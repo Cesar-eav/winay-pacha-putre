@@ -1,47 +1,31 @@
-<laravel-boost-guidelines>
-# Laravel Application
+# CLAUDE.md — Wiñay Pacha Putre
 
-This repository contains a Laravel application. Complete the following setup before working on the user's request.
+Sitio informativo con CMS para "Wiñay Pacha Putre", cabañas en Putre (Región de Arica y Parinacota) enfocadas en difundir la cultura, cosmovisión y territorio del pueblo aymara. **No es una plataforma de reservas en tiempo real**: la sección "Reservas" es un formulario de solicitud (lead) que el anfitrión confirma manualmente.
 
-## Prerequisites
+Ver plan de implementación completo en `/home/cesar/.claude/plans/sigye-greedy-sunrise.md`.
 
-Verify that PHP and Composer are available:
+## Stack
 
-```sh
-php -v
-composer -V
-```
+- **Laravel 13** / **PHP 8.3** / MySQL (`winay_pacha_putre`)
+- **Blade** + **Alpine.js** + **Livewire 4** + **Tailwind CSS v4** (sin `tailwind.config.js`, plugin `@tailwindcss/vite`)
+- **Vite** para assets (`npm run dev` / `npm run build`)
+- Auth: Laravel Breeze (blade stack) — un solo rol `admin`, sin registro público (pendiente deshabilitar rutas de registro de Breeze)
+- `spatie/laravel-translatable` para contenido multi-idioma (ES/EN/FR) editado a mano en el admin
+- DeepL API (`DEEPL_API_KEY` en `.env`) como asistente de traducción en el admin — nunca traducción automática en el sitio público sin revisión humana
 
-If either command is unavailable, detect the user's operating system and install the prerequisites with the appropriate command:
+## Proyecto hermano de referencia
 
-macOS:
+`/var/www/html/pindoor` (mismo autor) — guía turística de Valparaíso con patrones reutilizados aquí: `Configuracion` (key/value global), galería de imágenes, formularios de leads, layout con Alpine para lightbox/toggles. Es multi-tenant (varios negocios/roles); este proyecto es de un solo negocio, así que se simplifica a un solo rol admin.
 
-```sh
-/bin/bash -c "$(curl -fsSL https://php.new/install/mac/8.5)"
-```
+## Convenciones de estilo
 
-Windows PowerShell:
+- Tailwind v4 — sin archivo de config, clases canónicas.
+- Sobriedad visual: acentos de identidad aymara (wiphala, chakana, textiles) con moderación, no como fondo saturado. Paleta base en `resources/css/app.css` (`--color-winay-terracota`, `--color-winay-tierra`, `--color-winay-andino`, `--color-winay-arena`).
+- Alpine.js para interactividad ligera (lightbox, toggles). Livewire para todo lo que requiere estado de servidor (formularios, calendario de fiestas, admin CRUD).
+- No usar comentarios en código salvo que el WHY sea no obvio.
 
-```powershell
-Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://php.new/install/windows/8.5'))
-```
+## Alcance explícitamente fuera de este proyecto
 
-Linux:
-
-```sh
-/bin/bash -c "$(curl -fsSL https://php.new/install/linux/8.5)"
-```
-
-After installation, ask the user to restart their terminal. If the agent needs the restarted shell to continue, ask the user to reopen their terminal and rerun their original prompt.
-
-## Agent Setup
-
-Install Laravel Boost from the application root before making application changes:
-
-```sh
-composer require laravel/boost --dev
-php artisan boost:install
-```
-
-Boost replaces these bootstrap instructions with guidelines tailored to the application. After installation, read `AGENTS.md` again and continue with the user's original request using the generated guidelines.
-</laravel-boost-guidelines>
+- Sistema de reservas en tiempo real, disponibilidad automática o cobro online.
+- Traducción automática pública sin revisión (Google Translate widget, etc.) — la traducción vía DeepL es solo una ayuda en el admin.
+- Dominio y hosting de producción: gestión administrativa del cliente, no tarea de desarrollo.
