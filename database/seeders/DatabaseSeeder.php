@@ -15,11 +15,11 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
-
+        // Contraseña de desarrollo: "password" (default del factory). Cambiar antes de producción.
         User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+            'name' => 'Admin',
+            'email' => 'admin@winaypachaputre.cl',
+            'is_admin' => true,
         ]);
 
         $this->call(WinayPlaceholderSeeder::class);
