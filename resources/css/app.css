@@ -1,0 +1,12 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/forms";
+
+@source "../views/**/*.blade.php";
+@source "../js/**/*.js";
+
+@theme {
+  --color-winay-terracota: #b5502f;
+  --color-winay-tierra: #6b4423;
+  --color-winay-andino: #2f4a5c;
+  --color-winay-arena: #f4ede2;
+}
