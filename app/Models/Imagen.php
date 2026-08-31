@@ -18,6 +18,12 @@ class Imagen extends Model
 
     public function getUrlAttribute(): string
     {
+        // Los placeholders viven en public/images/ (sin storage:link); las
+        // fotos reales subidas desde el admin siguen usando el disco storage.
+        if (str_starts_with($this->path, 'placeholder/')) {
+            return asset('images/'.$this->path);
+        }
+
         return asset('storage/'.$this->path);
     }
 }

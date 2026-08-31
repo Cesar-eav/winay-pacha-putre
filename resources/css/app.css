@@ -10,3 +10,7 @@
   --color-winay-andino: #2f4a5c;
   --color-winay-arena: #f4ede2;
 }
+
+[x-cloak] {
+  display: none !important;
+}
