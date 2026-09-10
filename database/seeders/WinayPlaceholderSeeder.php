@@ -101,7 +101,7 @@ class WinayPlaceholderSeeder extends Seeder
 
         $equipamientoCabana = Equipamiento::ambito('cabana')->pluck('id');
         $equipamientoHabitacion = Equipamiento::ambito('habitacion')->pluck('id');
-        $placeholders = ['placeholder/cabana-1.svg', 'placeholder/cabana-2.svg', 'placeholder/cabana-3.svg'];
+        $placeholders = ['placeholder/cabana-ejemplo.jpg', 'placeholder/cabana-ejemplo.jpg', 'placeholder/cabana-ejemplo.jpg'];
 
         foreach ($cabanas as $orden => $data) {
             $cabana = Cabana::updateOrCreate(

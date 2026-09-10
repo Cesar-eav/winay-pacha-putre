@@ -9,13 +9,13 @@
     @livewireScriptConfig
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body class="bg-winay-arena text-stone-800 antialiased">
+<body class="bg-white text-stone-800 antialiased">
 
     <header x-data="{ open: false }" class="bg-white border-b border-winay-arena sticky top-0 z-40">
         <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-16">
-                <a href="{{ route('inicio') }}" class="font-semibold text-lg text-winay-tierra">
-                    Wiñaypacha Putre
+                <a href="{{ route('inicio') }}" class="flex items-center">
+                    <img src="{{ asset('images/logo_12500x3655.png') }}" alt="Wiñaypacha Putre" class="h-10 sm:h-12 w-auto">
                 </a>
 
                 <nav class="hidden lg:flex items-center gap-6">
@@ -73,38 +73,7 @@
         {{ $slot }}
     </main>
 
-    <footer class="bg-winay-tierra text-winay-arena mt-16">
-        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 grid gap-8 sm:grid-cols-3">
-            <div>
-                <p class="font-semibold text-white mb-2">Wiñaypacha Putre</p>
-                <p class="text-sm text-winay-arena/80">
-                    Cabañas en Putre, Región de Arica y Parinacota — difundiendo la cultura, cosmovisión y territorio del pueblo aymara.
-                </p>
-            </div>
-
-            <div>
-                <p class="font-semibold text-white mb-2">Contacto</p>
-                <ul class="text-sm text-winay-arena/80 space-y-1">
-                    <li>{{ \App\Models\Configuracion::get('contacto_direccion', 'Putre, Región de Arica y Parinacota') }}</li>
-                    <li>{{ \App\Models\Configuracion::get('contacto_telefono', '+56 9 0000 0000') }}</li>
-                    <li>{{ \App\Models\Configuracion::get('contacto_email', 'contacto@winaypachaputre.cl') }}</li>
-                </ul>
-            </div>
-
-            <div>
-                <p class="font-semibold text-white mb-2">Enlaces</p>
-                <ul class="text-sm text-winay-arena/80 space-y-1">
-                    <li><a href="{{ route('cabanas.index') }}" class="hover:text-white">Cabañas</a></li>
-                    <li><a href="{{ route('entorno') }}" class="hover:text-white">Qué visitar</a></li>
-                    <li><a href="{{ route('contacto') }}" class="hover:text-white">Contacto</a></li>
-                </ul>
-            </div>
-        </div>
-
-        <div class="border-t border-winay-arena/20 py-4 text-center text-xs text-winay-arena/60">
-            &copy; {{ now()->year }} Wiñaypacha Putre
-        </div>
-    </footer>
+    @include('layouts.footer')
 
 </body>
 </html>
