@@ -15,10 +15,10 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // Contraseña de desarrollo: "password" (default del factory). Cambiar antes de producción.
         User::factory()->create([
             'name' => 'Admin',
-            'email' => 'admin@winaypachaputre.cl',
+            'email' => env('ADMIN_EMAIL', 'admin@winaypachaputre.cl'),
+            'password' => bcrypt(env('ADMIN_PASSWORD', 'password')),
             'is_admin' => true,
         ]);
 

@@ -1,6 +1,6 @@
-# CLAUDE.md — Wiñay Pacha Putre
+# CLAUDE.md — Wiñaypacha Putre
 
-Sitio informativo con CMS para "Wiñay Pacha Putre", cabañas en Putre (Región de Arica y Parinacota) enfocadas en difundir la cultura, cosmovisión y territorio del pueblo aymara. **No es una plataforma de reservas en tiempo real**: la sección "Reservas" es un formulario de solicitud (lead) que el anfitrión confirma manualmente.
+Sitio informativo con CMS para "Wiñaypacha Putre", cabañas en Putre (Región de Arica y Parinacota) enfocadas en difundir la cultura, cosmovisión y territorio del pueblo aymara. **No es una plataforma de reservas en tiempo real**: la sección "Reservas" es un formulario de solicitud (lead) que el anfitrión confirma manualmente.
 
 Ver plan de implementación completo en `/home/cesar/.claude/plans/sigye-greedy-sunrise.md`.
 

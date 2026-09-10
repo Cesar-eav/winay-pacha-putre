@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>{{ isset($titulo) ? $titulo.' — Wiñay Pacha Putre' : 'Wiñay Pacha Putre' }}</title>
+    <title>{{ isset($titulo) ? $titulo.' — Wiñaypacha Putre' : 'Wiñaypacha Putre' }}</title>
 
     @livewireScriptConfig
     @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -15,7 +15,7 @@
         <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-16">
                 <a href="{{ route('inicio') }}" class="font-semibold text-lg text-winay-tierra">
-                    Wiñay Pacha Putre
+                    Wiñaypacha Putre
                 </a>
 
                 <nav class="hidden lg:flex items-center gap-6">
@@ -76,7 +76,7 @@
     <footer class="bg-winay-tierra text-winay-arena mt-16">
         <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 grid gap-8 sm:grid-cols-3">
             <div>
-                <p class="font-semibold text-white mb-2">Wiñay Pacha Putre</p>
+                <p class="font-semibold text-white mb-2">Wiñaypacha Putre</p>
                 <p class="text-sm text-winay-arena/80">
                     Cabañas en Putre, Región de Arica y Parinacota — difundiendo la cultura, cosmovisión y territorio del pueblo aymara.
                 </p>
@@ -102,7 +102,7 @@
         </div>
 
         <div class="border-t border-winay-arena/20 py-4 text-center text-xs text-winay-arena/60">
-            &copy; {{ now()->year }} Wiñay Pacha Putre
+            &copy; {{ now()->year }} Wiñaypacha Putre
         </div>
     </footer>
 

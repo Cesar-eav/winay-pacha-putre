@@ -6,7 +6,7 @@
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
                     <a href="{{ route('dashboard') }}" class="font-semibold text-lg text-winay-tierra">
-                        Wiñay Pacha Putre
+                        Wiñaypacha Putre
                     </a>
                 </div>
 

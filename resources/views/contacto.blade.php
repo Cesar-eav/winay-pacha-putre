@@ -30,7 +30,7 @@
             @endif
 
             @if ($temasPublicoObjetivo->isNotEmpty())
-                <h2 class="mt-8 font-semibold text-winay-tierra">¿Para quién es Wiñay Pacha?</h2>
+                <h2 class="mt-8 font-semibold text-winay-tierra">¿Para quién es Wiñaypacha?</h2>
                 <div class="mt-2 space-y-4">
                     @foreach ($temasPublicoObjetivo as $tema)
                         <div>

@@ -2,7 +2,7 @@
     <x-slot:titulo>Nosotros</x-slot:titulo>
 
     <section class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 grid gap-10 lg:grid-cols-2 items-center">
-        <x-galeria-lightbox :imagenes="$pagina->imagenes" titulo="Wiñay Pacha Putre" />
+        <x-galeria-lightbox :imagenes="$pagina->imagenes" titulo="Wiñaypacha Putre" />
 
         <div>
             <h1 class="text-3xl font-bold text-winay-tierra">Nosotros</h1>

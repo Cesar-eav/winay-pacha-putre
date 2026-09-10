@@ -13,7 +13,7 @@ class InicioController extends Controller
         $temaDestacado = Tema::categoria('cultura')->publicado()->ordenado()->with('imagenes')->first();
 
         return view('inicio', [
-            'heroTitulo' => Configuracion::get('inicio_titulo', 'Wiñay Pacha Putre'),
+            'heroTitulo' => Configuracion::get('inicio_titulo', 'Wiñaypacha Putre'),
             'heroSubtitulo' => Configuracion::get('inicio_subtitulo', 'Cabañas en el corazón del altiplano aymara'),
             'heroTexto' => Configuracion::get('inicio_texto', 'Contenido de bienvenida pendiente de definir con el cliente.'),
             'temaDestacado' => $temaDestacado,

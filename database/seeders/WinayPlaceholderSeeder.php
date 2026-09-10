@@ -36,7 +36,7 @@ class WinayPlaceholderSeeder extends Seeder
         Configuracion::set('contacto_telefono', '+56 9 1234 5678');
         Configuracion::set('contacto_whatsapp', '+56 9 1234 5678');
         Configuracion::set('contacto_email', 'contacto@winaypachaputre.cl');
-        Configuracion::set('inicio_titulo', 'Wiñay Pacha Putre');
+        Configuracion::set('inicio_titulo', 'Wiñaypacha Putre');
         Configuracion::set('inicio_subtitulo', 'Cabañas en el corazón del altiplano aymara');
         Configuracion::set('inicio_texto', 'Texto de bienvenida placeholder: aquí irá la presentación del proyecto, su vínculo con la cultura aymara y el territorio de Putre. Pendiente de contenido definitivo del cliente.');
         Configuracion::set('redes_instagram', 'https://instagram.com/winaypachaputre');
@@ -202,7 +202,7 @@ class WinayPlaceholderSeeder extends Seeder
     {
         $pagina = PaginaNosotros::singleton();
         $pagina->update([
-            'historia' => ['es' => '<p>Texto placeholder sobre la historia de Wiñay Pacha Putre y sus anfitriones. Pendiente de contenido definitivo del cliente.</p>'],
+            'historia' => ['es' => '<p>Texto placeholder sobre la historia de Wiñaypacha Putre y sus anfitriones. Pendiente de contenido definitivo del cliente.</p>'],
             'mensaje' => ['es' => '<p>Texto placeholder sobre el mensaje y propósito del proyecto: difundir la cultura y territorio aymara. Pendiente de contenido definitivo.</p>'],
         ]);
     }

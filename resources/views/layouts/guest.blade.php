@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>Admin — Wiñay Pacha Putre</title>
+        <title>Admin — Wiñaypacha Putre</title>
 
         <!-- Scripts -->
         @livewireScriptConfig
@@ -15,7 +15,7 @@
         <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-winay-arena">
             <div>
                 <a href="/" class="font-semibold text-xl text-winay-tierra">
-                    Wiñay Pacha Putre
+                    Wiñaypacha Putre
                 </a>
             </div>
 

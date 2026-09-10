@@ -18,7 +18,7 @@
             </div>
         </div>
 
-        <x-imagen-placeholder label="Imagen: Wiñay Pacha Putre" color="terracota" class="aspect-video rounded-2xl" />
+        <x-imagen-placeholder label="Imagen: Wiñaypacha Putre" color="terracota" class="aspect-video rounded-2xl" />
     </section>
 
     @if ($temaDestacado)
@@ -48,7 +48,7 @@
         </a>
         <a href="{{ route('nosotros') }}" class="p-6 rounded-2xl border border-winay-arena hover:border-winay-terracota transition">
             <h3 class="font-semibold text-winay-tierra">Nosotros</h3>
-            <p class="mt-2 text-sm text-stone-600">La historia detrás de Wiñay Pacha Putre.</p>
+            <p class="mt-2 text-sm text-stone-600">La historia detrás de WiñayPacha Putre.</p>
         </a>
     </section>
 </x-winay-layout>
