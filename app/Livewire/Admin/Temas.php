@@ -42,7 +42,7 @@ class Temas extends Component
             'titulo.es' => ['required', 'string', 'max:255'],
             'cuerpo.es' => ['required', 'string'],
             'orden' => ['required', 'integer', 'min:0'],
-            'nuevasFotos.*' => ['image', 'mimes:jpg,jpeg,png,webp,gif,bmp', 'max:5120'],
+            'nuevasFotos.*' => ['image', 'mimes:jpg,jpeg,png,webp,gif,bmp,heic,heif', 'max:5120'],
         ];
     }
 

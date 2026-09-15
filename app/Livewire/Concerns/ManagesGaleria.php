@@ -6,7 +6,10 @@ use App\Models\Imagen;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
+use Illuminate\Validation\ValidationException;
 use Livewire\WithFileUploads;
+use Maestroerror\HeicToJpg;
 
 trait ManagesGaleria
 {
@@ -71,6 +74,14 @@ trait ManagesGaleria
 
     protected function guardarGaleria(Model $modelo, string $carpeta): void
     {
+        $rutasNuevas = [];
+
+        foreach (array_values($this->nuevasFotos) as $foto) {
+            $rutasNuevas[] = $this->esFormatoHeic($foto)
+                ? $this->convertirHeicAWebp($foto, $carpeta)
+                : $foto->store($carpeta, 'public');
+        }
+
         foreach ($this->imagenesAEliminar as $id) {
             $imagen = Imagen::find($id);
 
@@ -91,9 +102,7 @@ trait ManagesGaleria
 
         $ordenBase = $this->imagenesExistentes->count();
 
-        foreach (array_values($this->nuevasFotos) as $i => $foto) {
-            $path = $foto->store($carpeta, 'public');
-
+        foreach ($rutasNuevas as $i => $path) {
             $modelo->imagenes()->create([
                 'path' => $path,
                 'alt' => (string) ($modelo->nombre ?? $modelo->titulo ?? ''),
@@ -103,5 +112,36 @@ trait ManagesGaleria
 
         $this->nuevasFotos = [];
         $this->imagenesAEliminar = [];
+    }
+
+    protected function esFormatoHeic($foto): bool
+    {
+        return in_array(strtolower($foto->getClientOriginalExtension()), ['heic', 'heif'], true);
+    }
+
+    protected function convertirHeicAWebp($foto, string $carpeta): string
+    {
+        try {
+            $jpg = HeicToJpg::convert($foto->getRealPath())->get();
+            $imagen = imagecreatefromstring($jpg);
+        } catch (\Throwable $e) {
+            $imagen = false;
+        }
+
+        if (! $imagen) {
+            throw ValidationException::withMessages([
+                'nuevasFotos' => 'No se pudo convertir una de las fotos HEIC. Expórtala como JPG o PNG e inténtalo de nuevo.',
+            ]);
+        }
+
+        $path = $carpeta.'/'.Str::random(40).'.webp';
+        $temporal = tempnam(sys_get_temp_dir(), 'webp');
+        imagewebp($imagen, $temporal);
+        imagedestroy($imagen);
+
+        Storage::disk('public')->put($path, file_get_contents($temporal));
+        unlink($temporal);
+
+        return $path;
     }
 }

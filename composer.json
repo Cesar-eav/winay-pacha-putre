@@ -10,6 +10,7 @@
         "laravel/framework": "^13.17",
         "laravel/tinker": "^3.0",
         "livewire/livewire": "^4.4",
+        "maestroerror/php-heic-to-jpg": "^1.0",
         "spatie/laravel-translatable": "^6.14"
     },
     "require-dev": {

@@ -38,7 +38,7 @@
     <div class="mt-3">
         <input type="file" wire:model="nuevasFotos" multiple accept="image/*"
                class="block w-full text-sm text-stone-600 file:mr-3 file:py-2 file:px-4 file:rounded-full file:border-0 file:bg-winay-arena file:text-winay-tierra file:text-sm file:font-semibold hover:file:bg-winay-arena/70">
-        <p class="mt-1 text-xs text-stone-500">Formatos aceptados: JPG, PNG o WebP. Si subes fotos desde iPhone, actívalas como "Más compatible" en Ajustes → Cámara → Formatos, o conviértelas antes de subir.</p>
+        <p class="mt-1 text-xs text-stone-500">Formatos aceptados: JPG, PNG, WebP o fotos HEIC de iPhone (se convierten automáticamente).</p>
         <div wire:loading wire:target="nuevasFotos" class="mt-1 text-xs text-stone-500">Subiendo…</div>
         @error('nuevasFotos.*') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
     </div>
