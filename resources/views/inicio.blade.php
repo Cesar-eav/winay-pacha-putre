@@ -58,8 +58,9 @@
                     </a>
                 </div>
             </div>
-
-            <x-imagen-placeholder label="Imagen: Wiñaypacha Putre" color="terracota" class="aspect-video rounded-2xl" />
+            <img src="{{ asset('images/placeholder/50.JPG') }}"
+                 alt="Wiñaypacha Putre"
+                 class="w-full aspect-video rounded-2xl object-cover">
         </div>
     </section>
 
