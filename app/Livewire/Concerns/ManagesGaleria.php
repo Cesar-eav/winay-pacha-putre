@@ -40,6 +40,13 @@ trait ManagesGaleria
         $this->nuevasFotos = array_values($this->nuevasFotos);
     }
 
+    public function fotoEsPrevisualizable($foto): bool
+    {
+        $extension = strtolower($foto->getClientOriginalExtension());
+
+        return in_array($extension, config('livewire.temporary_file_upload.preview_mimes'), true);
+    }
+
     public function moverFotoExistente(int $id, string $direccion): void
     {
         $items = $this->imagenesExistentes->values();

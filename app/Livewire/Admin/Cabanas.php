@@ -46,7 +46,7 @@ class Cabanas extends Component
             'descripcion.es' => ['required', 'string'],
             'precioDesde' => ['nullable', 'string', 'max:255'],
             'orden' => ['required', 'integer', 'min:0'],
-            'nuevasFotos.*' => ['image', 'max:5120'],
+            'nuevasFotos.*' => ['image', 'mimes:jpg,jpeg,png,webp,gif,bmp', 'max:5120'],
         ];
     }
 
