@@ -32,9 +32,9 @@
             @endforeach
 
             <a href="{{ route('cabanas.index') }}"
-               class="group relative block aspect-2/1 rounded-2xl overflow-hidden border border-winay-arena hover:border-winay-terracota transition">
+               class="group relative block aspect-2/1 overflow-hidden border border-winay-arena hover:border-winay-terracota transition">
                 <x-imagen-placeholder label="" color="andino" class="w-full h-full" />
-                <span class="absolute inset-x-0 bottom-0 bg-linear-to-t from-black/60 to-transparent p-4">
+                <span class="absolute inset-0 flex items-center justify-center bg-linear-to-t from-black/60 to-transparent p-4">
                     <span class="text-white font-semibold">Conoce todas las cabañas</span>
                 </span>
             </a>
