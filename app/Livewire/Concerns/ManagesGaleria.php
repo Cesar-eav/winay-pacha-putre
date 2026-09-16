@@ -17,6 +17,8 @@ trait ManagesGaleria
 
     public array $nuevasFotos = [];
 
+    public array $previsualizacionesHeic = [];
+
     public Collection $imagenesExistentes;
 
     public array $imagenesAEliminar = [];
@@ -25,7 +27,24 @@ trait ManagesGaleria
     {
         $this->imagenesExistentes = $modelo ? $modelo->imagenes()->get() : collect();
         $this->nuevasFotos = [];
+        $this->previsualizacionesHeic = [];
         $this->imagenesAEliminar = [];
+    }
+
+    /**
+     * El navegador no puede mostrar un <img> de un archivo HEIC directamente
+     * (salvo Safari), así que generamos una miniatura JPG en el servidor
+     * apenas se suben las fotos, en vez de esperar al guardado del formulario.
+     */
+    public function updatedNuevasFotos(): void
+    {
+        $this->previsualizacionesHeic = [];
+
+        foreach ($this->nuevasFotos as $i => $foto) {
+            $this->previsualizacionesHeic[$i] = $this->esFormatoHeic($foto)
+                ? $this->generarPrevisualizacionHeic($foto)
+                : null;
+        }
     }
 
     public function eliminarFotoExistente(int $id): void
@@ -41,6 +60,9 @@ trait ManagesGaleria
     {
         unset($this->nuevasFotos[$index]);
         $this->nuevasFotos = array_values($this->nuevasFotos);
+
+        unset($this->previsualizacionesHeic[$index]);
+        $this->previsualizacionesHeic = array_values($this->previsualizacionesHeic);
     }
 
     public function fotoEsPrevisualizable($foto): bool
@@ -121,32 +143,13 @@ trait ManagesGaleria
 
     protected function convertirHeicAWebp($foto, string $carpeta): string
     {
-        try {
-            $jpg = HeicToJpg::convert($foto->getRealPath())->get();
-        } catch (\Throwable $e) {
-            $jpg = false;
-        }
-
-        $temporalJpg = $jpg ? tempnam(sys_get_temp_dir(), 'heic').'.jpg' : null;
-        $imagen = false;
-
-        if ($temporalJpg) {
-            file_put_contents($temporalJpg, $jpg);
-            $imagen = @imagecreatefromjpeg($temporalJpg);
-        }
+        $imagen = $this->heicAImagenGd($foto);
 
         if (! $imagen) {
-            if ($temporalJpg) {
-                unlink($temporalJpg);
-            }
-
             throw ValidationException::withMessages([
                 'nuevasFotos' => 'No se pudo convertir una de las fotos HEIC. Expórtala como JPG o PNG e inténtalo de nuevo.',
             ]);
         }
-
-        $imagen = $this->corregirOrientacionExif($imagen, $temporalJpg);
-        unlink($temporalJpg);
 
         $path = $carpeta.'/'.Str::random(40).'.webp';
         $temporal = tempnam(sys_get_temp_dir(), 'webp');
@@ -157,6 +160,66 @@ trait ManagesGaleria
         unlink($temporal);
 
         return $path;
+    }
+
+    /**
+     * Miniatura JPG codificada en base64 para previsualizar una foto HEIC
+     * antes de guardar el formulario (mismo pipeline de conversión que
+     * convertirHeicAWebp, pero reducida de tamaño porque viaja embebida en
+     * el HTML de cada respuesta de Livewire mientras el formulario esté abierto).
+     */
+    protected function generarPrevisualizacionHeic($foto): ?string
+    {
+        $imagen = $this->heicAImagenGd($foto);
+
+        if (! $imagen) {
+            return null;
+        }
+
+        $ladoMaximo = 400;
+        $ancho = imagesx($imagen);
+        $alto = imagesy($imagen);
+
+        if (max($ancho, $alto) > $ladoMaximo) {
+            $factor = $ladoMaximo / max($ancho, $alto);
+            $miniatura = imagescale($imagen, (int) round($ancho * $factor), (int) round($alto * $factor));
+            $imagen = $this->reemplazarImagen($imagen, $miniatura);
+        }
+
+        ob_start();
+        imagejpeg($imagen, null, 75);
+        $bytes = ob_get_clean();
+        imagedestroy($imagen);
+
+        return 'data:image/jpeg;base64,'.base64_encode($bytes);
+    }
+
+    /**
+     * Decodifica un HEIC a un recurso GD ya con la orientación EXIF corregida.
+     * Devuelve false si el archivo no es un HEIC válido.
+     */
+    protected function heicAImagenGd($foto)
+    {
+        try {
+            $jpg = HeicToJpg::convert($foto->getRealPath())->get();
+        } catch (\Throwable $e) {
+            return false;
+        }
+
+        $temporalJpg = tempnam(sys_get_temp_dir(), 'heic').'.jpg';
+        file_put_contents($temporalJpg, $jpg);
+        $imagen = @imagecreatefromjpeg($temporalJpg);
+
+        if (! $imagen) {
+            unlink($temporalJpg);
+
+            return false;
+        }
+
+        $imagen = $this->corregirOrientacionExif($imagen, $temporalJpg);
+        unlink($temporalJpg);
+
+        return $imagen;
     }
 
     /**

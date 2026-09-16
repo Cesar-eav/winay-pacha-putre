@@ -21,6 +21,8 @@
             <div class="relative rounded-lg overflow-hidden border border-winay-terracota aspect-square">
                 @if ($this->fotoEsPrevisualizable($foto))
                     <img src="{{ $foto->temporaryUrl() }}" class="w-full h-full object-cover">
+                @elseif ($previsualizacionesHeic[$i] ?? null)
+                    <img src="{{ $previsualizacionesHeic[$i] }}" class="w-full h-full object-cover">
                 @else
                     <div class="w-full h-full flex items-center justify-center bg-stone-100 text-center px-2">
                         <span class="text-xs text-stone-500">{{ $foto->getClientOriginalName() }}<br>Formato no compatible</span>
@@ -33,13 +35,27 @@
                 </button>
             </div>
         @endforeach
+
+        <div wire:loading.flex wire:target="nuevasFotos"
+             class="hidden rounded-lg border border-dashed border-winay-terracota aspect-square items-center justify-center bg-stone-50">
+            <svg class="animate-spin h-6 w-6 text-winay-terracota" viewBox="0 0 24 24" fill="none">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+            </svg>
+        </div>
     </div>
 
     <div class="mt-3">
         <input type="file" wire:model="nuevasFotos" multiple accept="image/*"
                class="block w-full text-sm text-stone-600 file:mr-3 file:py-2 file:px-4 file:rounded-full file:border-0 file:bg-winay-arena file:text-winay-tierra file:text-sm file:font-semibold hover:file:bg-winay-arena/70">
         <p class="mt-1 text-xs text-stone-500">Formatos aceptados: JPG, PNG, WebP o fotos HEIC de iPhone (se convierten automáticamente).</p>
-        <div wire:loading wire:target="nuevasFotos" class="mt-1 text-xs text-stone-500">Subiendo…</div>
+        <div wire:loading.flex wire:target="nuevasFotos" class="hidden mt-1 items-center gap-1.5 text-xs text-stone-500">
+            <svg class="animate-spin h-3.5 w-3.5 text-winay-terracota" viewBox="0 0 24 24" fill="none">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+            </svg>
+            Subiendo…
+        </div>
         @error('nuevasFotos.*') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
     </div>
 </div>
