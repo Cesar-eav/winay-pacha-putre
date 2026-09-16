@@ -5,11 +5,11 @@
         <p class="text-sm uppercase tracking-wide text-winay-terracota font-semibold mb-2">Nuestras cabañas</p>
         <h1 class="text-2xl sm:text-3xl font-bold text-winay-tierra">Cada cabaña, una forma distinta de vivir el altiplano</h1>
 
-        <div class="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-6">
+        <div class="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-0">
             @foreach ($cabanasDestacadas as $cabana)
                 @php $imagen = $cabana->imagenes->first(); @endphp
                 <a href="{{ route('cabanas.show', $cabana) }}"
-                   class="group relative block aspect-2/1 rounded-2xl overflow-hidden border border-winay-arena hover:border-winay-terracota hover:shadow-xl transition">
+                   class="group relative block aspect-2/1 overflow-hidden border border-winay-arena hover:border-winay-terracota hover:shadow-xl transition">
                     <img src="{{ $imagen ? $imagen->url : asset('images/placeholder/cabana-ejemplo.jpg') }}"
                          alt="{{ $imagen && $imagen->alt ? $imagen->alt : $cabana->nombre }}"
                          class="w-full h-full object-cover group-hover:scale-110 transition duration-500 ease-out">
