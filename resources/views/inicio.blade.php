@@ -9,7 +9,7 @@
             @foreach ($cabanasDestacadas as $cabana)
                 @php $imagen = $cabana->imagenes->first(); @endphp
                 <a href="{{ route('cabanas.show', $cabana) }}"
-                   class="group relative block aspect-4/3 rounded-2xl overflow-hidden border border-winay-arena hover:border-winay-terracota hover:shadow-xl transition">
+                   class="group relative block aspect-2/1 rounded-2xl overflow-hidden border border-winay-arena hover:border-winay-terracota hover:shadow-xl transition">
                     <img src="{{ $imagen ? $imagen->url : asset('images/placeholder/cabana-ejemplo.jpg') }}"
                          alt="{{ $imagen && $imagen->alt ? $imagen->alt : $cabana->nombre }}"
                          class="w-full h-full object-cover group-hover:scale-110 transition duration-500 ease-out">
@@ -25,14 +25,14 @@
                         </span>
                     </span>
 
-                    <span class="absolute inset-x-0 bottom-0 p-4">
-                        <span class="text-white font-semibold text-lg drop-shadow">{{ $cabana->nombre }}</span>
+                    <span class="absolute inset-0 flex items-center justify-center p-4 text-center group-hover:opacity-0 transition duration-300">
+                        <span class="text-white font-semibold text-4xl drop-shadow">{{ $cabana->nombre }}</span>
                     </span>
                 </a>
             @endforeach
 
             <a href="{{ route('cabanas.index') }}"
-               class="group relative block aspect-4/3 rounded-2xl overflow-hidden border border-winay-arena hover:border-winay-terracota transition">
+               class="group relative block aspect-2/1 rounded-2xl overflow-hidden border border-winay-arena hover:border-winay-terracota transition">
                 <x-imagen-placeholder label="" color="andino" class="w-full h-full" />
                 <span class="absolute inset-x-0 bottom-0 bg-linear-to-t from-black/60 to-transparent p-4">
                     <span class="text-white font-semibold">Conoce todas las cabañas</span>
