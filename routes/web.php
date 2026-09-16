@@ -21,7 +21,7 @@ Route::get('/nosotros', NosotrosController::class)->name('nosotros');
 Route::get('/contacto', ContactoController::class)->name('contacto');
 Route::get('/reserva', ReservaController::class)->name('reserva');
 
-Route::redirect('/dashboard', '/admin/temas')->middleware(['auth', 'admin'])->name('dashboard');
+Route::redirect('/dashboard', '/admin')->middleware(['auth', 'admin'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

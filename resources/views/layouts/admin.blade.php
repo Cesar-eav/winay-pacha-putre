@@ -14,12 +14,17 @@
     <div x-data="{ open: false }" class="lg:flex min-h-screen">
 
         <aside class="hidden lg:flex lg:flex-col lg:w-64 bg-winay-tierra text-winay-arena shrink-0">
-            <a href="{{ route('admin.temas') }}" class="px-6 py-5 font-semibold text-white border-b border-white/10">
+            <a href="{{ route('admin.dashboard') }}" class="px-6 py-5 font-semibold text-white border-b border-white/10">
                 Wiñaypacha Putre
             </a>
 
             <nav class="flex-1 px-3 py-4 space-y-1">
-                <p class="px-3 pt-2 pb-1 text-xs uppercase tracking-wide text-winay-arena/50">Catálogo</p>
+                <a href="{{ route('admin.dashboard') }}"
+                   class="block px-3 py-2 rounded-lg text-sm {{ request()->routeIs('admin.dashboard') ? 'bg-white/10 text-white' : 'text-winay-arena/80 hover:bg-white/5' }}">
+                    Dashboard
+                </a>
+
+                <p class="px-3 pt-4 pb-1 text-xs uppercase tracking-wide text-winay-arena/50">Catálogo</p>
                 <a href="{{ route('admin.temas') }}"
                    class="block px-3 py-2 rounded-lg text-sm {{ request()->routeIs('admin.temas*') ? 'bg-white/10 text-white' : 'text-winay-arena/80 hover:bg-white/5' }}">
                     Temas
@@ -55,6 +60,7 @@
             </header>
 
             <div x-show="open" x-cloak class="lg:hidden bg-winay-tierra text-winay-arena px-4 py-3 space-y-1">
+                <a href="{{ route('admin.dashboard') }}" class="block px-2 py-2 rounded-md text-sm {{ request()->routeIs('admin.dashboard') ? 'text-white bg-white/10' : '' }}">Dashboard</a>
                 <a href="{{ route('admin.temas') }}" class="block px-2 py-2 rounded-md text-sm {{ request()->routeIs('admin.temas*') ? 'text-white bg-white/10' : '' }}">Temas</a>
                 <a href="{{ route('admin.cabanas') }}" class="block px-2 py-2 rounded-md text-sm {{ request()->routeIs('admin.cabanas*') ? 'text-white bg-white/10' : '' }}">Cabañas</a>
                 <a href="{{ route('admin.lugares') }}" class="block px-2 py-2 rounded-md text-sm {{ request()->routeIs('admin.lugares*') ? 'text-white bg-white/10' : '' }}">Qué Visitar — Lugares</a>
