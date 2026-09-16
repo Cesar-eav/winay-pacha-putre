@@ -34,4 +34,17 @@ class Especie extends Model
     {
         return $query->orderBy('orden');
     }
+
+    public function getImagenUrlAttribute(): string
+    {
+        if (! $this->imagen) {
+            return asset('images/placeholder/especie-'.$this->tipo.'.svg');
+        }
+
+        if (str_starts_with($this->imagen, 'placeholder/')) {
+            return asset('images/'.$this->imagen);
+        }
+
+        return asset('storage/'.$this->imagen);
+    }
 }

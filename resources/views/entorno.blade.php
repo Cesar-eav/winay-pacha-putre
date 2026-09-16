@@ -40,7 +40,7 @@
                     <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
                         @foreach ($especies as $especie)
                             <div class="rounded-2xl border border-winay-arena overflow-hidden">
-                                <img src="{{ asset('images/'.$especie->imagen) }}" alt="{{ $especie->nombre_comun }}" class="w-full aspect-video object-cover">
+                                <img src="{{ $especie->imagen_url }}" alt="{{ $especie->nombre_comun }}" class="w-full aspect-video object-cover">
                                 <div class="p-5">
                                     <h3 class="font-semibold text-winay-tierra">{{ $especie->nombre_comun }}</h3>
                                     <p class="text-xs italic text-stone-500">{{ $especie->nombre_cientifico }}</p>

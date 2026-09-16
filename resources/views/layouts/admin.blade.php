@@ -28,6 +28,14 @@
                    class="block px-3 py-2 rounded-lg text-sm {{ request()->routeIs('admin.cabanas*') ? 'bg-white/10 text-white' : 'text-winay-arena/80 hover:bg-white/5' }}">
                     Cabañas
                 </a>
+                <a href="{{ route('admin.lugares') }}"
+                   class="block px-3 py-2 rounded-lg text-sm {{ request()->routeIs('admin.lugares*') ? 'bg-white/10 text-white' : 'text-winay-arena/80 hover:bg-white/5' }}">
+                    Qué Visitar — Lugares
+                </a>
+                <a href="{{ route('admin.especies') }}"
+                   class="block px-3 py-2 rounded-lg text-sm {{ request()->routeIs('admin.especies*') ? 'bg-white/10 text-white' : 'text-winay-arena/80 hover:bg-white/5' }}">
+                    Qué Visitar — Flora y Fauna
+                </a>
             </nav>
 
             <a href="{{ route('inicio') }}" class="px-6 py-4 text-xs text-winay-arena/60 border-t border-white/10 hover:text-white">
@@ -49,6 +57,8 @@
             <div x-show="open" x-cloak class="lg:hidden bg-winay-tierra text-winay-arena px-4 py-3 space-y-1">
                 <a href="{{ route('admin.temas') }}" class="block px-2 py-2 rounded-md text-sm {{ request()->routeIs('admin.temas*') ? 'text-white bg-white/10' : '' }}">Temas</a>
                 <a href="{{ route('admin.cabanas') }}" class="block px-2 py-2 rounded-md text-sm {{ request()->routeIs('admin.cabanas*') ? 'text-white bg-white/10' : '' }}">Cabañas</a>
+                <a href="{{ route('admin.lugares') }}" class="block px-2 py-2 rounded-md text-sm {{ request()->routeIs('admin.lugares*') ? 'text-white bg-white/10' : '' }}">Qué Visitar — Lugares</a>
+                <a href="{{ route('admin.especies') }}" class="block px-2 py-2 rounded-md text-sm {{ request()->routeIs('admin.especies*') ? 'text-white bg-white/10' : '' }}">Qué Visitar — Flora y Fauna</a>
                 <a href="{{ route('inicio') }}" class="block px-2 py-2 rounded-md text-sm text-winay-arena/70">← Ver sitio público</a>
             </div>
 
