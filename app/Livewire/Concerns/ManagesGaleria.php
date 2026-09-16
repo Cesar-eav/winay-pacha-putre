@@ -123,16 +123,30 @@ trait ManagesGaleria
     {
         try {
             $jpg = HeicToJpg::convert($foto->getRealPath())->get();
-            $imagen = imagecreatefromstring($jpg);
         } catch (\Throwable $e) {
-            $imagen = false;
+            $jpg = false;
+        }
+
+        $temporalJpg = $jpg ? tempnam(sys_get_temp_dir(), 'heic').'.jpg' : null;
+        $imagen = false;
+
+        if ($temporalJpg) {
+            file_put_contents($temporalJpg, $jpg);
+            $imagen = @imagecreatefromjpeg($temporalJpg);
         }
 
         if (! $imagen) {
+            if ($temporalJpg) {
+                unlink($temporalJpg);
+            }
+
             throw ValidationException::withMessages([
                 'nuevasFotos' => 'No se pudo convertir una de las fotos HEIC. Expórtala como JPG o PNG e inténtalo de nuevo.',
             ]);
         }
+
+        $imagen = $this->corregirOrientacionExif($imagen, $temporalJpg);
+        unlink($temporalJpg);
 
         $path = $carpeta.'/'.Str::random(40).'.webp';
         $temporal = tempnam(sys_get_temp_dir(), 'webp');
@@ -143,5 +157,51 @@ trait ManagesGaleria
         unlink($temporal);
 
         return $path;
+    }
+
+    /**
+     * El JPEG que extrae HeicToJpg conserva el tag EXIF Orientation del HEIC
+     * original, pero GD lo ignora al decodificar y WebP no lo conserva al
+     * guardar. Sin esta corrección, las fotos tomadas en vertical (la
+     * mayoría desde iPhone) quedan giradas en el WebP final.
+     */
+    protected function corregirOrientacionExif($imagen, string $rutaJpg)
+    {
+        $orientacion = @exif_read_data($rutaJpg)['Orientation'] ?? 1;
+
+        switch ($orientacion) {
+            case 3:
+                $imagen = $this->reemplazarImagen($imagen, imagerotate($imagen, 180, 0));
+                break;
+            case 5:
+                $imagen = $this->reemplazarImagen($imagen, imagerotate($imagen, -90, 0));
+                imageflip($imagen, IMG_FLIP_HORIZONTAL);
+                break;
+            case 6:
+                $imagen = $this->reemplazarImagen($imagen, imagerotate($imagen, -90, 0));
+                break;
+            case 7:
+                $imagen = $this->reemplazarImagen($imagen, imagerotate($imagen, 90, 0));
+                imageflip($imagen, IMG_FLIP_HORIZONTAL);
+                break;
+            case 8:
+                $imagen = $this->reemplazarImagen($imagen, imagerotate($imagen, 90, 0));
+                break;
+            case 2:
+                imageflip($imagen, IMG_FLIP_HORIZONTAL);
+                break;
+            case 4:
+                imageflip($imagen, IMG_FLIP_VERTICAL);
+                break;
+        }
+
+        return $imagen;
+    }
+
+    protected function reemplazarImagen($imagenAnterior, $imagenNueva)
+    {
+        imagedestroy($imagenAnterior);
+
+        return $imagenNueva;
     }
 }
