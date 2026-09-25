@@ -10,8 +10,11 @@ class PutreController extends Controller
     public function __invoke(): View
     {
         return view('putre', [
-            'actividades' => Tema::categoria('actividad')->publicado()->ordenado()->with('imagenes')->get(),
-            'viveLocal' => Tema::categoria('vive_local')->publicado()->ordenado()->with('imagenes')->get(),
+            'temas' => Tema::categoria('putre_blog')
+                ->publicado()
+                ->ordenado()
+                ->with('imagenes')
+                ->get(),
         ]);
     }
 }

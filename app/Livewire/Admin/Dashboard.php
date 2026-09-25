@@ -16,8 +16,7 @@ class Dashboard extends Component
 {
     protected const ETIQUETAS_CATEGORIA_TEMA = [
         'cultura' => 'Cultura',
-        'actividad' => 'Actividad',
-        'vive_local' => 'Vive Local',
+        'putre_blog' => 'Putre Blog',
         'publico_objetivo' => 'Público Objetivo',
     ];
 

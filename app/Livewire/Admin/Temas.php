@@ -38,7 +38,7 @@ class Temas extends Component
     {
         return [
             'slug' => ['required', 'string', 'max:255', Rule::unique('temas', 'slug')->ignore($this->editandoId)],
-            'categoria' => ['required', Rule::in(['cultura', 'actividad', 'vive_local', 'publico_objetivo'])],
+            'categoria' => ['required', Rule::in(['cultura', 'putre_blog', 'publico_objetivo'])],
             'titulo.es' => ['required', 'string', 'max:255'],
             'cuerpo.es' => ['required', 'string'],
             'orden' => ['required', 'integer', 'min:0'],

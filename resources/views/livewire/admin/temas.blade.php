@@ -9,7 +9,7 @@
     </div>
 
     <div class="flex gap-1 border-b border-stone-200 mb-6">
-        @foreach (['cultura' => 'Cultura', 'actividad' => 'Actividad', 'vive_local' => 'Vive Local', 'publico_objetivo' => 'Público Objetivo'] as $valor => $nombreCat)
+        @foreach (['cultura' => 'Cultura', 'putre_blog' => 'Putre Blog', 'publico_objetivo' => 'Público Objetivo'] as $valor => $nombreCat)
             <button type="button" wire:click="$set('categoriaFiltro', '{{ $valor }}')"
                     class="px-4 py-2 text-sm font-medium border-b-2 -mb-px {{ $categoriaFiltro === $valor ? 'border-winay-terracota text-winay-terracota' : 'border-transparent text-stone-500' }}">
                 {{ $nombreCat }}
@@ -27,8 +27,7 @@
                         <label class="block text-sm font-medium text-stone-700">Categoría</label>
                         <select wire:model="categoria" class="mt-1 block w-full rounded-lg border-stone-300 focus:border-winay-terracota focus:ring-winay-terracota">
                             <option value="cultura">Cultura</option>
-                            <option value="actividad">Actividad</option>
-                            <option value="vive_local">Vive Local</option>
+                            <option value="putre_blog">Putre Blog</option>
                             <option value="publico_objetivo">Público Objetivo</option>
                         </select>
                     </div>
