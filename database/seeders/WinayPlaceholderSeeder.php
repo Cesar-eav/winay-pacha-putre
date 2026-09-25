@@ -203,7 +203,9 @@ class WinayPlaceholderSeeder extends Seeder
     {
         $pagina = PaginaNosotros::singleton();
         $pagina->update([
+            'titulo_historia' => ['es' => 'Nuestra historia'],
             'historia' => ['es' => '<p>Texto placeholder sobre la historia de Wiñaypacha Putre y sus anfitriones. Pendiente de contenido definitivo del cliente.</p>'],
+            'titulo_mensaje' => ['es' => 'Nuestro mensaje'],
             'mensaje' => ['es' => '<p>Texto placeholder sobre el mensaje y propósito del proyecto: difundir la cultura y territorio aymara. Pendiente de contenido definitivo.</p>'],
         ]);
     }

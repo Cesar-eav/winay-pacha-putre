@@ -12,9 +12,9 @@ class PaginaNosotros extends Model
 
     protected $table = 'pagina_nosotros';
 
-    public array $translatable = ['historia', 'mensaje'];
+    public array $translatable = ['titulo_historia', 'historia', 'titulo_mensaje', 'mensaje'];
 
-    protected $fillable = ['historia', 'mensaje'];
+    protected $fillable = ['titulo_historia', 'historia', 'titulo_mensaje', 'mensaje'];
 
     public function imagenes(): MorphMany
     {
@@ -24,7 +24,9 @@ class PaginaNosotros extends Model
     public static function singleton(): self
     {
         return static::first() ?? static::create([
+            'titulo_historia' => ['es' => 'Nuestra historia'],
             'historia' => ['es' => ''],
+            'titulo_mensaje' => ['es' => 'Nuestro mensaje'],
             'mensaje' => ['es' => ''],
         ]);
     }

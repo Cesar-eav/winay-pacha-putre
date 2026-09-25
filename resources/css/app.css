@@ -14,3 +14,15 @@
 [x-cloak] {
   display: none !important;
 }
+
+.ql-toolbar.ql-snow {
+  border-color: var(--color-stone-300);
+  border-radius: 0.5rem 0.5rem 0 0;
+}
+
+.ql-container.ql-snow {
+  border-color: var(--color-stone-300);
+  border-radius: 0 0 0.5rem 0.5rem;
+  min-height: 10rem;
+  font-size: 1rem;
+}

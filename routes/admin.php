@@ -4,6 +4,7 @@ use App\Livewire\Admin\Cabanas;
 use App\Livewire\Admin\Dashboard;
 use App\Livewire\Admin\Especies;
 use App\Livewire\Admin\Lugares;
+use App\Livewire\Admin\Nosotros;
 use App\Livewire\Admin\Temas;
 use Illuminate\Support\Facades\Route;
 
@@ -13,4 +14,5 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::get('/cabanas', Cabanas::class)->name('cabanas');
     Route::get('/lugares', Lugares::class)->name('lugares');
     Route::get('/especies', Especies::class)->name('especies');
+    Route::get('/nosotros', Nosotros::class)->name('nosotros');
 });

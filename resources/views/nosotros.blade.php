@@ -7,12 +7,12 @@
         <div>
             <h1 class="text-3xl font-bold text-winay-tierra">Nosotros</h1>
 
-            <h2 class="mt-6 font-semibold text-winay-tierra">Nuestra historia</h2>
+            <h2 class="mt-6 font-semibold text-winay-tierra">{{ $pagina->titulo_historia ?: 'Nuestra historia' }}</h2>
             <div class="mt-2 text-stone-600 space-y-3">
                 {!! $pagina->historia ?: '<p>Contenido pendiente de definir con el cliente.</p>' !!}
             </div>
 
-            <h2 class="mt-6 font-semibold text-winay-tierra">Nuestro mensaje</h2>
+            <h2 class="mt-6 font-semibold text-winay-tierra">{{ $pagina->titulo_mensaje ?: 'Nuestro mensaje' }}</h2>
             <div class="mt-2 text-stone-600 space-y-3">
                 {!! $pagina->mensaje ?: '<p>Contenido pendiente de definir con el cliente.</p>' !!}
             </div>

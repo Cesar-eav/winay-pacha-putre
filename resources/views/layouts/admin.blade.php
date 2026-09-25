@@ -7,7 +7,7 @@
     <title>{{ isset($titulo) ? $titulo.' — Admin' : 'Admin' }} — WiñayPacha Putre</title>
 
     @livewireScriptConfig
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @vite(['resources/css/app.css', 'resources/js/admin.js'])
 </head>
 <body class="bg-winay-arena text-stone-800 antialiased">
 
@@ -41,6 +41,12 @@
                    class="block px-3 py-2 rounded-lg text-sm {{ request()->routeIs('admin.especies*') ? 'bg-white/10 text-white' : 'text-winay-arena/80 hover:bg-white/5' }}">
                     Qué Visitar — Flora y Fauna
                 </a>
+
+                <p class="px-3 pt-4 pb-1 text-xs uppercase tracking-wide text-winay-arena/50">Páginas</p>
+                <a href="{{ route('admin.nosotros') }}"
+                   class="block px-3 py-2 rounded-lg text-sm {{ request()->routeIs('admin.nosotros*') ? 'bg-white/10 text-white' : 'text-winay-arena/80 hover:bg-white/5' }}">
+                    Nosotros
+                </a>
             </nav>
 
             <a href="{{ route('inicio') }}" class="px-6 py-4 text-xs text-winay-arena/60 border-t border-white/10 hover:text-white">
@@ -65,6 +71,7 @@
                 <a href="{{ route('admin.cabanas') }}" class="block px-2 py-2 rounded-md text-sm {{ request()->routeIs('admin.cabanas*') ? 'text-white bg-white/10' : '' }}">Cabañas</a>
                 <a href="{{ route('admin.lugares') }}" class="block px-2 py-2 rounded-md text-sm {{ request()->routeIs('admin.lugares*') ? 'text-white bg-white/10' : '' }}">Qué Visitar — Lugares</a>
                 <a href="{{ route('admin.especies') }}" class="block px-2 py-2 rounded-md text-sm {{ request()->routeIs('admin.especies*') ? 'text-white bg-white/10' : '' }}">Qué Visitar — Flora y Fauna</a>
+                <a href="{{ route('admin.nosotros') }}" class="block px-2 py-2 rounded-md text-sm {{ request()->routeIs('admin.nosotros*') ? 'text-white bg-white/10' : '' }}">Nosotros</a>
                 <a href="{{ route('inicio') }}" class="block px-2 py-2 rounded-md text-sm text-winay-arena/70">← Ver sitio público</a>
             </div>
 
