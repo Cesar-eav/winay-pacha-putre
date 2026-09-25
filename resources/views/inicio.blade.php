@@ -87,7 +87,7 @@
         </a>
         <a href="{{ route('entorno') }}" class="p-6 rounded-2xl border border-winay-arena hover:border-winay-terracota transition">
             <h3 class="font-semibold text-winay-tierra">Qué visitar</h3>
-            <p class="mt-2 text-sm text-stone-600">Lugares del entorno, flora y fauna del altiplano.</p>
+            <p class="mt-2 text-sm text-stone-600">Lugares del entorno de Putre y el altiplano.</p>
         </a>
         <a href="{{ route('nosotros') }}" class="p-6 rounded-2xl border border-winay-arena hover:border-winay-terracota transition">
             <h3 class="font-semibold text-winay-tierra">Nosotros</h3>

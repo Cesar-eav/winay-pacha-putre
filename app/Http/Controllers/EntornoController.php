@@ -2,17 +2,26 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Especie;
 use App\Models\LugarEntorno;
 use Illuminate\View\View;
 
 class EntornoController extends Controller
 {
-    public function __invoke(): View
+    public function index(): View
     {
-        return view('entorno', [
+        return view('entorno.index', [
             'lugares' => LugarEntorno::publicado()->ordenado()->with('imagenes')->get(),
-            'especiesPorTipo' => Especie::publicado()->ordenado()->get()->groupBy('tipo'),
+        ]);
+    }
+
+    public function show(LugarEntorno $lugar): View
+    {
+        abort_unless($lugar->publicado, 404);
+
+        $lugar->load('imagenes');
+
+        return view('entorno.show', [
+            'lugar' => $lugar,
         ]);
     }
 }
