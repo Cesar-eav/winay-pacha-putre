@@ -1,6 +1,67 @@
 <x-winay-layout>
     <x-slot:titulo>Inicio</x-slot:titulo>
 
+    {{-- SLIDER BANNER ANCHO COMPLETO --}}
+    <section
+        x-data="{
+            slide: 0,
+            slides: {{ Illuminate\Support\Js::from([
+                ['src' => asset('images/inicio/61.JPG'), 'alt' => 'Vista del altiplano en Putre'],
+                ['src' => asset('images/placeholder/50.JPG'), 'alt' => 'Wiñaypacha Putre'],
+                ['src' => asset('images/placeholder/cabana-ejemplo.jpg'), 'alt' => 'Cabañas Wiñaypacha Putre'],
+            ]) }},
+            init() {
+                setInterval(() => { this.slide = (this.slide + 1) % this.slides.length }, 5000)
+            },
+        }"
+        class="relative w-full h-[90vh] min-h-80 max-h-150 overflow-hidden"
+    >
+        <template x-for="(item, i) in slides" :key="i">
+            <img
+                :src="item.src"
+                :alt="item.alt"
+                x-show="slide === i"
+                x-transition:enter="transition ease-out duration-700"
+                x-transition:enter-start="opacity-0"
+                x-transition:enter-end="opacity-100"
+                x-transition:leave="transition ease-in duration-700"
+                x-transition:leave-start="opacity-100"
+                x-transition:leave-end="opacity-0"
+                class="absolute inset-0 w-full h-full object-cover"
+            >
+        </template>
+
+        <button
+            type="button"
+            @click="slide = slide === 0 ? slides.length - 1 : slide - 1"
+            class="absolute left-4 top-1/2 -translate-y-1/2 size-10 flex items-center justify-center rounded-full bg-black/30 hover:bg-black/50 text-white transition"
+            aria-label="Anterior"
+        >
+            &#8249;
+        </button>
+        <button
+            type="button"
+            @click="slide = slide === slides.length - 1 ? 0 : slide + 1"
+            class="absolute right-4 top-1/2 -translate-y-1/2 size-10 flex items-center justify-center rounded-full bg-black/30 hover:bg-black/50 text-white transition"
+            aria-label="Siguiente"
+        >
+            &#8250;
+        </button>
+
+        <div class="absolute bottom-4 inset-x-0 flex items-center justify-center gap-2">
+            <template x-for="(item, i) in slides" :key="i">
+                <button
+                    type="button"
+                    @click="slide = i"
+                    class="size-2.5 rounded-full transition"
+                    :class="slide === i ? 'bg-winay-terracota' : 'bg-white/60 hover:bg-white/80'"
+                    :aria-label="'Ir a la imagen ' + (i + 1)"
+                ></button>
+            </template>
+        </div>
+    </section>
+
+    {{-- BANNER VARIAS IMAGENES   --}}
     <section class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <p class="text-sm uppercase tracking-wide text-winay-terracota font-semibold mb-2">Nuestras cabañas</p>
         <h1 class="text-2xl sm:text-3xl font-bold text-winay-tierra">Cada cabaña, una forma distinta de vivir el altiplano</h1>
