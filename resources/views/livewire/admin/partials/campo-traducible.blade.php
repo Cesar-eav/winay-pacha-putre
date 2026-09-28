@@ -1,4 +1,3 @@
-@php($tipo ??= 'input')
 @php($generaSlug ??= false)
 
 <div x-data="{ tab: 'es' }">
@@ -24,18 +23,13 @@
 
     @foreach (['es', 'en', 'fr'] as $locale)
         <div x-show="tab === '{{ $locale }}'" class="mt-2">
-            @if ($tipo === 'textarea')
-                <textarea wire:model="{{ $prop }}.{{ $locale }}" rows="4"
-                          class="block w-full rounded-lg border-stone-300 focus:border-winay-terracota focus:ring-winay-terracota"></textarea>
-            @else
-                <input type="text"
-                       @if ($generaSlug && $locale === 'es')
-                           wire:model.live.debounce.500ms="{{ $prop }}.{{ $locale }}"
-                       @else
-                           wire:model="{{ $prop }}.{{ $locale }}"
-                       @endif
-                       class="block w-full rounded-lg border-stone-300 focus:border-winay-terracota focus:ring-winay-terracota">
-            @endif
+            <input type="text"
+                   @if ($generaSlug && $locale === 'es')
+                       wire:model.live.debounce.500ms="{{ $prop }}.{{ $locale }}"
+                   @else
+                       wire:model="{{ $prop }}.{{ $locale }}"
+                   @endif
+                   class="block w-full rounded-lg border-stone-300 focus:border-winay-terracota focus:ring-winay-terracota">
             @error("{$prop}.{$locale}") <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
         </div>
     @endforeach

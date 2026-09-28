@@ -39,8 +39,8 @@
                     </div>
                 </div>
 
-                @include('livewire.admin.partials.campo-traducible', ['prop' => 'titulo', 'label' => 'Título', 'tipo' => 'input', 'generaSlug' => true])
-                @include('livewire.admin.partials.campo-traducible', ['prop' => 'cuerpo', 'label' => 'Cuerpo', 'tipo' => 'textarea'])
+                @include('livewire.admin.partials.campo-traducible', ['prop' => 'titulo', 'label' => 'Título', 'generaSlug' => true])
+                @include('livewire.admin.partials.campo-richtext', ['prop' => 'cuerpo', 'label' => 'Cuerpo'])
 
                 <div class="grid gap-4 sm:grid-cols-2">
                     <div>

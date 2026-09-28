@@ -34,8 +34,8 @@
                     </select>
                 </div>
 
-                @include('livewire.admin.partials.campo-traducible', ['prop' => 'descripcion', 'label' => 'Descripción', 'tipo' => 'textarea'])
-                @include('livewire.admin.partials.campo-traducible', ['prop' => 'dondeObservar', 'label' => 'Dónde observarla', 'tipo' => 'textarea'])
+                @include('livewire.admin.partials.campo-richtext', ['prop' => 'descripcion', 'label' => 'Descripción'])
+                @include('livewire.admin.partials.campo-richtext', ['prop' => 'dondeObservar', 'label' => 'Dónde observarla'])
 
                 <div class="grid gap-4 sm:grid-cols-2">
                     <div>

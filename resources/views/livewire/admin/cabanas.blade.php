@@ -37,7 +37,7 @@
                     </div>
                 </div>
 
-                @include('livewire.admin.partials.campo-traducible', ['prop' => 'descripcion', 'label' => 'Descripción', 'tipo' => 'textarea'])
+                @include('livewire.admin.partials.campo-richtext', ['prop' => 'descripcion', 'label' => 'Descripción'])
 
                 <div>
                     <label class="block text-sm font-medium text-stone-700 mb-2">Equipamiento</label>
