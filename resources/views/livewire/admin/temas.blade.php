@@ -8,14 +8,16 @@
         </button>
     </div>
 
-    <div class="flex gap-1 border-b border-stone-200 mb-6">
-        @foreach (['cultura' => 'Cultura', 'putre_blog' => 'Putre Blog', 'publico_objetivo' => 'Público Objetivo'] as $valor => $nombreCat)
-            <button type="button" wire:click="$set('categoriaFiltro', '{{ $valor }}')"
-                    class="px-4 py-2 text-sm font-medium border-b-2 -mb-px {{ $categoriaFiltro === $valor ? 'border-winay-terracota text-winay-terracota' : 'border-transparent text-stone-500' }}">
-                {{ $nombreCat }}
-            </button>
-        @endforeach
-    </div>
+    @unless ($mostrarFormulario)
+        <div class="flex gap-1 border-b border-stone-200 mb-6">
+            @foreach (['cultura' => 'Cultura', 'putre_blog' => 'Putre Blog', 'publico_objetivo' => 'Público Objetivo'] as $valor => $nombreCat)
+                <button type="button" wire:click="$set('categoriaFiltro', '{{ $valor }}')"
+                        class="px-4 py-2 text-sm font-medium border-b-2 -mb-px {{ $categoriaFiltro === $valor ? 'border-winay-terracota text-winay-terracota' : 'border-transparent text-stone-500' }}">
+                    {{ $nombreCat }}
+                </button>
+            @endforeach
+        </div>
+    @endunless
 
     @if ($mostrarFormulario)
         <div class="mb-8 bg-white rounded-2xl border border-stone-200 p-6">
