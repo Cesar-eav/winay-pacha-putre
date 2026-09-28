@@ -5,7 +5,7 @@
         <x-galeria-lightbox :imagenes="$lugar->imagenes" :titulo="$lugar->nombre" />
 
         <div>
-            <a href="{{ route('entorno') }}" class="text-sm text-winay-terracota hover:text-winay-tierra">&larr; Qué Visitar</a>
+            <a href="{{ lroute('entorno') }}" class="text-sm text-winay-terracota hover:text-winay-tierra">&larr; {{ __('Qué Visitar') }}</a>
 
             <h1 class="mt-2 text-3xl font-bold text-winay-tierra">{{ $lugar->nombre }}</h1>
             <p class="mt-1 text-stone-500">{{ $lugar->ubicacion_texto }}</p>

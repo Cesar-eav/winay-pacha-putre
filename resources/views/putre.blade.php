@@ -4,7 +4,7 @@
     <section class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <h1 class="text-3xl font-bold tracking-tight text-winay-tierra">Putre</h1>
         <p class="mt-3 text-lg text-stone-600">
-            A 3.500 metros de altura, entre volcanes y cielos despejados, Putre conserva el trazo y el ritmo de un pueblo altiplánico centenario. Esto es lo que vas a encontrar al recorrerlo.
+            {{ __('A 3.500 metros de altura, entre volcanes y cielos despejados, Putre conserva el trazo y el ritmo de un pueblo altiplánico centenario. Esto es lo que vas a encontrar al recorrerlo.') }}
         </p>
 
         <div class="mt-14">
@@ -31,7 +31,7 @@
                     </div>
                 @endunless
             @empty
-                <p class="text-stone-500">Aún no hay contenido publicado.</p>
+                <p class="text-stone-500">{{ __('Aún no hay contenido publicado.') }}</p>
             @endforelse
         </div>
     </section>

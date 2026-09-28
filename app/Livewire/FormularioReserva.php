@@ -55,6 +55,25 @@ class FormularioReserva extends Component
         ];
     }
 
+    protected function messages(): array
+    {
+        return [
+            'nombre.required' => __('El nombre es obligatorio.'),
+            'apellido.required' => __('El apellido es obligatorio.'),
+            'correo.required' => __('El correo es obligatorio.'),
+            'correo.email' => __('Ingresa un correo válido.'),
+            'whatsapp.required' => __('El WhatsApp es obligatorio.'),
+            'fechaLlegada.required' => __('La fecha de llegada es obligatoria.'),
+            'fechaLlegada.after_or_equal' => __('La fecha de llegada no puede ser en el pasado.'),
+            'fechaSalida.required' => __('La fecha de salida es obligatoria.'),
+            'fechaSalida.after' => __('La fecha de salida debe ser posterior a la de llegada.'),
+            'numPersonas.required' => __('Indica el número de personas.'),
+            'numPersonas.min' => __('Debe ser al menos 1 persona.'),
+            'cabanaId.exists' => __('La cabaña seleccionada no es válida.'),
+            'comentarios.max' => __('El comentario es demasiado largo.'),
+        ];
+    }
+
     public function guardar(): void
     {
         $this->validate();

@@ -1,13 +1,13 @@
 <x-winay-layout>
-    <x-slot:titulo>Qué Visitar</x-slot:titulo>
+    <x-slot:titulo>{{ __('Qué Visitar') }}</x-slot:titulo>
 
     <section class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <h1 class="text-3xl font-bold text-winay-tierra">Qué Visitar</h1>
-        <p class="mt-2 text-stone-600 max-w-2xl">Lugares del entorno de Putre y el altiplano.</p>
+        <h1 class="text-3xl font-bold text-winay-tierra">{{ __('Qué Visitar') }}</h1>
+        <p class="mt-2 text-stone-600 max-w-2xl">{{ __('Lugares del entorno de Putre y el altiplano.') }}</p>
 
         <div class="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             @forelse ($lugares as $lugar)
-                <a href="{{ route('entorno.show', $lugar) }}" class="block rounded-2xl border border-winay-arena overflow-hidden hover:border-winay-terracota transition">
+                <a href="{{ lroute('entorno.show', $lugar) }}" class="block rounded-2xl border border-winay-arena overflow-hidden hover:border-winay-terracota transition">
                     <div class="aspect-video">
                         <x-galeria-lightbox :imagenes="$lugar->imagenes" :titulo="$lugar->nombre" />
                     </div>
@@ -18,7 +18,7 @@
                     </div>
                 </a>
             @empty
-                <p class="text-stone-500">Aún no hay lugares publicados.</p>
+                <p class="text-stone-500">{{ __('Aún no hay lugares publicados.') }}</p>
             @endforelse
         </div>
     </section>

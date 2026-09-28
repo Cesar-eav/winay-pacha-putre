@@ -27,6 +27,20 @@ class FormularioContacto extends Component
         ];
     }
 
+    protected function messages(): array
+    {
+        return [
+            'nombre.required' => __('El nombre es obligatorio.'),
+            'nombre.max' => __('El nombre es demasiado largo.'),
+            'correo.required' => __('El correo es obligatorio.'),
+            'correo.email' => __('Ingresa un correo válido.'),
+            'correo.max' => __('El correo es demasiado largo.'),
+            'telefono.max' => __('El teléfono es demasiado largo.'),
+            'mensaje.required' => __('El mensaje es obligatorio.'),
+            'mensaje.max' => __('El mensaje es demasiado largo.'),
+        ];
+    }
+
     public function guardar(): void
     {
         $this->validate();

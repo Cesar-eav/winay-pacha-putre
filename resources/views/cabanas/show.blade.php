@@ -6,10 +6,10 @@
 
         <div>
             <h1 class="text-3xl font-bold text-winay-tierra">{{ $cabana->nombre }}</h1>
-            <p class="mt-1 text-stone-500">Hasta {{ $cabana->capacidad }} personas</p>
+            <p class="mt-1 text-stone-500">{{ __('Hasta :n personas', ['n' => $cabana->capacidad]) }}</p>
 
             @if ($cabana->precio_desde)
-                <p class="mt-3 text-lg font-semibold text-winay-terracota">Desde {{ $cabana->precio_desde }}</p>
+                <p class="mt-3 text-lg font-semibold text-winay-terracota">{{ __('Desde :precio', ['precio' => $cabana->precio_desde]) }}</p>
             @endif
 
             <div class="mt-4 text-stone-600 space-y-3">{!! $cabana->descripcion !!}</div>
@@ -17,7 +17,7 @@
             @foreach ($equipamientosPorAmbito as $ambito => $items)
                 <div class="mt-6">
                     <h2 class="font-semibold text-winay-tierra">
-                        {{ $ambito === 'cabana' ? 'Equipamiento de la cabaña' : 'Equipamiento de la habitación' }}
+                        {{ $ambito === 'cabana' ? __('Equipamiento de la cabaña') : __('Equipamiento de la habitación') }}
                     </h2>
                     <ul class="mt-2 grid grid-cols-2 gap-2 text-sm text-stone-600">
                         @foreach ($items as $item)
@@ -27,9 +27,9 @@
                 </div>
             @endforeach
 
-            <a href="{{ route('reserva', ['cabana' => $cabana->slug]) }}"
+            <a href="{{ lroute('reserva', ['cabana' => $cabana->slug]) }}"
                class="mt-8 inline-flex items-center px-5 py-2.5 rounded-full text-sm font-semibold text-white bg-winay-terracota hover:bg-winay-tierra transition">
-                Reservar esta cabaña
+                {{ __('Reservar esta cabaña') }}
             </a>
         </div>
     </section>

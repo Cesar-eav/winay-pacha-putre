@@ -5,12 +5,12 @@
                 <img src="{{ asset('images/logo_12500x3655.png') }}" alt="Wiñaypacha Putre" class="h-10 w-auto">
             </div>
             <p class="text-sm text-winay-arena/80">
-                Cabañas en Putre, Región de Arica y Parinacota — difundiendo la cultura, cosmovisión y territorio del pueblo aymara.
+                {{ __('Cabañas en Putre, Región de Arica y Parinacota — difundiendo la cultura, cosmovisión y territorio del pueblo aymara.') }}
             </p>
         </div>
 
         <div>
-            <p class="font-semibold text-white mb-2">Contacto</p>
+            <p class="font-semibold text-white mb-2">{{ __('Contacto') }}</p>
             <ul class="text-sm text-winay-arena/80 space-y-1">
                 <li>{{ \App\Models\Configuracion::get('contacto_direccion', 'Putre, Región de Arica y Parinacota') }}</li>
                 <li>{{ \App\Models\Configuracion::get('contacto_telefono', '+56 9 0000 0000') }}</li>
@@ -19,11 +19,11 @@
         </div>
 
         <div>
-            <p class="font-semibold text-white mb-2">Enlaces</p>
+            <p class="font-semibold text-white mb-2">{{ __('Enlaces') }}</p>
             <ul class="text-sm text-winay-arena/80 space-y-1">
-                <li><a href="{{ route('cabanas.index') }}" class="hover:text-white">Cabañas</a></li>
-                <li><a href="{{ route('entorno') }}" class="hover:text-white">Qué visitar</a></li>
-                <li><a href="{{ route('contacto') }}" class="hover:text-white">Contacto</a></li>
+                <li><a href="{{ lroute('cabanas.index') }}" class="hover:text-white">{{ __('Cabañas') }}</a></li>
+                <li><a href="{{ lroute('entorno') }}" class="hover:text-white">{{ __('Qué visitar') }}</a></li>
+                <li><a href="{{ lroute('contacto') }}" class="hover:text-white">{{ __('Contacto') }}</a></li>
             </ul>
         </div>
     </div>
