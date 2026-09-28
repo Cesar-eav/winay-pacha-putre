@@ -19,15 +19,21 @@ trait ManagesGaleria
 
     public array $previsualizacionesHeic = [];
 
+    public array $altsNuevasFotos = [];
+
     public Collection $imagenesExistentes;
+
+    public array $altsExistentes = [];
 
     public array $imagenesAEliminar = [];
 
     public function cargarGaleria(?Model $modelo): void
     {
         $this->imagenesExistentes = $modelo ? $modelo->imagenes()->get() : collect();
+        $this->altsExistentes = $this->imagenesExistentes->pluck('alt', 'id')->all();
         $this->nuevasFotos = [];
         $this->previsualizacionesHeic = [];
+        $this->altsNuevasFotos = [];
         $this->imagenesAEliminar = [];
     }
 
@@ -39,6 +45,8 @@ trait ManagesGaleria
     public function updatedNuevasFotos(): void
     {
         $this->previsualizacionesHeic = [];
+        $this->altsNuevasFotos = array_slice($this->altsNuevasFotos, 0, count($this->nuevasFotos))
+            + array_fill(0, count($this->nuevasFotos), '');
 
         foreach ($this->nuevasFotos as $i => $foto) {
             $this->previsualizacionesHeic[$i] = $this->esFormatoHeic($foto)
@@ -53,6 +61,8 @@ trait ManagesGaleria
             ->reject(fn ($imagen) => $imagen->id === $id)
             ->values();
 
+        unset($this->altsExistentes[$id]);
+
         $this->imagenesAEliminar[] = $id;
     }
 
@@ -63,6 +73,9 @@ trait ManagesGaleria
 
         unset($this->previsualizacionesHeic[$index]);
         $this->previsualizacionesHeic = array_values($this->previsualizacionesHeic);
+
+        unset($this->altsNuevasFotos[$index]);
+        $this->altsNuevasFotos = array_values($this->altsNuevasFotos);
     }
 
     public function fotoEsPrevisualizable($foto): bool
@@ -119,7 +132,10 @@ trait ManagesGaleria
         }
 
         foreach ($this->imagenesExistentes->values() as $orden => $imagen) {
-            Imagen::where('id', $imagen->id)->update(['orden' => $orden]);
+            Imagen::where('id', $imagen->id)->update([
+                'orden' => $orden,
+                'alt' => (string) ($this->altsExistentes[$imagen->id] ?? $imagen->alt),
+            ]);
         }
 
         $ordenBase = $this->imagenesExistentes->count();
@@ -127,12 +143,15 @@ trait ManagesGaleria
         foreach ($rutasNuevas as $i => $path) {
             $modelo->imagenes()->create([
                 'path' => $path,
-                'alt' => (string) ($modelo->nombre ?? $modelo->titulo ?? ''),
+                'alt' => ($this->altsNuevasFotos[$i] ?? '') !== ''
+                    ? $this->altsNuevasFotos[$i]
+                    : (string) ($modelo->nombre ?? $modelo->titulo ?? ''),
                 'orden' => $ordenBase + $i,
             ]);
         }
 
         $this->nuevasFotos = [];
+        $this->altsNuevasFotos = [];
         $this->imagenesAEliminar = [];
     }
 

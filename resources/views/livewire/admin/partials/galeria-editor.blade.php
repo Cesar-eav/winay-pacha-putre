@@ -3,36 +3,44 @@
 
     <div class="mt-2 grid grid-cols-2 sm:grid-cols-4 gap-3">
         @foreach ($imagenesExistentes as $i => $imagen)
-            <div class="relative rounded-lg overflow-hidden border border-stone-200 aspect-square">
-                <img src="{{ $imagen->url }}" alt="{{ $imagen->alt }}" class="w-full h-full object-cover">
-                <div class="absolute inset-x-0 bottom-0 bg-black/60 flex items-center justify-between px-1 py-1">
-                    <button type="button" wire:click="moverFotoExistente({{ $imagen->id }}, 'arriba')" @if ($i === 0) disabled @endif
-                            class="text-white text-xs px-1 disabled:opacity-30">↑</button>
-                    <button type="button" wire:click="moverFotoExistente({{ $imagen->id }}, 'abajo')" @if ($i === $imagenesExistentes->count() - 1) disabled @endif
-                            class="text-white text-xs px-1 disabled:opacity-30">↓</button>
-                    <button type="button" wire:click="eliminarFotoExistente({{ $imagen->id }})"
-                            onclick="return confirm('¿Eliminar esta foto?')"
-                            class="text-white text-xs px-1 hover:text-red-300">✕</button>
+            <div>
+                <div class="relative rounded-lg overflow-hidden border border-stone-200 aspect-square">
+                    <img src="{{ $imagen->url }}" alt="{{ $imagen->alt }}" class="w-full h-full object-cover">
+                    <div class="absolute inset-x-0 bottom-0 bg-black/60 flex items-center justify-between px-1 py-1">
+                        <button type="button" wire:click="moverFotoExistente({{ $imagen->id }}, 'arriba')" @if ($i === 0) disabled @endif
+                                class="text-white text-xs px-1 disabled:opacity-30">↑</button>
+                        <button type="button" wire:click="moverFotoExistente({{ $imagen->id }}, 'abajo')" @if ($i === $imagenesExistentes->count() - 1) disabled @endif
+                                class="text-white text-xs px-1 disabled:opacity-30">↓</button>
+                        <button type="button" wire:click="eliminarFotoExistente({{ $imagen->id }})"
+                                onclick="return confirm('¿Eliminar esta foto?')"
+                                class="text-white text-xs px-1 hover:text-red-300">✕</button>
+                    </div>
                 </div>
+                <input type="text" wire:model.blur="altsExistentes.{{ $imagen->id }}" placeholder="Texto alternativo"
+                       class="mt-1 w-full text-xs rounded border-stone-200 focus:border-winay-terracota focus:ring-winay-terracota">
             </div>
         @endforeach
 
         @foreach ($nuevasFotos as $i => $foto)
-            <div class="relative rounded-lg overflow-hidden border border-winay-terracota aspect-square">
-                @if ($this->fotoEsPrevisualizable($foto))
-                    <img src="{{ $foto->temporaryUrl() }}" class="w-full h-full object-cover">
-                @elseif ($previsualizacionesHeic[$i] ?? null)
-                    <img src="{{ $previsualizacionesHeic[$i] }}" class="w-full h-full object-cover">
-                @else
-                    <div class="w-full h-full flex items-center justify-center bg-stone-100 text-center px-2">
-                        <span class="text-xs text-stone-500">{{ $foto->getClientOriginalName() }}<br>Formato no compatible</span>
-                    </div>
-                @endif
-                <span class="absolute top-1 left-1 bg-winay-terracota text-white text-[10px] px-1.5 py-0.5 rounded">Nueva</span>
-                <button type="button" wire:click="eliminarFotoNueva({{ $i }})"
-                        class="absolute bottom-1 right-1 bg-black/60 text-white text-xs px-1.5 py-0.5 rounded hover:text-red-300">
-                    ✕
-                </button>
+            <div>
+                <div class="relative rounded-lg overflow-hidden border border-winay-terracota aspect-square">
+                    @if ($this->fotoEsPrevisualizable($foto))
+                        <img src="{{ $foto->temporaryUrl() }}" class="w-full h-full object-cover">
+                    @elseif ($previsualizacionesHeic[$i] ?? null)
+                        <img src="{{ $previsualizacionesHeic[$i] }}" class="w-full h-full object-cover">
+                    @else
+                        <div class="w-full h-full flex items-center justify-center bg-stone-100 text-center px-2">
+                            <span class="text-xs text-stone-500">{{ $foto->getClientOriginalName() }}<br>Formato no compatible</span>
+                        </div>
+                    @endif
+                    <span class="absolute top-1 left-1 bg-winay-terracota text-white text-[10px] px-1.5 py-0.5 rounded">Nueva</span>
+                    <button type="button" wire:click="eliminarFotoNueva({{ $i }})"
+                            class="absolute bottom-1 right-1 bg-black/60 text-white text-xs px-1.5 py-0.5 rounded hover:text-red-300">
+                        ✕
+                    </button>
+                </div>
+                <input type="text" wire:model.blur="altsNuevasFotos.{{ $i }}" placeholder="Texto alternativo"
+                       class="mt-1 w-full text-xs rounded border-stone-200 focus:border-winay-terracota focus:ring-winay-terracota">
             </div>
         @endforeach
 
