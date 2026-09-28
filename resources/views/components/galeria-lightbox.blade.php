@@ -14,7 +14,7 @@
             lightbox: false,
         }"
     >
-        <button type="button" @click="lightbox = true" class="group block w-full aspect-video rounded-2xl overflow-hidden">
+        <button type="button" @click.prevent.stop="lightbox = true" class="group block w-full aspect-video rounded-2xl overflow-hidden">
             <img :src="images[current]" :alt="alts[current]" class="w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-105">
         </button>
 
@@ -23,7 +23,7 @@
                 <template x-for="(image, i) in images" :key="i">
                     <button
                         type="button"
-                        @click="current = i"
+                        @click.prevent.stop="current = i"
                         class="shrink-0 w-16 h-16 rounded-lg overflow-hidden border-2"
                         :class="current === i ? 'border-winay-terracota' : 'border-transparent'"
                     >
@@ -37,22 +37,22 @@
             x-show="lightbox"
             x-cloak
             x-transition
-            @click.self="lightbox = false"
+            @click.self.prevent.stop="lightbox = false"
             @keydown.escape.window="lightbox = false"
             @keydown.arrow-left.window="current = current === 0 ? images.length - 1 : current - 1"
             @keydown.arrow-right.window="current = current === images.length - 1 ? 0 : current + 1"
             class="fixed inset-0 z-50 bg-black/90 flex items-center justify-center p-4"
         >
-            <button type="button" @click="lightbox = false" class="absolute top-4 right-4 text-white/80 hover:text-white text-2xl leading-none" aria-label="Cerrar">
+            <button type="button" @click.prevent.stop="lightbox = false" class="absolute top-4 right-4 text-white/80 hover:text-white text-2xl leading-none" aria-label="Cerrar">
                 &times;
             </button>
 
             @if ($imagenes->count() > 1)
-                <button type="button" @click.stop="current = current === 0 ? images.length - 1 : current - 1"
+                <button type="button" @click.prevent.stop="current = current === 0 ? images.length - 1 : current - 1"
                         class="absolute left-4 text-white/80 hover:text-white text-3xl" aria-label="Anterior">
                     &#8249;
                 </button>
-                <button type="button" @click.stop="current = current === images.length - 1 ? 0 : current + 1"
+                <button type="button" @click.prevent.stop="current = current === images.length - 1 ? 0 : current + 1"
                         class="absolute right-4 text-white/80 hover:text-white text-3xl" aria-label="Siguiente">
                     &#8250;
                 </button>
