@@ -9,7 +9,7 @@
 
         <div class="mt-14">
             @forelse ($temas as $tema)
-                <article class="grid gap-8 lg:grid-cols-2 items-center">
+                <article class="grid gap-8 lg:grid-cols-2 items-start">
                     <div class="{{ $loop->even ? 'lg:order-2' : '' }}">
                         <x-galeria-lightbox :imagenes="$tema->imagenes" :titulo="$tema->titulo" />
                     </div>
