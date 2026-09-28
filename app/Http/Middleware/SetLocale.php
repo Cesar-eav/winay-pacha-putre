@@ -9,20 +9,34 @@ use Symfony\Component\HttpFoundation\Response;
 
 class SetLocale
 {
+    /**
+     * Nombres base (sin prefijo de idioma) de las rutas públicas registradas en routes/web.php.
+     */
+    private const RUTAS_PUBLICAS = [
+        'inicio', 'cultura', 'putre', 'cabanas.index', 'cabanas.show',
+        'entorno', 'entorno.show', 'nosotros', 'contacto', 'reserva',
+    ];
+
     public function handle(Request $request, Closure $next): Response
     {
-        $soportados = array_keys(config('winay.locales'));
         $localePredeterminado = array_key_first(config('winay.locales'));
-        $segmento = $request->segment(1);
+        $routeName = $request->route()?->getName();
 
-        if (in_array($segmento, $soportados, true) && $segmento !== $localePredeterminado) {
-            $locale = $segmento;
-            session(['locale' => $locale]);
-        } else {
-            $locale = session('locale', $localePredeterminado);
+        foreach (config('winay.locales') as $codigo => $label) {
+            $prefijo = $codigo === $localePredeterminado ? '' : "{$codigo}.";
+
+            if ($routeName !== null && str_starts_with($routeName, $prefijo)
+                && in_array(substr($routeName, strlen($prefijo)), self::RUTAS_PUBLICAS, true)) {
+                session(['locale' => $codigo]);
+                App::setLocale($codigo);
+
+                return $next($request);
+            }
         }
 
-        App::setLocale($locale);
+        // Ruta fuera del grupo público (admin, auth, endpoint interno de Livewire, etc.):
+        // se mantiene el idioma ya elegido en la sesión durante la navegación pública.
+        App::setLocale(session('locale', $localePredeterminado));
 
         return $next($request);
     }
