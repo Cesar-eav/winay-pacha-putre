@@ -7,7 +7,6 @@ use App\Models\Configuracion;
 use App\Models\Equipamiento;
 use App\Models\Especie;
 use App\Models\LugarEntorno;
-use App\Models\PaginaNosotros;
 use App\Models\ServicioLocal;
 use App\Models\Tema;
 use Illuminate\Database\Seeder;
@@ -27,7 +26,6 @@ class WinayPlaceholderSeeder extends Seeder
         $this->lugaresEntorno();
         $this->especies();
         $this->serviciosLocales();
-        $this->paginaNosotros();
     }
 
     private function configuracion(): void
@@ -197,16 +195,5 @@ class WinayPlaceholderSeeder extends Seeder
                 ['icono' => $data['icono'], 'orden' => $orden]
             );
         }
-    }
-
-    private function paginaNosotros(): void
-    {
-        $pagina = PaginaNosotros::singleton();
-        $pagina->update([
-            'titulo_historia' => ['es' => 'Nuestra historia'],
-            'historia' => ['es' => '<p>Texto placeholder sobre la historia de Wiñaypacha Putre y sus anfitriones. Pendiente de contenido definitivo del cliente.</p>'],
-            'titulo_mensaje' => ['es' => 'Nuestro mensaje'],
-            'mensaje' => ['es' => '<p>Texto placeholder sobre el mensaje y propósito del proyecto: difundir la cultura y territorio aymara. Pendiente de contenido definitivo.</p>'],
-        ]);
     }
 }

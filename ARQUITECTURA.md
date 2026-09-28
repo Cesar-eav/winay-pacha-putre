@@ -12,7 +12,7 @@ Mapa del código para no tener que explorarlo desde cero en cada sesión. Conven
 | `/cabanas` | `CabanaController@index` | `cabanas.index` |
 | `/cabanas/{cabana:slug}` | `CabanaController@show` | `cabanas.show` |
 | `/entorno` | `EntornoController` (invokable) | `entorno` |
-| `/nosotros` | `NosotrosController` (invokable) | `nosotros` |
+| `/nosotros` | `Route::view` (vista estática, sin controller/CMS) | `nosotros` |
 | `/contacto` | `ContactoController` (invokable) | `contacto` |
 | `/reserva` | `ReservaController` (invokable) | `reserva` |
 
@@ -32,7 +32,7 @@ Prefijo `/admin`, name `admin.*`, middleware `['auth', 'admin']` (alias `admin` 
 
 Vistas en `resources/views/livewire/admin/*.blade.php`, layout `layouts/admin.blade.php`.
 
-Nota: no hay CRUD admin para `Fiesta`, `ServicioLocal`, `PaginaNosotros` todavía (existen modelo + migración pero no componente Livewire admin) — verificar antes de asumir que están editables desde el panel.
+Nota: no hay CRUD admin para `Fiesta`, `ServicioLocal` todavía (existen modelo + migración pero no componente Livewire admin) — verificar antes de asumir que están editables desde el panel. `Nosotros` (`/nosotros`) no tiene CMS: es vista estática, sin modelo ni admin.
 
 ## Modelos (`app/Models`)
 
@@ -45,9 +45,8 @@ Nota: no hay CRUD admin para `Fiesta`, `ServicioLocal`, `PaginaNosotros` todaví
 | `Especie` | `especies` | `descripcion`, `donde_observar` | — (imagen simple vía columna `imagen`, no morphMany) |
 | `Equipamiento` | `equipamientos` | — | `cabanas` (belongsToMany) |
 | `ServicioLocal` | `servicios_locales` | — | — |
-| `PaginaNosotros` | `pagina_nosotros` | `historia`, `mensaje` | `imagenes` (morphMany), patrón singleton (`::singleton()`) |
 | `Configuracion` | `configuraciones` | — | key/value global (`clave` PK string), `Configuracion::get()/set()` — mismo patrón que en el proyecto hermano `pindoor` |
-| `Imagen` | `imagenes` | — | `imageable` (morphTo) — polimórfica, usada por Cabana/Tema/Fiesta/LugarEntorno/PaginaNosotros |
+| `Imagen` | `imagenes` | — | `imageable` (morphTo) — polimórfica, usada por Cabana/Tema/Fiesta/LugarEntorno |
 | `LeadContacto` | `leads_contacto` | — | formulario de contacto (`atendido` boolean) |
 | `SolicitudReserva` | `solicitudes_reserva` | — | `cabana` (belongsTo) — el lead de reserva, NO reserva real (ver alcance en CLAUDE.md) |
 | `User` | `users` | — | columna `is_admin` (único rol admin, sin roles múltiples) |

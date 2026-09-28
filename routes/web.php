@@ -5,7 +5,6 @@ use App\Http\Controllers\ContactoController;
 use App\Http\Controllers\CulturaController;
 use App\Http\Controllers\EntornoController;
 use App\Http\Controllers\InicioController;
-use App\Http\Controllers\NosotrosController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PutreController;
 use App\Http\Controllers\ReservaController;
@@ -18,7 +17,7 @@ Route::get('/cabanas', [CabanaController::class, 'index'])->name('cabanas.index'
 Route::get('/cabanas/{cabana:slug}', [CabanaController::class, 'show'])->name('cabanas.show');
 Route::get('/entorno', [EntornoController::class, 'index'])->name('entorno');
 Route::get('/entorno/{lugar:slug}', [EntornoController::class, 'show'])->name('entorno.show');
-Route::get('/nosotros', NosotrosController::class)->name('nosotros');
+Route::view('/nosotros', 'nosotros')->name('nosotros');
 Route::get('/contacto', ContactoController::class)->name('contacto');
 Route::get('/reserva', ReservaController::class)->name('reserva');
 
