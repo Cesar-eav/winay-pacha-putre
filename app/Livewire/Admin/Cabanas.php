@@ -2,10 +2,12 @@
 
 namespace App\Livewire\Admin;
 
+use App\Livewire\Concerns\ManagesEstadoYOrden;
 use App\Livewire\Concerns\ManagesGaleria;
 use App\Livewire\Concerns\TranslatesWithDeepl;
 use App\Models\Cabana;
 use App\Models\Equipamiento;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
@@ -15,7 +17,7 @@ use Livewire\Component;
 #[Layout('layouts.admin', ['titulo' => 'Cabañas'])]
 class Cabanas extends Component
 {
-    use ManagesGaleria, TranslatesWithDeepl;
+    use ManagesGaleria, TranslatesWithDeepl, ManagesEstadoYOrden;
 
     public bool $mostrarFormulario = false;
 
@@ -139,10 +141,15 @@ class Cabanas extends Component
         session()->flash('success', 'Cabaña eliminada.');
     }
 
+    protected function consultaListado(): Builder
+    {
+        return Cabana::query();
+    }
+
     public function render()
     {
         return view('livewire.admin.cabanas', [
-            'cabanas' => Cabana::orderBy('orden')->get(),
+            'cabanas' => $this->consultaListado()->orderBy('orden')->get(),
             'equipamientosPorAmbito' => Equipamiento::orderBy('orden')->get()->groupBy('ambito'),
         ]);
     }

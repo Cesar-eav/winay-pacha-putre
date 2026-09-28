@@ -84,11 +84,19 @@
                 @forelse ($temas as $tema)
                     <tr>
                         <td class="px-4 py-3">{{ $tema->titulo }}</td>
-                        <td class="px-4 py-3">{{ $tema->orden }}</td>
                         <td class="px-4 py-3">
-                            <span class="px-2 py-0.5 rounded-full text-xs {{ $tema->publicado ? 'bg-winay-andino/10 text-winay-andino' : 'bg-stone-100 text-stone-500' }}">
+                            <div class="flex items-center gap-1">
+                                <button type="button" wire:click="moverOrden({{ $tema->id }}, 'arriba')" @if ($loop->first) disabled @endif
+                                        class="text-stone-400 hover:text-winay-terracota disabled:opacity-30 disabled:hover:text-stone-400" title="Subir">▲</button>
+                                <button type="button" wire:click="moverOrden({{ $tema->id }}, 'abajo')" @if ($loop->last) disabled @endif
+                                        class="text-stone-400 hover:text-winay-terracota disabled:opacity-30 disabled:hover:text-stone-400" title="Bajar">▼</button>
+                            </div>
+                        </td>
+                        <td class="px-4 py-3">
+                            <button type="button" wire:click="alternarPublicado({{ $tema->id }})"
+                                    class="px-2 py-0.5 rounded-full text-xs {{ $tema->publicado ? 'bg-winay-andino/10 text-winay-andino hover:bg-winay-andino/20' : 'bg-stone-100 text-stone-500 hover:bg-stone-200' }}">
                                 {{ $tema->publicado ? 'Publicado' : 'Borrador' }}
-                            </span>
+                            </button>
                         </td>
                         <td class="px-4 py-3 text-right space-x-3">
                             <button type="button" wire:click="editar({{ $tema->id }})" class="text-winay-terracota hover:underline">Editar</button>

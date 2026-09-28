@@ -116,11 +116,19 @@
                         </td>
                         <td class="px-4 py-3">{{ $especie->nombre_comun }}</td>
                         <td class="px-4 py-3 text-stone-500 capitalize">{{ $especie->tipo }}</td>
-                        <td class="px-4 py-3">{{ $especie->orden }}</td>
                         <td class="px-4 py-3">
-                            <span class="px-2 py-0.5 rounded-full text-xs {{ $especie->publicado ? 'bg-winay-andino/10 text-winay-andino' : 'bg-stone-100 text-stone-500' }}">
+                            <div class="flex items-center gap-1">
+                                <button type="button" wire:click="moverOrden({{ $especie->id }}, 'arriba')" @if ($loop->first) disabled @endif
+                                        class="text-stone-400 hover:text-winay-terracota disabled:opacity-30 disabled:hover:text-stone-400" title="Subir">▲</button>
+                                <button type="button" wire:click="moverOrden({{ $especie->id }}, 'abajo')" @if ($loop->last) disabled @endif
+                                        class="text-stone-400 hover:text-winay-terracota disabled:opacity-30 disabled:hover:text-stone-400" title="Bajar">▼</button>
+                            </div>
+                        </td>
+                        <td class="px-4 py-3">
+                            <button type="button" wire:click="alternarPublicado({{ $especie->id }})"
+                                    class="px-2 py-0.5 rounded-full text-xs {{ $especie->publicado ? 'bg-winay-andino/10 text-winay-andino hover:bg-winay-andino/20' : 'bg-stone-100 text-stone-500 hover:bg-stone-200' }}">
                                 {{ $especie->publicado ? 'Publicado' : 'Borrador' }}
-                            </span>
+                            </button>
                         </td>
                         <td class="px-4 py-3 text-right space-x-3">
                             <button type="button" wire:click="editar({{ $especie->id }})" class="text-winay-terracota hover:underline">Editar</button>

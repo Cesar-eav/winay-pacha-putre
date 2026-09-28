@@ -2,8 +2,10 @@
 
 namespace App\Livewire\Admin;
 
+use App\Livewire\Concerns\ManagesEstadoYOrden;
 use App\Livewire\Concerns\TranslatesWithDeepl;
 use App\Models\Especie;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 use Livewire\Attributes\Layout;
@@ -13,7 +15,7 @@ use Livewire\WithFileUploads;
 #[Layout('layouts.admin', ['titulo' => 'Qué Visitar — Flora y Fauna'])]
 class Especies extends Component
 {
-    use TranslatesWithDeepl, WithFileUploads;
+    use TranslatesWithDeepl, WithFileUploads, ManagesEstadoYOrden;
 
     public bool $mostrarFormulario = false;
 
@@ -149,10 +151,15 @@ class Especies extends Component
         session()->flash('success', 'Especie eliminada.');
     }
 
+    protected function consultaListado(): Builder
+    {
+        return Especie::query();
+    }
+
     public function render()
     {
         return view('livewire.admin.especies', [
-            'especies' => Especie::orderBy('orden')->get(),
+            'especies' => $this->consultaListado()->orderBy('orden')->get(),
         ]);
     }
 }

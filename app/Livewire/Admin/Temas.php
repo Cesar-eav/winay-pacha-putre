@@ -2,9 +2,11 @@
 
 namespace App\Livewire\Admin;
 
+use App\Livewire\Concerns\ManagesEstadoYOrden;
 use App\Livewire\Concerns\ManagesGaleria;
 use App\Livewire\Concerns\TranslatesWithDeepl;
 use App\Models\Tema;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
@@ -14,7 +16,7 @@ use Livewire\Component;
 #[Layout('layouts.admin', ['titulo' => 'Temas'])]
 class Temas extends Component
 {
-    use ManagesGaleria, TranslatesWithDeepl;
+    use ManagesGaleria, TranslatesWithDeepl, ManagesEstadoYOrden;
 
     public string $categoriaFiltro = 'cultura';
 
@@ -128,10 +130,15 @@ class Temas extends Component
         session()->flash('success', 'Tema eliminado.');
     }
 
+    protected function consultaListado(): Builder
+    {
+        return Tema::where('categoria', $this->categoriaFiltro);
+    }
+
     public function render()
     {
         return view('livewire.admin.temas', [
-            'temas' => Tema::where('categoria', $this->categoriaFiltro)->orderBy('orden')->get(),
+            'temas' => $this->consultaListado()->orderBy('orden')->get(),
         ]);
     }
 }

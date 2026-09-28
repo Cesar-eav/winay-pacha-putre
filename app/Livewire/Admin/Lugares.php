@@ -2,9 +2,11 @@
 
 namespace App\Livewire\Admin;
 
+use App\Livewire\Concerns\ManagesEstadoYOrden;
 use App\Livewire\Concerns\ManagesGaleria;
 use App\Livewire\Concerns\TranslatesWithDeepl;
 use App\Models\LugarEntorno;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
@@ -14,7 +16,7 @@ use Livewire\Component;
 #[Layout('layouts.admin', ['titulo' => 'Qué Visitar — Lugares'])]
 class Lugares extends Component
 {
-    use ManagesGaleria, TranslatesWithDeepl;
+    use ManagesGaleria, TranslatesWithDeepl, ManagesEstadoYOrden;
 
     public bool $mostrarFormulario = false;
 
@@ -132,10 +134,15 @@ class Lugares extends Component
         session()->flash('success', 'Lugar eliminado.');
     }
 
+    protected function consultaListado(): Builder
+    {
+        return LugarEntorno::query();
+    }
+
     public function render()
     {
         return view('livewire.admin.lugares', [
-            'lugares' => LugarEntorno::orderBy('orden')->get(),
+            'lugares' => $this->consultaListado()->orderBy('orden')->get(),
         ]);
     }
 }
