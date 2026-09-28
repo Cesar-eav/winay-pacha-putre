@@ -28,11 +28,12 @@ class DeepLTranslator
             : 'https://api.deepl.com/v2/translate';
 
         try {
-            $response = Http::asForm()->post($url, [
-                'auth_key' => $apiKey,
-                'text' => $texto,
-                'target_lang' => strtoupper($destino),
-            ]);
+            $response = Http::asForm()
+                ->withHeaders(['Authorization' => "DeepL-Auth-Key {$apiKey}"])
+                ->post($url, [
+                    'text' => $texto,
+                    'target_lang' => strtoupper($destino),
+                ]);
 
             if (! $response->successful()) {
                 Log::warning('DeepL: respuesta no exitosa', ['status' => $response->status()]);

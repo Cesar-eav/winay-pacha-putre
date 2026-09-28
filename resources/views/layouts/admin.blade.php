@@ -6,6 +6,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ isset($titulo) ? $titulo.' — Admin' : 'Admin' }} — WiñayPacha Putre</title>
 
+    @livewireStyles
     @livewireScriptConfig
     @vite(['resources/css/app.css', 'resources/js/admin.js'])
 </head>

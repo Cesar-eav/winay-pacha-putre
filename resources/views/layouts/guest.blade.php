@@ -8,6 +8,7 @@
         <title>Admin — Wiñaypacha Putre</title>
 
         <!-- Scripts -->
+        @livewireStyles
         @livewireScriptConfig
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
