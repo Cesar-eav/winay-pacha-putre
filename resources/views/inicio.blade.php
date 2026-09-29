@@ -72,9 +72,9 @@
                 @php $imagen = $cabana->imagenes->first(); @endphp
                 <a href="{{ lroute('cabanas.show', $cabana) }}"
                    class="group relative block aspect-2/1 overflow-hidden border border-winay-arena hover:border-winay-terracota hover:shadow-xl transition">
-                    <img src="{{ $imagen ? $imagen->url : asset('images/placeholder/cabana-ejemplo.jpg') }}"
+                    <img src="{{ $imagen ? $imagen->medium_url : asset('images/placeholder/cabana-ejemplo.jpg') }}"
                          alt="{{ $imagen && $imagen->alt ? $imagen->alt : $cabana->nombre }}"
-                         class="w-full h-full object-cover group-hover:scale-110 transition duration-500 ease-out">
+                         loading="lazy" decoding="async" class="w-full h-full object-cover group-hover:scale-110 transition duration-500 ease-out">
 
                     <span class="absolute inset-0 bg-linear-to-t from-black/80 via-black/10 to-transparent group-hover:from-black/90 group-hover:via-black/40 transition duration-300"></span>
 

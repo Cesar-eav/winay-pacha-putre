@@ -5,8 +5,8 @@ namespace App\Livewire\Admin;
 use App\Livewire\Concerns\ManagesEstadoYOrden;
 use App\Livewire\Concerns\TranslatesWithDeepl;
 use App\Models\Especie;
+use App\Services\ProcesadorImagen;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
@@ -117,7 +117,7 @@ class Especies extends Component
         ];
 
         if ($this->nuevaFoto) {
-            $datos['imagen'] = $this->nuevaFoto->store('especies', 'public');
+            $datos['imagen'] = ProcesadorImagen::guardar($this->nuevaFoto, 'especies', 'nuevaFoto');
         } elseif ($this->quitarFotoActual) {
             $datos['imagen'] = null;
         }
@@ -128,8 +128,8 @@ class Especies extends Component
             ? tap(Especie::findOrFail($this->editandoId))->update($datos)
             : Especie::create($datos);
 
-        if (($this->nuevaFoto || $this->quitarFotoActual) && $fotoAnterior && ! str_starts_with($fotoAnterior, 'placeholder/')) {
-            Storage::disk('public')->delete($fotoAnterior);
+        if (($this->nuevaFoto || $this->quitarFotoActual) && $fotoAnterior) {
+            ProcesadorImagen::eliminar($fotoAnterior);
         }
 
         $this->nuevaFoto = null;
@@ -142,9 +142,7 @@ class Especies extends Component
     {
         $especie = Especie::findOrFail($id);
 
-        if ($especie->imagen && ! str_starts_with($especie->imagen, 'placeholder/')) {
-            Storage::disk('public')->delete($especie->imagen);
-        }
+        ProcesadorImagen::eliminar($especie->imagen);
 
         $especie->delete();
 

@@ -5,9 +5,9 @@ namespace App\Livewire\Admin;
 use App\Livewire\Concerns\ManagesEstadoYOrden;
 use App\Livewire\Concerns\ManagesGaleria;
 use App\Livewire\Concerns\TranslatesWithDeepl;
+use App\Services\ProcesadorImagen;
 use App\Models\LugarEntorno;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Livewire\Attributes\Layout;
@@ -123,9 +123,7 @@ class Lugares extends Component
         $lugar = LugarEntorno::findOrFail($id);
 
         foreach ($lugar->imagenes as $imagen) {
-            if (! str_starts_with($imagen->path, 'placeholder/')) {
-                Storage::disk('public')->delete($imagen->path);
-            }
+            ProcesadorImagen::eliminar($imagen->path);
             $imagen->delete();
         }
 

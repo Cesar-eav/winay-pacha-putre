@@ -65,6 +65,10 @@ Modelos publicables usan scopes `publicado()` / `ordenado()` consistentemente (c
 - `TranslatesWithDeepl` — botón "traducir" en el admin: toma el campo `es` de una propiedad traducible y llama a `DeepLTranslator` (servicio en `app/Services`) para rellenar `en`/`fr`. Si falla, deja mensaje de error y permite completar a mano. Nunca se usa en el sitio público.
 - `ManagesGaleria` — CRUD de galería de imágenes (`WithFileUploads`) para modelos con `imagenes()` morphMany: subir, reordenar, eliminar. Incluye conversión HEIC→WebP server-side (vía `maestroerror/php-heic-to-jpg` + GD) con corrección de orientación EXIF, porque los navegadores (salvo Safari) no renderizan HEIC — las fotos de iPhone se convierten al vuelo. Placeholders (`path` con prefijo `placeholder/`) viven en `public/images/` y no se tocan con `Storage`.
 
+## Imágenes
+
+Toda subida del admin pasa por `App\Services\ProcesadorImagen` (intervention/image ^4, driver GD): guarda 3 variantes WebP en disco `public` — `carpeta/x.webp` (full, 2000px), `carpeta/medium/x.webp` (1200px), `carpeta/thumbs/x.webp` (480px). En BD solo se guarda la ruta full; `Imagen::thumb_url` / `medium_url` (y `Especie::imagen_thumb_url`) derivan la variante y caen al original si no existe. `galeria-lightbox` muestra medium/thumbs y carga full solo al abrir el lightbox. Imágenes anteriores a este sistema: `php artisan imagenes:optimizar [--dry-run]`.
+
 ## Vistas (`resources/views`)
 
 - `layouts/winay.blade.php` — layout del sitio público (el que tenías abierto).

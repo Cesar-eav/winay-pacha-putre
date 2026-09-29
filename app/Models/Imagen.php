@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Services\ProcesadorImagen;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 
@@ -25,5 +26,15 @@ class Imagen extends Model
         }
 
         return asset('storage/'.$this->path);
+    }
+
+    public function getThumbUrlAttribute(): string
+    {
+        return ProcesadorImagen::urlVariante($this->path, 'thumbs');
+    }
+
+    public function getMediumUrlAttribute(): string
+    {
+        return ProcesadorImagen::urlVariante($this->path, 'medium');
     }
 }

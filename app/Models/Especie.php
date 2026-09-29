@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Services\ProcesadorImagen;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Translatable\HasTranslations;
 
@@ -46,5 +47,14 @@ class Especie extends Model
         }
 
         return asset('storage/'.$this->imagen);
+    }
+
+    public function getImagenThumbUrlAttribute(): string
+    {
+        if (! $this->imagen) {
+            return $this->imagen_url;
+        }
+
+        return ProcesadorImagen::urlVariante($this->imagen, 'thumbs');
     }
 }

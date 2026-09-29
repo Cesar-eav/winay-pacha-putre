@@ -9,13 +9,15 @@
     <div
         x-data="{
             images: {{ Illuminate\Support\Js::from($imagenes->pluck('url')) }},
+            thumbs: {{ Illuminate\Support\Js::from($imagenes->map(fn ($i) => $i['thumb_url'] ?? $i['url'])->values()) }},
+            mediums: {{ Illuminate\Support\Js::from($imagenes->map(fn ($i) => $i['medium_url'] ?? $i['url'])->values()) }},
             alts: {{ Illuminate\Support\Js::from($imagenes->pluck('alt')) }},
             current: 0,
             lightbox: false,
         }"
     >
         <button type="button" @click.prevent.stop="lightbox = true" class="group block w-full aspect-video rounded-2xl overflow-hidden">
-            <img :src="images[current]" :alt="alts[current]" class="w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-105">
+            <img :src="mediums[current]" :alt="alts[current]" decoding="async" class="w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-105">
         </button>
 
         @if ($imagenes->count() > 1)
@@ -27,7 +29,7 @@
                         class="shrink-0 w-16 h-16 rounded-lg overflow-hidden border-2"
                         :class="current === i ? 'border-winay-terracota' : 'border-transparent'"
                     >
-                        <img :src="image" :alt="alts[i]" class="w-full h-full object-cover">
+                        <img :src="thumbs[i]" :alt="alts[i]" width="64" height="64" loading="lazy" decoding="async" class="w-full h-full object-cover">
                     </button>
                 </template>
             </div>
@@ -58,7 +60,7 @@
                 </button>
             @endif
 
-            <img :src="images[current]" :alt="alts[current]" class="max-w-full max-h-full object-contain rounded-lg">
+            <img :src="lightbox ? images[current] : mediums[current]" :alt="alts[current]" class="max-w-full max-h-full object-contain rounded-lg">
 
             @if ($imagenes->count() > 1)
                 <div class="absolute bottom-4 text-white/70 text-sm" x-text="(current + 1) + ' / ' + images.length"></div>

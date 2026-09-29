@@ -112,7 +112,7 @@
                 @forelse ($especies as $especie)
                     <tr>
                         <td class="px-4 py-3">
-                            <img src="{{ $especie->imagen_url }}" alt="{{ $especie->nombre_comun }}" class="w-10 h-10 rounded-lg object-cover">
+                            <img src="{{ $especie->imagen_thumb_url }}" alt="{{ $especie->nombre_comun }}" class="w-10 h-10 rounded-lg object-cover">
                         </td>
                         <td class="px-4 py-3">{{ $especie->nombre_comun }}</td>
                         <td class="px-4 py-3 text-stone-500 capitalize">{{ $especie->tipo }}</td>

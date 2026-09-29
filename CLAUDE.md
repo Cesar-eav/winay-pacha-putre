@@ -36,7 +36,8 @@ Mapa de rutas, modelos, Livewire y vistas ya construidos: ver `ARQUITECTURA.md` 
   1. `cd ~/winay-pacha-putre && git pull`
   2. Si cambió `composer.lock`: `php composer.phar install --no-dev --optimize-autoloader`
   3. Si cambiaron assets: `npm run build` en local y subir `public/build` a `~/public_html/build`
-  4. `php artisan config:cache route:cache view:cache` si aplica
+  4. Si hay imágenes subidas antes del procesador: `php artisan imagenes:optimizar` (requiere GD con WebP en el servidor)
+  5. `php artisan config:cache route:cache view:cache` si aplica
 
 ## Alcance explícitamente fuera de este proyecto
 

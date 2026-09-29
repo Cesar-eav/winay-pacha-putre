@@ -5,10 +5,9 @@ namespace App\Livewire\Concerns;
 use App\Models\Imagen;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 use Livewire\WithFileUploads;
+use App\Services\ProcesadorImagen;
 use Maestroerror\HeicToJpg;
 
 trait ManagesGaleria
@@ -112,9 +111,10 @@ trait ManagesGaleria
         $rutasNuevas = [];
 
         foreach (array_values($this->nuevasFotos) as $foto) {
-            $rutasNuevas[] = $this->esFormatoHeic($foto)
-                ? $this->convertirHeicAWebp($foto, $carpeta)
-                : $foto->store($carpeta, 'public');
+            $rutasNuevas[] = ProcesadorImagen::guardar(
+                $this->esFormatoHeic($foto) ? $this->heicABinarioJpg($foto) : $foto,
+                $carpeta,
+            );
         }
 
         foreach ($this->imagenesAEliminar as $id) {
@@ -124,9 +124,7 @@ trait ManagesGaleria
                 continue;
             }
 
-            if (! str_starts_with($imagen->path, 'placeholder/')) {
-                Storage::disk('public')->delete($imagen->path);
-            }
+            ProcesadorImagen::eliminar($imagen->path);
 
             $imagen->delete();
         }
@@ -160,25 +158,15 @@ trait ManagesGaleria
         return in_array(strtolower($foto->getClientOriginalExtension()), ['heic', 'heif'], true);
     }
 
-    protected function convertirHeicAWebp($foto, string $carpeta): string
+    protected function heicABinarioJpg($foto): string
     {
-        $imagen = $this->heicAImagenGd($foto);
-
-        if (! $imagen) {
+        try {
+            return HeicToJpg::convert($foto->getRealPath())->get();
+        } catch (\Throwable $e) {
             throw ValidationException::withMessages([
                 'nuevasFotos' => 'No se pudo convertir una de las fotos HEIC. Expórtala como JPG o PNG e inténtalo de nuevo.',
             ]);
         }
-
-        $path = $carpeta.'/'.Str::random(40).'.webp';
-        $temporal = tempnam(sys_get_temp_dir(), 'webp');
-        imagewebp($imagen, $temporal);
-        imagedestroy($imagen);
-
-        Storage::disk('public')->put($path, file_get_contents($temporal));
-        unlink($temporal);
-
-        return $path;
     }
 
     /**
