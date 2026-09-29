@@ -6,9 +6,10 @@
         x-data="{
             slide: 0,
             slides: {{ Illuminate\Support\Js::from([
+                ['src' => asset('images/culturaaymara/cosmovision2.png'), 'alt' => __('Cabañas Wiñaypacha Putre')],
                 ['src' => asset('images/inicio/61.JPG'), 'alt' => __('Vista del altiplano en Putre')],
                 ['src' => asset('images/placeholder/50.JPG'), 'alt' => 'Wiñaypacha Putre'],
-                ['src' => asset('images/placeholder/cabana-ejemplo.jpg'), 'alt' => __('Cabañas Wiñaypacha Putre')],
+                
             ]) }},
             init() {
                 setInterval(() => { this.slide = (this.slide + 1) % this.slides.length }, 5000)
