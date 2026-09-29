@@ -35,18 +35,18 @@
         <button
             type="button"
             @click="slide = slide === 0 ? slides.length - 1 : slide - 1"
-            class="absolute left-4 top-1/2 -translate-y-1/2 size-10 flex items-center justify-center rounded-full bg-black/30 hover:bg-black/50 text-white transition"
+            class="absolute left-4 top-1/2 -translate-y-1/2 size-14 flex items-center justify-center rounded-full bg-black/30 hover:bg-black/50 text-white transition"
             aria-label="{{ __('Anterior') }}"
         >
-            &#8249;
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="size-8" aria-hidden="true"><path d="m15 18-6-6 6-6" /></svg>
         </button>
         <button
             type="button"
             @click="slide = slide === slides.length - 1 ? 0 : slide + 1"
-            class="absolute right-4 top-1/2 -translate-y-1/2 size-10 flex items-center justify-center rounded-full bg-black/30 hover:bg-black/50 text-white transition"
+            class="absolute right-4 top-1/2 -translate-y-1/2 size-14 flex items-center justify-center rounded-full bg-black/30 hover:bg-black/50 text-white transition"
             aria-label="{{ __('Siguiente') }}"
         >
-            &#8250;
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="size-8" aria-hidden="true"><path d="m9 18 6-6-6-6" /></svg>
         </button>
 
         <div class="absolute bottom-4 inset-x-0 flex items-center justify-center gap-2">
