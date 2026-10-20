@@ -38,7 +38,7 @@ Nota: no hay CRUD admin para `Fiesta`, `ServicioLocal` todavía (existen modelo 
 
 | Modelo | Tabla | Traducible (`spatie/translatable`) | Relaciones |
 |---|---|---|---|
-| `Cabana` | `cabanas` | `descripcion` | `imagenes` (morphMany), `equipamientos` (belongsToMany vía `cabana_equipamiento`), `solicitudesReserva` (hasMany) |
+| `Cabana` | `cabanas` | `descripcion` | portada en columna `imagen_principal` (aparte de la galería), `imagenes` (morphMany), `equipamientos` (belongsToMany vía `cabana_equipamiento`), `solicitudesReserva` (hasMany) |
 | `Tema` | `temas` | `titulo`, `cuerpo` | `imagenes` (morphMany) |
 | `Fiesta` | `fiestas` | `titulo`, `descripcion` | `imagenes` (morphMany) |
 | `LugarEntorno` | `lugares_entorno` | `descripcion` | `imagenes` (morphMany) |

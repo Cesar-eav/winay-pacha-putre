@@ -1,5 +1,5 @@
 <div>
-    <label class="block text-sm font-medium text-stone-700">Fotos</label>
+    <label class="block text-sm font-medium text-stone-700">{{ $etiqueta ?? 'Fotos' }}</label>
 
     <div class="mt-2 grid grid-cols-2 sm:grid-cols-4 gap-3">
         @foreach ($imagenesExistentes as $i => $imagen)

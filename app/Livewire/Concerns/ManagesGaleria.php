@@ -158,13 +158,13 @@ trait ManagesGaleria
         return in_array(strtolower($foto->getClientOriginalExtension()), ['heic', 'heif'], true);
     }
 
-    protected function heicABinarioJpg($foto): string
+    protected function heicABinarioJpg($foto, string $campoError = 'nuevasFotos'): string
     {
         try {
             return HeicToJpg::convert($foto->getRealPath())->get();
         } catch (\Throwable $e) {
             throw ValidationException::withMessages([
-                'nuevasFotos' => 'No se pudo convertir una de las fotos HEIC. Expórtala como JPG o PNG e inténtalo de nuevo.',
+                $campoError => 'No se pudo convertir una de las fotos HEIC. Expórtala como JPG o PNG e inténtalo de nuevo.',
             ]);
         }
     }

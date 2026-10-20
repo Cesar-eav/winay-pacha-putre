@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Services\ProcesadorImagen;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -14,12 +15,28 @@ class Cabana extends Model
 
     public array $translatable = ['descripcion'];
 
-    protected $fillable = ['slug', 'nombre', 'capacidad', 'descripcion', 'precio_desde', 'orden', 'publicado'];
+    protected $fillable = [
+        'numero', 'slug', 'nombre', 'capacidad', 'cantidad_banos', 'bano_privado',
+        'descripcion', 'precio_desde', 'imagen_principal', 'orden', 'publicado',
+    ];
 
     protected $casts = [
         'publicado' => 'boolean',
+        'bano_privado' => 'boolean',
+        'numero' => 'integer',
         'capacidad' => 'integer',
+        'cantidad_banos' => 'integer',
     ];
+
+    public function getImagenPrincipalUrlAttribute(): ?string
+    {
+        return $this->imagen_principal ? ProcesadorImagen::urlVariante($this->imagen_principal, 'medium') : null;
+    }
+
+    public function getImagenPrincipalThumbUrlAttribute(): ?string
+    {
+        return $this->imagen_principal ? ProcesadorImagen::urlVariante($this->imagen_principal, 'thumbs') : null;
+    }
 
     public function imagenes(): MorphMany
     {
