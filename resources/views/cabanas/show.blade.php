@@ -22,7 +22,7 @@
                             @foreach ($items as $item)
                                 <li class="flex items-center gap-3 border-b border-winay-arena py-2.5">
                                     <x-icono-equipamiento :equipamiento="$item" class="text-winay-terracota" />
-                                    {{ $item->nombre }}
+                                    {{ __($item->nombre) }}
                                 </li>
                             @endforeach
                         </ul>

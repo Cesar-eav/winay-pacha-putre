@@ -65,12 +65,16 @@ Modelos publicables usan scopes `publicado()` / `ordenado()` consistentemente (c
 **Admin CRUD:** `Admin\Dashboard`, `Admin\Temas`, `Admin\Cabanas` (+ `Admin\Habitaciones`), `Admin\Lugares`, `Admin\Especies` — todos componentes full-page, usan los traits de `Concerns/`.
 
 **Traits reutilizables (`app/Livewire/Concerns`):**
-- `TranslatesWithDeepl` — botón "traducir" en el admin: toma el campo `es` de una propiedad traducible y llama a `DeepLTranslator` (servicio en `app/Services`) para rellenar `en`/`fr`. Si falla, deja mensaje de error y permite completar a mano. Nunca se usa en el sitio público.
+- `TranslatesWithDeepl` — `traducir()`: botón "Traducir con DeepL" para previsualizar en el formulario. `completarTraducciones($props, $guardado)`: se llama en cada `guardar()` del admin y traduce EN/FR si están vacíos, o si el ES cambió respecto a lo guardado y ese idioma no se editó a mano (si DeepL falla, guarda igual y deja `session('aviso')`, que muestra `banner-exito`). `DeepLTranslator` (`app/Services`) manda `source_lang=ES` y `tag_handling=html` cuando el texto trae HTML (Quill).
 - `ManagesGaleria` — CRUD de galería de imágenes (`WithFileUploads`) para modelos con `imagenes()` morphMany: subir (de a un archivo, validando cada uno para reportar cuál falló), reordenar con arrastre (`wire:sort`), eliminar, máximo de fotos (`maximoFotosGaleria()`, 12 por defecto) e imagen principal opcional (`usaImagenPrincipal()`, activa solo en Cabañas). Incluye conversión HEIC→WebP server-side (vía `maestroerror/php-heic-to-jpg` + GD) con corrección de orientación EXIF, porque los navegadores (salvo Safari) no renderizan HEIC — las fotos de iPhone se convierten al vuelo. Placeholders (`path` con prefijo `placeholder/`) viven en `public/images/` y no se tocan con `Storage`.
 
 ## Imágenes
 
 Toda subida del admin pasa por `App\Services\ProcesadorImagen` (intervention/image ^4, driver GD): guarda 3 variantes WebP en disco `public` — `carpeta/x.webp` (full, 2000px), `carpeta/medium/x.webp` (1200px), `carpeta/thumbs/x.webp` (480px). En BD solo se guarda la ruta full; `Imagen::thumb_url` / `medium_url` (y `Especie::imagen_thumb_url`) derivan la variante y caen al original si no existe. `galeria-lightbox` muestra medium/thumbs y carga full solo al abrir el lightbox. Imágenes anteriores a este sistema: `php artisan imagenes:optimizar [--dry-run]`.
+
+## Idiomas
+
+Rutas públicas duplicadas con prefijo `/en` y `/fr` (names `en.*`, `fr.*`), `SetLocale` fija el idioma, `lroute()` (`app/helpers.php`) genera la URL en el idioma actual. Textos fijos: `__()` + `lang/{en,fr}.json` (incluye nombres de `Equipamiento` y `ServicioLocal`, que son catálogos sin CRUD; ojo con claves dinámicas como el calendario de `cultura.blade.php`). Contenido del CMS: columnas JSON de `spatie/translatable`, auto-traducidas con DeepL al guardar (ver `TranslatesWithDeepl`). Rellenar vacíos existentes: `php artisan traducciones:completar [--dry-run]`.
 
 ## Vistas (`resources/views`)
 
@@ -78,7 +82,7 @@ Todo lo del admin vive en `admin/`; el resto de `views/` es sitio público.
 
 **Admin (`admin/`):**
 - `admin/{dashboard,temas,cabanas,lugares,especies}.blade.php` — vistas de los componentes Livewire `App\Livewire\Admin\*`.
-- `admin/partials/` — `campo-traducible` (input ES/EN/FR + botón DeepL), `campo-richtext`, `galeria-editor` (UI de `ManagesGaleria`), `banner-exito`.
+- `admin/partials/` — `campo-traducible` (input ES/EN/FR + botón DeepL), `campo-richtext`, `galeria-editor` (UI de `ManagesGaleria`), `banner-exito` (`session('success')` y `session('aviso')`).
 - `admin/layouts/admin.blade.php` — layout del panel. `admin/layouts/{app,guest,navigation}` — stack Breeze (`<x-app-layout>` / `<x-guest-layout>` para profile y auth).
 - `admin/auth/` — login, password reset, verify email (Breeze).
 - `admin/profile/` — perfil del admin (Breeze).

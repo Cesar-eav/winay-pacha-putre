@@ -132,6 +132,8 @@ class Cabanas extends Component
     {
         $this->validate();
 
+        $this->completarTraducciones(['descripcion'], $this->editandoId ? $this->consultaListado()->find($this->editandoId) : null);
+
         $datos = [
             'tipo' => $this->tipo(),
             'numero' => $this->numero !== null && $this->numero !== '' ? (int) $this->numero : null,

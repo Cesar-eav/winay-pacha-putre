@@ -106,6 +106,10 @@ class Especies extends Component
     {
         $this->validate();
 
+        $guardada = $this->editandoId ? Especie::find($this->editandoId) : null;
+
+        $this->completarTraducciones(['descripcion', 'dondeObservar'], $guardada);
+
         $datos = [
             'nombre_comun' => $this->nombreComun,
             'nombre_cientifico' => $this->nombreCientifico ?: null,
@@ -122,7 +126,7 @@ class Especies extends Component
             $datos['imagen'] = null;
         }
 
-        $fotoAnterior = $this->editandoId ? Especie::find($this->editandoId)?->imagen : null;
+        $fotoAnterior = $guardada?->imagen;
 
         $especie = $this->editandoId
             ? tap(Especie::findOrFail($this->editandoId))->update($datos)

@@ -24,7 +24,7 @@
                 <h2 class="mt-8 text-xl font-display font-medium tracking-[-0.01em] text-winay-tierra">{{ __('Servicios en Putre') }}</h2>
                 <ul class="mt-2 grid grid-cols-2 gap-2 text-sm text-stone-600">
                     @foreach ($servicios as $servicio)
-                        <li>{{ $servicio->nombre }}</li>
+                        <li>{{ __($servicio->nombre) }}</li>
                     @endforeach
                 </ul>
             @endif

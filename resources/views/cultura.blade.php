@@ -291,7 +291,7 @@
                             <div x-show="open" x-cloak x-transition class="pb-4 space-y-2">
                                 @foreach ($item['fechas'] as $fecha)
                                     <p class="text-stone-600">
-                                        <span class="font-semibold text-stone-800">{{ $fecha['fecha'] }}:</span>
+                                        <span class="font-semibold text-stone-800">{{ __($fecha['fecha']) }}:</span>
                                         {{ __($fecha['texto']) }}
                                     </p>
                                 @endforeach

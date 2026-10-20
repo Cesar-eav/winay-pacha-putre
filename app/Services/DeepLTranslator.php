@@ -30,10 +30,12 @@ class DeepLTranslator
         try {
             $response = Http::asForm()
                 ->withHeaders(['Authorization' => "DeepL-Auth-Key {$apiKey}"])
-                ->post($url, [
+                ->post($url, array_filter([
                     'text' => $texto,
+                    'source_lang' => 'ES',
                     'target_lang' => strtoupper($destino),
-                ]);
+                    'tag_handling' => $texto !== strip_tags($texto) ? 'html' : null,
+                ]));
 
             if (! $response->successful()) {
                 Log::warning('DeepL: respuesta no exitosa', ['status' => $response->status()]);
@@ -41,7 +43,9 @@ class DeepLTranslator
                 return null;
             }
 
-            return $response->json('translations.0.text');
+            // Con tag_handling=html DeepL escapa los apóstrofes, que Quill guarda literales
+            // y que los extractos con strip_tags() mostrarían como "&#x27;".
+            return str_replace(['&#x27;', '&#39;'], "'", (string) $response->json('translations.0.text'));
         } catch (\Throwable $e) {
             Log::warning('DeepL: error al traducir', ['message' => $e->getMessage()]);
 

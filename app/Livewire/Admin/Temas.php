@@ -94,6 +94,8 @@ class Temas extends Component
     {
         $this->validate();
 
+        $this->completarTraducciones(['titulo', 'cuerpo'], $this->editandoId ? Tema::find($this->editandoId) : null);
+
         $datos = [
             'slug' => $this->slug,
             'categoria' => $this->categoria,

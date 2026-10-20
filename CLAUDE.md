@@ -11,7 +11,7 @@ Mapa de rutas, modelos, Livewire y vistas ya construidos: ver `ARQUITECTURA.md` 
 - **Vite** para assets (`npm run dev` / `npm run build`)
 - Auth: Laravel Breeze (blade stack) — un solo rol `admin`, sin registro público (pendiente deshabilitar rutas de registro de Breeze)
 - `spatie/laravel-translatable` para contenido multi-idioma (ES/EN/FR) editado a mano en el admin
-- DeepL API (`DEEPL_API_KEY` en `.env`) como asistente de traducción en el admin — nunca traducción automática en el sitio público sin revisión humana
+- DeepL API (`DEEPL_API_KEY` en `.env`): al guardar en el admin, traduce automáticamente a EN/FR los campos vacíos o desactualizados (ES cambió y ese idioma no se editó a mano). Las pestañas EN/FR del admin quedan para revisar/corregir. Textos fijos de las vistas van en `lang/{en,fr}.json` vía `__()`, traducidos a mano
 
 ## Proyecto hermano de referencia
 
@@ -37,10 +37,11 @@ Mapa de rutas, modelos, Livewire y vistas ya construidos: ver `ARQUITECTURA.md` 
   2. Si cambió `composer.lock`: `php composer.phar install --no-dev --optimize-autoloader`
   3. Si cambiaron assets: `npm run build` en local y subir `public/build` a `~/public_html/build`
   4. Si hay imágenes subidas antes del procesador: `php artisan imagenes:optimizar` (requiere GD con WebP en el servidor)
+  4b. Si hay contenido con EN/FR vacíos (p. ej. cargado antes de la auto-traducción): `php artisan traducciones:completar [--dry-run]` (solo rellena vacíos, no pisa nada)
   5. `php artisan config:cache route:cache view:cache` si aplica
 
 ## Alcance explícitamente fuera de este proyecto
 
 - Sistema de reservas en tiempo real, disponibilidad automática o cobro online.
-- Traducción automática pública sin revisión (Google Translate widget, etc.) — la traducción vía DeepL es solo una ayuda en el admin.
+- Traducción en vivo del lado del cliente (Google Translate widget, etc.) — la traducción se hace con DeepL al guardar en el admin y queda persistida/editable.
 - Dominio y hosting de producción: gestión administrativa del cliente, no tarea de desarrollo.

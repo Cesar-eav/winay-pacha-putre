@@ -45,17 +45,17 @@
             @keydown.arrow-right.window="current = current === images.length - 1 ? 0 : current + 1"
             class="fixed inset-0 z-50 bg-black/90 flex items-center justify-center p-4"
         >
-            <button type="button" @click.prevent.stop="lightbox = false" class="absolute top-4 right-4 text-white/80 hover:text-white text-2xl leading-none" aria-label="Cerrar">
+            <button type="button" @click.prevent.stop="lightbox = false" class="absolute top-4 right-4 text-white/80 hover:text-white text-2xl leading-none" aria-label="{{ __('Cerrar') }}">
                 &times;
             </button>
 
             @if ($imagenes->count() > 1)
                 <button type="button" @click.prevent.stop="current = current === 0 ? images.length - 1 : current - 1"
-                        class="absolute left-4 text-white/80 hover:text-white text-3xl" aria-label="Anterior">
+                        class="absolute left-4 text-white/80 hover:text-white text-3xl" aria-label="{{ __('Anterior') }}">
                     &#8249;
                 </button>
                 <button type="button" @click.prevent.stop="current = current === images.length - 1 ? 0 : current + 1"
-                        class="absolute right-4 text-white/80 hover:text-white text-3xl" aria-label="Siguiente">
+                        class="absolute right-4 text-white/80 hover:text-white text-3xl" aria-label="{{ __('Siguiente') }}">
                     &#8250;
                 </button>
             @endif

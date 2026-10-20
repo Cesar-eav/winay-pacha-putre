@@ -97,6 +97,8 @@ class Lugares extends Component
     {
         $this->validate();
 
+        $this->completarTraducciones(['descripcion'], $this->editandoId ? LugarEntorno::find($this->editandoId) : null);
+
         $datos = [
             'slug' => $this->slug,
             'nombre' => $this->nombre,
