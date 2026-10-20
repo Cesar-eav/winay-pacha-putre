@@ -2,9 +2,10 @@
 
 namespace App\Livewire\Concerns;
 
-use App\Models\Imagen;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 use Livewire\WithFileUploads;
 use App\Services\ProcesadorImagen;
@@ -16,65 +17,185 @@ trait ManagesGaleria
 
     public array $nuevasFotos = [];
 
-    public array $previsualizacionesHeic = [];
+    public array $fotosPendientes = [];
 
-    public array $altsNuevasFotos = [];
+    public array $previsualizacionesHeic = [];
 
     public Collection $imagenesExistentes;
 
-    public array $altsExistentes = [];
+    /**
+     * Orden visible de la galería mezclando fotos ya guardadas ("e-{id}") y
+     * fotos recién subidas aún sin guardar ("n-{aleatorio}").
+     */
+    public array $ordenGaleria = [];
+
+    public array $altsGaleria = [];
 
     public array $imagenesAEliminar = [];
 
-    public function cargarGaleria(?Model $modelo): void
+    public ?string $clavePrincipal = null;
+
+    public array $erroresFotos = [];
+
+    public function maximoFotosGaleria(): int
+    {
+        return 12;
+    }
+
+    public function usaImagenPrincipal(): bool
+    {
+        return false;
+    }
+
+    public function cargarGaleria(?Model $modelo, ?string $pathPrincipal = null): void
     {
         $this->imagenesExistentes = $modelo ? $modelo->imagenes()->get() : collect();
-        $this->altsExistentes = $this->imagenesExistentes->pluck('alt', 'id')->all();
+        $this->ordenGaleria = $this->imagenesExistentes->map(fn ($imagen) => 'e-'.$imagen->id)->all();
+        $this->altsGaleria = $this->imagenesExistentes->mapWithKeys(fn ($imagen) => ['e-'.$imagen->id => (string) $imagen->alt])->all();
         $this->nuevasFotos = [];
+        $this->fotosPendientes = [];
         $this->previsualizacionesHeic = [];
-        $this->altsNuevasFotos = [];
         $this->imagenesAEliminar = [];
+        $this->erroresFotos = [];
+
+        $principal = $pathPrincipal ? $this->imagenesExistentes->firstWhere('path', $pathPrincipal) : null;
+        $this->clavePrincipal = $principal ? 'e-'.$principal->id : null;
+        $this->asegurarPrincipal();
     }
 
     /**
-     * El navegador no puede mostrar un <img> de un archivo HEIC directamente
-     * (salvo Safari), así que generamos una miniatura JPG en el servidor
-     * apenas se suben las fotos, en vez de esperar al guardado del formulario.
+     * El navegador sube las fotos de a una, así que cada llamada trae
+     * normalmente un solo archivo; se valida aquí mismo para poder decir
+     * cuál falló, en vez de esperar al guardado del formulario.
      */
     public function updatedNuevasFotos(): void
     {
-        $this->previsualizacionesHeic = [];
-        $this->altsNuevasFotos = array_slice($this->altsNuevasFotos, 0, count($this->nuevasFotos))
-            + array_fill(0, count($this->nuevasFotos), '');
+        foreach ($this->nuevasFotos as $foto) {
+            $nombre = $foto->getClientOriginalName();
+            $error = $this->validarFotoNueva($foto);
+            $previsualizacion = null;
 
-        foreach ($this->nuevasFotos as $i => $foto) {
-            $this->previsualizacionesHeic[$i] = $this->esFormatoHeic($foto)
-                ? $this->generarPrevisualizacionHeic($foto)
-                : null;
+            if (! $error && $this->esFormatoHeic($foto)) {
+                $previsualizacion = $this->generarPrevisualizacionHeic($foto);
+                $error = $previsualizacion ? null : 'No se pudo leer la foto HEIC. Expórtala como JPG e inténtalo de nuevo.';
+            }
+
+            if ($error) {
+                $this->erroresFotos[] = ['nombre' => $nombre, 'motivo' => $error];
+
+                continue;
+            }
+
+            $clave = 'n-'.Str::random(10);
+            $this->fotosPendientes[$clave] = $foto;
+            $this->previsualizacionesHeic[$clave] = $previsualizacion;
+            $this->altsGaleria[$clave] = '';
+            $this->ordenGaleria[] = $clave;
+        }
+
+        $this->nuevasFotos = [];
+        $this->asegurarPrincipal();
+    }
+
+    protected function validarFotoNueva($foto): ?string
+    {
+        if (count($this->ordenGaleria) >= $this->maximoFotosGaleria()) {
+            return 'Se alcanzó el máximo de '.$this->maximoFotosGaleria().' imágenes.';
+        }
+
+        $validador = Validator::make(
+            ['foto' => $foto],
+            ['foto' => ['image', 'mimes:jpg,jpeg,png,webp,gif,bmp,heic,heif', 'max:25600']],
+            [
+                'foto.image' => 'Formato no permitido. Usa JPG, PNG, WebP o HEIC.',
+                'foto.mimes' => 'Formato no permitido. Usa JPG, PNG, WebP o HEIC.',
+                'foto.max' => 'Pesa más de 25 MB.',
+            ],
+        );
+
+        if ($validador->fails()) {
+            return $validador->errors()->first('foto');
+        }
+
+        if (! $this->esFormatoHeic($foto) && @getimagesize($foto->getRealPath()) === false) {
+            return 'El archivo está dañado o no es una imagen válida.';
+        }
+
+        return null;
+    }
+
+    public function itemsGaleria(): array
+    {
+        $items = [];
+
+        foreach ($this->ordenGaleria as $clave) {
+            if (str_starts_with($clave, 'e-')) {
+                $imagen = $this->imagenesExistentes->firstWhere('id', (int) substr($clave, 2));
+
+                if ($imagen) {
+                    $items[] = ['clave' => $clave, 'url' => $imagen->thumb_url, 'nombre' => $imagen->alt, 'nueva' => false];
+                }
+            } elseif ($foto = $this->fotosPendientes[$clave] ?? null) {
+                $items[] = [
+                    'clave' => $clave,
+                    'url' => $this->fotoEsPrevisualizable($foto) ? $foto->temporaryUrl() : ($this->previsualizacionesHeic[$clave] ?? null),
+                    'nombre' => $foto->getClientOriginalName(),
+                    'nueva' => true,
+                ];
+            }
+        }
+
+        return $items;
+    }
+
+    public function ordenarGaleria(string $clave, int $posicion): void
+    {
+        $indice = array_search($clave, $this->ordenGaleria, true);
+
+        if ($indice === false) {
+            return;
+        }
+
+        array_splice($this->ordenGaleria, $indice, 1);
+        array_splice($this->ordenGaleria, max(0, min($posicion, count($this->ordenGaleria))), 0, [$clave]);
+    }
+
+    public function marcarPrincipal(string $clave): void
+    {
+        if ($this->usaImagenPrincipal() && in_array($clave, $this->ordenGaleria, true)) {
+            $this->clavePrincipal = $clave;
         }
     }
 
-    public function eliminarFotoExistente(int $id): void
+    public function eliminarFoto(string $clave): void
     {
-        $this->imagenesExistentes = $this->imagenesExistentes
-            ->reject(fn ($imagen) => $imagen->id === $id)
-            ->values();
+        if (! in_array($clave, $this->ordenGaleria, true)) {
+            return;
+        }
 
-        unset($this->altsExistentes[$id]);
+        $this->ordenGaleria = array_values(array_diff($this->ordenGaleria, [$clave]));
+        unset($this->altsGaleria[$clave], $this->fotosPendientes[$clave], $this->previsualizacionesHeic[$clave]);
 
-        $this->imagenesAEliminar[] = $id;
+        if (str_starts_with($clave, 'e-')) {
+            $this->imagenesAEliminar[] = (int) substr($clave, 2);
+        }
+
+        if ($this->clavePrincipal === $clave) {
+            $this->clavePrincipal = null;
+        }
+
+        $this->asegurarPrincipal();
     }
 
-    public function eliminarFotoNueva(int $index): void
+    protected function asegurarPrincipal(): void
     {
-        unset($this->nuevasFotos[$index]);
-        $this->nuevasFotos = array_values($this->nuevasFotos);
+        if (! $this->usaImagenPrincipal()) {
+            return;
+        }
 
-        unset($this->previsualizacionesHeic[$index]);
-        $this->previsualizacionesHeic = array_values($this->previsualizacionesHeic);
-
-        unset($this->altsNuevasFotos[$index]);
-        $this->altsNuevasFotos = array_values($this->altsNuevasFotos);
+        if (! in_array($this->clavePrincipal, $this->ordenGaleria, true)) {
+            $this->clavePrincipal = $this->ordenGaleria[0] ?? null;
+        }
     }
 
     public function fotoEsPrevisualizable($foto): bool
@@ -84,73 +205,68 @@ trait ManagesGaleria
         return in_array($extension, config('livewire.temporary_file_upload.preview_mimes'), true);
     }
 
-    public function moverFotoExistente(int $id, string $direccion): void
-    {
-        $items = $this->imagenesExistentes->values();
-        $index = $items->search(fn ($imagen) => $imagen->id === $id);
-
-        if ($index === false) {
-            return;
-        }
-
-        $nuevoIndex = $direccion === 'arriba' ? $index - 1 : $index + 1;
-
-        if ($nuevoIndex < 0 || $nuevoIndex >= $items->count()) {
-            return;
-        }
-
-        $temp = $items[$index];
-        $items[$index] = $items[$nuevoIndex];
-        $items[$nuevoIndex] = $temp;
-
-        $this->imagenesExistentes = $items->values();
-    }
-
-    protected function guardarGaleria(Model $modelo, string $carpeta): void
+    /**
+     * Devuelve la ruta guardada de cada foto de la galería, indexada por su
+     * clave, para que el componente pueda resolver la imagen principal.
+     */
+    protected function guardarGaleria(Model $modelo, string $carpeta): array
     {
         $rutasNuevas = [];
 
-        foreach (array_values($this->nuevasFotos) as $foto) {
-            $rutasNuevas[] = ProcesadorImagen::guardar(
-                $this->esFormatoHeic($foto) ? $this->heicABinarioJpg($foto) : $foto,
-                $carpeta,
-            );
+        foreach ($this->fotosPendientes as $clave => $foto) {
+            try {
+                $rutasNuevas[$clave] = ProcesadorImagen::guardar(
+                    $this->esFormatoHeic($foto) ? $this->heicABinarioJpg($foto) : $foto,
+                    $carpeta,
+                );
+            } catch (\Throwable $e) {
+                foreach ($rutasNuevas as $ruta) {
+                    ProcesadorImagen::eliminar($ruta);
+                }
+
+                throw ValidationException::withMessages([
+                    'galeria' => 'No se pudo procesar «'.$foto->getClientOriginalName().'». Expórtala como JPG o PNG, súbela de nuevo e inténtalo otra vez.',
+                ]);
+            }
         }
 
-        foreach ($this->imagenesAEliminar as $id) {
-            $imagen = Imagen::find($id);
-
-            if (! $imagen) {
-                continue;
-            }
-
+        foreach ($modelo->imagenes()->whereKey(array_unique($this->imagenesAEliminar))->get() as $imagen) {
             ProcesadorImagen::eliminar($imagen->path);
 
             $imagen->delete();
         }
 
-        foreach ($this->imagenesExistentes->values() as $orden => $imagen) {
-            Imagen::where('id', $imagen->id)->update([
-                'orden' => $orden,
-                'alt' => (string) ($this->altsExistentes[$imagen->id] ?? $imagen->alt),
-            ]);
-        }
+        $rutas = [];
+        $altPorDefecto = (string) ($modelo->nombre ?? $modelo->titulo ?? '');
 
-        $ordenBase = $this->imagenesExistentes->count();
+        foreach (array_values($this->ordenGaleria) as $orden => $clave) {
+            $alt = trim((string) ($this->altsGaleria[$clave] ?? ''));
 
-        foreach ($rutasNuevas as $i => $path) {
-            $modelo->imagenes()->create([
-                'path' => $path,
-                'alt' => ($this->altsNuevasFotos[$i] ?? '') !== ''
-                    ? $this->altsNuevasFotos[$i]
-                    : (string) ($modelo->nombre ?? $modelo->titulo ?? ''),
-                'orden' => $ordenBase + $i,
-            ]);
+            if (str_starts_with($clave, 'e-')) {
+                $imagen = $this->imagenesExistentes->firstWhere('id', (int) substr($clave, 2));
+
+                if (! $imagen) {
+                    continue;
+                }
+
+                $modelo->imagenes()->whereKey($imagen->id)->update(['orden' => $orden, 'alt' => $alt]);
+                $rutas[$clave] = $imagen->path;
+            } elseif (isset($rutasNuevas[$clave])) {
+                $modelo->imagenes()->create([
+                    'path' => $rutasNuevas[$clave],
+                    'alt' => $alt !== '' ? $alt : $altPorDefecto,
+                    'orden' => $orden,
+                ]);
+                $rutas[$clave] = $rutasNuevas[$clave];
+            }
         }
 
         $this->nuevasFotos = [];
-        $this->altsNuevasFotos = [];
+        $this->fotosPendientes = [];
+        $this->previsualizacionesHeic = [];
         $this->imagenesAEliminar = [];
+
+        return $rutas;
     }
 
     protected function esFormatoHeic($foto): bool

@@ -26,7 +26,6 @@ class OptimizarImagenes extends Command
         $tareas = [
             [Imagen::query(), 'path'],
             [Especie::query()->whereNotNull('imagen'), 'imagen'],
-            [Cabana::query()->whereNotNull('imagen_principal'), 'imagen_principal'],
         ];
 
         foreach ($tareas as [$query, $columna]) {
@@ -59,6 +58,10 @@ class OptimizarImagenes extends Command
                 }
 
                 $registro->forceFill([$columna => $nuevo])->save();
+
+                if ($registro instanceof Imagen) {
+                    Cabana::where('imagen_principal', $path)->update(['imagen_principal' => $nuevo]);
+                }
                 ProcesadorImagen::eliminar($path);
                 $procesadas++;
             }

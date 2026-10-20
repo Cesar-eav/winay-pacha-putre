@@ -45,7 +45,6 @@ class Lugares extends Component
             'descripcion.es' => ['required', 'string'],
             'ubicacionTexto' => ['nullable', 'string', 'max:255'],
             'orden' => ['required', 'integer', 'min:0'],
-            'nuevasFotos.*' => ['image', 'mimes:jpg,jpeg,png,webp,gif,bmp,heic,heif', 'max:5120'],
         ];
     }
 

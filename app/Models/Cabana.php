@@ -46,7 +46,11 @@ class Cabana extends Model
 
     public function getPortadaAltAttribute(): string
     {
-        return $this->imagen_principal ? $this->nombre : ($this->imagenes->first()?->alt ?: $this->nombre);
+        $portada = $this->imagen_principal
+            ? $this->imagenes->firstWhere('path', $this->imagen_principal)
+            : $this->imagenes->first();
+
+        return $portada?->alt ?: $this->nombre;
     }
 
     public function galeriaPublica(): Collection
@@ -56,8 +60,9 @@ class Cabana extends Model
         }
 
         return new Collection([
-            new Imagen(['path' => $this->imagen_principal, 'alt' => $this->nombre]),
-            ...$this->imagenes->all(),
+            $this->imagenes->firstWhere('path', $this->imagen_principal)
+                ?? new Imagen(['path' => $this->imagen_principal, 'alt' => $this->nombre]),
+            ...$this->imagenes->reject(fn ($imagen) => $imagen->path === $this->imagen_principal)->all(),
         ]);
     }
 

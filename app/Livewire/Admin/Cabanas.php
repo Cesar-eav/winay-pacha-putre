@@ -45,14 +45,6 @@ class Cabanas extends Component
 
     public array $equipamientosSeleccionados = [];
 
-    public $nuevaImagenPrincipal = null;
-
-    public ?string $previsualizacionPrincipalHeic = null;
-
-    public ?string $imagenPrincipalActual = null;
-
-    public bool $quitarImagenPrincipal = false;
-
     protected function rules(): array
     {
         return [
@@ -65,9 +57,12 @@ class Cabanas extends Component
             'descripcion.es' => ['required', 'string'],
             'precioDesde' => ['nullable', 'string', 'max:255'],
             'orden' => ['required', 'integer', 'min:0'],
-            'nuevaImagenPrincipal' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp,gif,bmp,heic,heif', 'max:5120'],
-            'nuevasFotos.*' => ['image', 'mimes:jpg,jpeg,png,webp,gif,bmp,heic,heif', 'max:5120'],
         ];
+    }
+
+    public function usaImagenPrincipal(): bool
+    {
+        return true;
     }
 
     public function updated(string $property, mixed $value): void
@@ -75,25 +70,6 @@ class Cabanas extends Component
         if ($property === 'nombre' && ! $this->editandoId) {
             $this->slug = Str::slug($value);
         }
-    }
-
-    public function updatedNuevaImagenPrincipal(): void
-    {
-        $this->previsualizacionPrincipalHeic = $this->nuevaImagenPrincipal && $this->esFormatoHeic($this->nuevaImagenPrincipal)
-            ? $this->generarPrevisualizacionHeic($this->nuevaImagenPrincipal)
-            : null;
-    }
-
-    public function quitarImagenPrincipalActual(): void
-    {
-        $this->imagenPrincipalActual = null;
-        $this->quitarImagenPrincipal = true;
-    }
-
-    public function descartarImagenPrincipalNueva(): void
-    {
-        $this->nuevaImagenPrincipal = null;
-        $this->previsualizacionPrincipalHeic = null;
     }
 
     public function nuevo(): void
@@ -110,7 +86,6 @@ class Cabanas extends Component
         $this->orden = 0;
         $this->publicado = true;
         $this->equipamientosSeleccionados = [];
-        $this->reiniciarImagenPrincipal(null);
         $this->cargarGaleria(null);
         $this->resetValidation();
         $this->mostrarFormulario = true;
@@ -132,8 +107,7 @@ class Cabanas extends Component
         $this->orden = $cabana->orden;
         $this->publicado = $cabana->publicado;
         $this->equipamientosSeleccionados = $cabana->equipamientos->pluck('id')->all();
-        $this->reiniciarImagenPrincipal($cabana->imagen_principal);
-        $this->cargarGaleria($cabana);
+        $this->cargarGaleria($cabana, $cabana->imagen_principal);
         $this->resetValidation();
         $this->mostrarFormulario = true;
     }
@@ -161,31 +135,16 @@ class Cabanas extends Component
             'publicado' => $this->publicado,
         ];
 
-        if ($this->nuevaImagenPrincipal) {
-            $datos['imagen_principal'] = ProcesadorImagen::guardar(
-                $this->esFormatoHeic($this->nuevaImagenPrincipal) ? $this->heicABinarioJpg($this->nuevaImagenPrincipal, 'nuevaImagenPrincipal') : $this->nuevaImagenPrincipal,
-                'cabanas',
-                'nuevaImagenPrincipal',
-            );
-        } elseif ($this->quitarImagenPrincipal) {
-            $datos['imagen_principal'] = null;
-        }
-
-        $principalAnterior = $this->editandoId ? Cabana::find($this->editandoId)?->imagen_principal : null;
-
         $cabana = $this->editandoId
             ? tap(Cabana::findOrFail($this->editandoId))->update($datos)
             : Cabana::create($datos);
 
-        if (($this->nuevaImagenPrincipal || $this->quitarImagenPrincipal) && $principalAnterior) {
-            ProcesadorImagen::eliminar($principalAnterior);
-        }
-
         $cabana->equipamientos()->sync($this->equipamientosSeleccionados);
 
-        $this->guardarGaleria($cabana, 'cabanas');
+        $rutas = $this->guardarGaleria($cabana, 'cabanas');
 
-        $this->reiniciarImagenPrincipal($cabana->imagen_principal);
+        $cabana->update(['imagen_principal' => $rutas[$this->clavePrincipal] ?? null]);
+
         $this->mostrarFormulario = false;
         session()->flash('success', 'Cabaña guardada correctamente.');
     }
@@ -193,8 +152,6 @@ class Cabanas extends Component
     public function eliminar(int $id): void
     {
         $cabana = Cabana::findOrFail($id);
-
-        ProcesadorImagen::eliminar($cabana->imagen_principal);
 
         foreach ($cabana->imagenes as $imagen) {
             ProcesadorImagen::eliminar($imagen->path);
@@ -204,14 +161,6 @@ class Cabanas extends Component
         $cabana->delete();
 
         session()->flash('success', 'Cabaña eliminada.');
-    }
-
-    protected function reiniciarImagenPrincipal(?string $actual): void
-    {
-        $this->nuevaImagenPrincipal = null;
-        $this->previsualizacionPrincipalHeic = null;
-        $this->imagenPrincipalActual = $actual;
-        $this->quitarImagenPrincipal = false;
     }
 
     protected function consultaListado(): Builder

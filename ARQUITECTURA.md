@@ -38,7 +38,7 @@ Nota: no hay CRUD admin para `Fiesta`, `ServicioLocal` todavía (existen modelo 
 
 | Modelo | Tabla | Traducible (`spatie/translatable`) | Relaciones |
 |---|---|---|---|
-| `Cabana` | `cabanas` | `descripcion` | portada en columna `imagen_principal` (aparte de la galería), `imagenes` (morphMany), `equipamientos` (belongsToMany vía `cabana_equipamiento`), `solicitudesReserva` (hasMany) |
+| `Cabana` | `cabanas` | `descripcion` | portada en columna `imagen_principal` (path de una de las fotos de su galería, elegida con un tap en el admin), `imagenes` (morphMany), `equipamientos` (belongsToMany vía `cabana_equipamiento`), `solicitudesReserva` (hasMany) |
 | `Tema` | `temas` | `titulo`, `cuerpo` | `imagenes` (morphMany) |
 | `Fiesta` | `fiestas` | `titulo`, `descripcion` | `imagenes` (morphMany) |
 | `LugarEntorno` | `lugares_entorno` | `descripcion` | `imagenes` (morphMany) |
@@ -63,7 +63,7 @@ Modelos publicables usan scopes `publicado()` / `ordenado()` consistentemente (c
 
 **Traits reutilizables (`app/Livewire/Concerns`):**
 - `TranslatesWithDeepl` — botón "traducir" en el admin: toma el campo `es` de una propiedad traducible y llama a `DeepLTranslator` (servicio en `app/Services`) para rellenar `en`/`fr`. Si falla, deja mensaje de error y permite completar a mano. Nunca se usa en el sitio público.
-- `ManagesGaleria` — CRUD de galería de imágenes (`WithFileUploads`) para modelos con `imagenes()` morphMany: subir, reordenar, eliminar. Incluye conversión HEIC→WebP server-side (vía `maestroerror/php-heic-to-jpg` + GD) con corrección de orientación EXIF, porque los navegadores (salvo Safari) no renderizan HEIC — las fotos de iPhone se convierten al vuelo. Placeholders (`path` con prefijo `placeholder/`) viven en `public/images/` y no se tocan con `Storage`.
+- `ManagesGaleria` — CRUD de galería de imágenes (`WithFileUploads`) para modelos con `imagenes()` morphMany: subir (de a un archivo, validando cada uno para reportar cuál falló), reordenar con arrastre (`wire:sort`), eliminar, máximo de fotos (`maximoFotosGaleria()`, 12 por defecto) e imagen principal opcional (`usaImagenPrincipal()`, activa solo en Cabañas). Incluye conversión HEIC→WebP server-side (vía `maestroerror/php-heic-to-jpg` + GD) con corrección de orientación EXIF, porque los navegadores (salvo Safari) no renderizan HEIC — las fotos de iPhone se convierten al vuelo. Placeholders (`path` con prefijo `placeholder/`) viven en `public/images/` y no se tocan con `Storage`.
 
 ## Imágenes
 

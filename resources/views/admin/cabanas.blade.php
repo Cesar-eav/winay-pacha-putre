@@ -90,55 +90,18 @@
                     </div>
                 </div>
 
-                <div>
-                    <label class="block text-sm font-medium text-stone-700">Imagen principal</label>
-
-                    <div class="mt-2 flex items-center gap-4">
-                        @if ($nuevaImagenPrincipal)
-                            <div class="relative w-32 aspect-video rounded-lg overflow-hidden border border-winay-terracota">
-                                @if ($this->fotoEsPrevisualizable($nuevaImagenPrincipal))
-                                    <img src="{{ $nuevaImagenPrincipal->temporaryUrl() }}" class="w-full h-full object-cover">
-                                @elseif ($previsualizacionPrincipalHeic)
-                                    <img src="{{ $previsualizacionPrincipalHeic }}" class="w-full h-full object-cover">
-                                @else
-                                    <div class="w-full h-full flex items-center justify-center bg-stone-100 text-[10px] text-stone-500 text-center px-1">Formato no compatible</div>
-                                @endif
-                                <span class="absolute top-1 left-1 bg-winay-terracota text-white text-[10px] px-1.5 py-0.5 rounded">Nueva</span>
-                                <button type="button" wire:click="descartarImagenPrincipalNueva"
-                                        class="absolute bottom-1 right-1 bg-black/60 text-white text-xs px-1.5 py-0.5 rounded hover:text-red-300">
-                                    ✕
-                                </button>
-                            </div>
-                        @elseif ($imagenPrincipalActual)
-                            <div class="relative w-32 aspect-video rounded-lg overflow-hidden border border-stone-200">
-                                <img src="{{ \App\Services\ProcesadorImagen::urlVariante($imagenPrincipalActual, 'thumbs') }}" class="w-full h-full object-cover">
-                                <button type="button" wire:click="quitarImagenPrincipalActual" onclick="return confirm('¿Quitar la imagen principal?')"
-                                        class="absolute bottom-1 right-1 bg-black/60 text-white text-xs px-1.5 py-0.5 rounded hover:text-red-300">
-                                    ✕
-                                </button>
-                            </div>
-                        @else
-                            <div class="w-32 aspect-video rounded-lg border border-dashed border-stone-300 flex items-center justify-center text-xs text-stone-400">
-                                Sin imagen
-                            </div>
-                        @endif
-
-                        <div class="flex-1">
-                            <input type="file" wire:model="nuevaImagenPrincipal" accept="image/*"
-                                   class="block w-full text-sm text-stone-600 file:mr-3 file:py-2 file:px-4 file:rounded-full file:border-0 file:bg-winay-arena file:text-winay-tierra file:text-sm file:font-semibold hover:file:bg-winay-arena/70">
-                            <p class="mt-1 text-xs text-stone-500">Portada de la cabaña. JPG, PNG, WebP o HEIC de iPhone.</p>
-                            <div wire:loading wire:target="nuevaImagenPrincipal" class="mt-1 text-xs text-stone-500">Subiendo…</div>
-                            @error('nuevaImagenPrincipal') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
-                        </div>
-                    </div>
-                </div>
-
                 @include('admin.partials.galeria-editor', ['etiqueta' => 'Galería de imágenes'])
 
                 <div class="flex gap-3 pt-2">
-                    <button type="submit" class="inline-flex items-center px-5 py-2.5 rounded-full text-sm font-semibold text-white bg-winay-terracota hover:bg-winay-tierra"
-                            wire:loading.attr="disabled" wire:target="guardar">
-                        Guardar
+                    <button type="submit" x-data="{ subiendo: false }" x-on:galeria-subiendo.window="subiendo = $event.detail" x-bind:disabled="subiendo"
+                            wire:loading.attr="disabled" wire:target="guardar"
+                            class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-semibold text-white bg-winay-terracota hover:bg-winay-tierra disabled:opacity-70 disabled:cursor-wait">
+                        <svg wire:loading wire:target="guardar" class="animate-spin h-4 w-4" viewBox="0 0 24 24" fill="none">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+                        </svg>
+                        <span wire:loading.remove wire:target="guardar">Guardar</span>
+                        <span wire:loading wire:target="guardar">Guardando…</span>
                     </button>
                     <button type="button" wire:click="cancelar" class="text-sm text-stone-500 hover:text-stone-700">
                         Cancelar
