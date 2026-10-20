@@ -114,7 +114,7 @@
                 })
             },
         }"
-        class="hidden lg:block sticky top-16 z-30 bg-white/95 backdrop-blur border-b border-winay-arena"
+        class="hidden lg:block sticky top-20 z-30 bg-white/95 backdrop-blur border-b border-winay-arena"
     >
         <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center gap-8 h-14">
@@ -270,7 +270,7 @@
 
             {{-- Timeline compacto del resto de fechas --}}
             <div class="mt-14 max-w-3xl">
-                <h3 class="text-lg font-semibold text-winay-tierra mb-4">{{ __('Resto del año') }}</h3>
+                <h3 class="text-lg font-semibold text-winay-tierra mb-4">{{ __('Calendario de fiestas y actividades tradicionales') }}</h3>
                 <div class="divide-y divide-winay-arena border-y border-winay-arena">
                     @foreach ($meses as $item)
                         <div x-data="{ open: false }" class="py-1">

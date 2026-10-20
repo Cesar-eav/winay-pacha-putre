@@ -23,7 +23,7 @@
 
     <header x-data="{ open: false }" class="bg-white border-b border-winay-arena sticky top-0 z-40">
         <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center h-16">
+            <div class="flex justify-between items-center h-20">
                 <a href="{{ lroute('inicio') }}" class="flex items-center">
                     <img src="{{ asset('images/logo_12500x3655.png') }}" alt="Wiñaypacha Putre" class="h-10 sm:h-12 w-auto">
                 </a>
@@ -44,13 +44,13 @@
 
                     @foreach ($navLinks as $routeName => [$label, $url])
                         <a href="{{ $url }}"
-                           class="text-sm font-medium {{ str_starts_with($nombreRutaActual, $routeName) ? 'text-winay-terracota' : 'text-stone-600 hover:text-winay-terracota' }}">
+                           class="text-sm xl:text-base font-medium {{ str_starts_with($nombreRutaActual, $routeName) ? 'text-winay-terracota' : 'text-stone-600 hover:text-winay-terracota' }}">
                             {{ $label }}
                         </a>
                     @endforeach
 
                     <a href="{{ lroute('reserva') }}"
-                       class="inline-flex items-center px-4 py-2 rounded-full text-sm font-semibold text-white bg-winay-terracota hover:bg-winay-tierra transition">
+                       class="inline-flex items-center px-4 py-2 rounded-full text-sm xl:text-base font-semibold text-white bg-winay-terracota hover:bg-winay-tierra transition">
                         {{ __('Reserva ahora') }}
                     </a>
 
@@ -70,12 +70,12 @@
             <div class="px-4 py-3 space-y-1">
                 @foreach ($navLinks as $routeName => [$label, $url])
                     <a href="{{ $url }}"
-                       class="block px-2 py-2 rounded-md text-sm font-medium {{ str_starts_with($nombreRutaActual, $routeName) ? 'text-winay-terracota bg-winay-arena' : 'text-stone-600' }}">
+                       class="block px-2 py-2 rounded-md text-base font-medium {{ str_starts_with($nombreRutaActual, $routeName) ? 'text-winay-terracota bg-winay-arena' : 'text-stone-600' }}">
                         {{ $label }}
                     </a>
                 @endforeach
                 <a href="{{ lroute('reserva') }}"
-                   class="block mt-2 px-2 py-2 rounded-md text-sm font-semibold text-white bg-winay-terracota text-center">
+                   class="block mt-2 px-2 py-2 rounded-md text-base font-semibold text-white bg-winay-terracota text-center">
                     {{ __('Reserva ahora') }}
                 </a>
                 <x-language-switcher class="justify-center pt-3 mt-3 border-t border-winay-arena" />

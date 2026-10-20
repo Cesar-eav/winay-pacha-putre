@@ -15,12 +15,10 @@
                 setInterval(() => { this.slide = (this.slide + 1) % this.slides.length }, 5000)
             },
         }"
-        class="relative w-full h-[90vh] min-h-80 max-h-150 overflow-hidden"
+        class="relative w-full h-[70vh] min-h-96 max-h-160 overflow-hidden"
     >
         <template x-for="(item, i) in slides" :key="i">
-            <img
-                :src="item.src"
-                :alt="item.alt"
+            <picture
                 x-show="slide === i"
                 x-transition:enter="transition ease-out duration-700"
                 x-transition:enter-start="opacity-0"
@@ -28,25 +26,28 @@
                 x-transition:leave="transition ease-in duration-700"
                 x-transition:leave-start="opacity-100"
                 x-transition:leave-end="opacity-0"
-                class="absolute inset-0 w-full h-full object-cover"
+                class="absolute inset-0"
             >
+                <source media="(max-width: 767px)" :srcset="item.srcMobile || item.src">
+                <img :src="item.src" :alt="item.alt" class="w-full h-full object-cover">
+            </picture>
         </template>
 
         <button
             type="button"
             @click="slide = slide === 0 ? slides.length - 1 : slide - 1"
-            class="absolute left-4 top-1/2 -translate-y-1/2 size-14 flex items-center justify-center rounded-full bg-black/30 hover:bg-black/50 text-white transition"
+            class="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 size-10 sm:size-14 flex items-center justify-center rounded-full bg-black/30 hover:bg-black/50 text-white transition"
             aria-label="{{ __('Anterior') }}"
         >
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="size-8" aria-hidden="true"><path d="m15 18-6-6 6-6" /></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="size-6 sm:size-8" aria-hidden="true"><path d="m15 18-6-6 6-6" /></svg>
         </button>
         <button
             type="button"
             @click="slide = slide === slides.length - 1 ? 0 : slide + 1"
-            class="absolute right-4 top-1/2 -translate-y-1/2 size-14 flex items-center justify-center rounded-full bg-black/30 hover:bg-black/50 text-white transition"
+            class="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 size-10 sm:size-14 flex items-center justify-center rounded-full bg-black/30 hover:bg-black/50 text-white transition"
             aria-label="{{ __('Siguiente') }}"
         >
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="size-8" aria-hidden="true"><path d="m9 18 6-6-6-6" /></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="size-6 sm:size-8" aria-hidden="true"><path d="m9 18 6-6-6-6" /></svg>
         </button>
 
         <div class="absolute bottom-4 inset-x-0 flex items-center justify-center gap-2">
@@ -141,8 +142,8 @@
             </div>
         </section>
     @endif
-
-    <section class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16 grid gap-6 sm:grid-cols-3">
+{{-- BOTONES --}}
+    <section class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
         <a href="{{ lroute('putre') }}" class="p-6 rounded-2xl border border-winay-arena hover:border-winay-terracota transition">
             <h3 class="font-semibold text-winay-tierra">Putre</h3>
             <p class="mt-2 text-sm text-stone-600">{{ __('Qué hacer y cómo vivir Putre como un local.') }}</p>
@@ -154,6 +155,10 @@
         <a href="{{ lroute('nosotros') }}" class="p-6 rounded-2xl border border-winay-arena hover:border-winay-terracota transition">
             <h3 class="font-semibold text-winay-tierra">{{ __('Nosotros') }}</h3>
             <p class="mt-2 text-sm text-stone-600">{{ __('La historia detrás de WiñayPacha Putre.') }}</p>
+        </a>
+        <a href="{{ lroute('cultura') }}#calendario" class="p-6 rounded-2xl border border-winay-arena hover:border-winay-terracota transition">
+            <h3 class="font-semibold text-winay-tierra">{{ __('Calendario de fiestas') }}</h3>
+            <p class="mt-2 text-sm text-stone-600">{{ __('Fiestas y actividades tradicionales del año aymara.') }}</p>
         </a>
     </section>
 </x-winay-layout>
