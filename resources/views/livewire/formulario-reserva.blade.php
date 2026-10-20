@@ -36,12 +36,16 @@
                     <x-form-field name="numPersonas" label="{{ __('Número de personas') }}" type="number" min="1" inputmode="numeric" required />
 
                     <div>
-                        <label for="cabanaId" class="block text-sm font-medium text-stone-700">{{ __('Cabaña de interés (opcional)') }}</label>
+                        <label for="cabanaId" class="block text-sm font-medium text-stone-700">{{ __('Alojamiento de interés (opcional)') }}</label>
                         <select id="cabanaId" wire:model="cabanaId"
                                 class="mt-1 block w-full rounded-lg focus:ring-winay-terracota {{ $errors->has('cabanaId') ? 'border-red-400 focus:border-red-500' : 'border-stone-300 focus:border-winay-terracota' }}">
                             <option value="">{{ __('Sin preferencia') }}</option>
-                            @foreach ($cabanas as $opcion)
-                                <option value="{{ $opcion->id }}">{{ $opcion->nombre }}</option>
+                            @foreach ($cabanas->groupBy('tipo') as $tipo => $opciones)
+                                <optgroup label="{{ $tipo === \App\Models\Cabana::TIPO_HABITACION ? __('Habitaciones') : __('Cabañas') }}">
+                                    @foreach ($opciones as $opcion)
+                                        <option value="{{ $opcion->id }}">{{ $opcion->nombre }}</option>
+                                    @endforeach
+                                </optgroup>
                             @endforeach
                         </select>
                         @error('cabanaId') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror

@@ -69,7 +69,7 @@ class FormularioReserva extends Component
             'fechaSalida.after' => __('La fecha de salida debe ser posterior a la de llegada.'),
             'numPersonas.required' => __('Indica el número de personas.'),
             'numPersonas.min' => __('Debe ser al menos 1 persona.'),
-            'cabanaId.exists' => __('La cabaña seleccionada no es válida.'),
+            'cabanaId.exists' => __('El alojamiento seleccionado no es válido.'),
             'comentarios.max' => __('El comentario es demasiado largo.'),
         ];
     }

@@ -11,6 +11,8 @@ Mapa del código para no tener que explorarlo desde cero en cada sesión. Conven
 | `/putre` | `PutreController` (invokable) | `putre` |
 | `/cabanas` | `CabanaController@index` | `cabanas.index` |
 | `/cabanas/{cabana:slug}` | `CabanaController@show` | `cabanas.show` |
+| `/habitaciones` | `CabanaController@habitaciones` | `habitaciones.index` |
+| `/habitaciones/{habitacion:slug}` | `CabanaController@habitacion` | `habitaciones.show` (404 si el slug es de una cabaña, y viceversa) |
 | `/entorno` | `EntornoController` (invokable) | `entorno` |
 | `/nosotros` | `Route::view` (vista estática, sin controller/CMS) | `nosotros` |
 | `/contacto` | `ContactoController` (invokable) | `contacto` |
@@ -27,6 +29,7 @@ Prefijo `/admin`, name `admin.*`, middleware `['auth', 'admin']` (alias `admin` 
 | `/admin` | `App\Livewire\Admin\Dashboard` |
 | `/admin/temas` | `App\Livewire\Admin\Temas` |
 | `/admin/cabanas` | `App\Livewire\Admin\Cabanas` |
+| `/admin/habitaciones` | `App\Livewire\Admin\Habitaciones` (extiende `Cabanas`, solo cambia `tipo()` y `etiquetas()`) |
 | `/admin/lugares` | `App\Livewire\Admin\Lugares` |
 | `/admin/especies` | `App\Livewire\Admin\Especies` |
 
@@ -38,7 +41,7 @@ Nota: no hay CRUD admin para `Fiesta`, `ServicioLocal` todavía (existen modelo 
 
 | Modelo | Tabla | Traducible (`spatie/translatable`) | Relaciones |
 |---|---|---|---|
-| `Cabana` | `cabanas` | `descripcion` | portada en columna `imagen_principal` (path de una de las fotos de su galería, elegida con un tap en el admin), `imagenes` (morphMany), `equipamientos` (belongsToMany vía `cabana_equipamiento`), `solicitudesReserva` (hasMany) |
+| `Cabana` | `cabanas` | `descripcion` | columna `tipo` (`Cabana::TIPO_CABANA` / `TIPO_HABITACION`, scope `tipo()`): cabañas y habitaciones comparten tabla, modelo y vistas; `numero` es único por tipo; accessor `url` elige la ruta pública según el tipo. Portada en columna `imagen_principal` (path de una de las fotos de su galería, elegida con un tap en el admin), `imagenes` (morphMany), `equipamientos` (belongsToMany vía `cabana_equipamiento`), `solicitudesReserva` (hasMany) |
 | `Tema` | `temas` | `titulo`, `cuerpo` | `imagenes` (morphMany) |
 | `Fiesta` | `fiestas` | `titulo`, `descripcion` | `imagenes` (morphMany) |
 | `LugarEntorno` | `lugares_entorno` | `descripcion` | `imagenes` (morphMany) |
@@ -59,7 +62,7 @@ Modelos publicables usan scopes `publicado()` / `ordenado()` consistentemente (c
 - `FormularioContacto` — crea `LeadContacto`
 - `FormularioReserva` — crea `SolicitudReserva`
 
-**Admin CRUD:** `Admin\Dashboard`, `Admin\Temas`, `Admin\Cabanas`, `Admin\Lugares`, `Admin\Especies` — todos componentes full-page, usan los traits de `Concerns/`.
+**Admin CRUD:** `Admin\Dashboard`, `Admin\Temas`, `Admin\Cabanas` (+ `Admin\Habitaciones`), `Admin\Lugares`, `Admin\Especies` — todos componentes full-page, usan los traits de `Concerns/`.
 
 **Traits reutilizables (`app/Livewire/Concerns`):**
 - `TranslatesWithDeepl` — botón "traducir" en el admin: toma el campo `es` de una propiedad traducible y llama a `DeepLTranslator` (servicio en `app/Services`) para rellenar `en`/`fr`. Si falla, deja mensaje de error y permite completar a mano. Nunca se usa en el sitio público.
@@ -83,7 +86,7 @@ Todo lo del admin vive en `admin/`; el resto de `views/` es sitio público.
 
 **Público:**
 - `layouts/winay.blade.php` + `layouts/footer.blade.php` — layout del sitio público.
-- Páginas en la raíz de `views/`: `inicio`, `cultura`, `putre`, `entorno/{index,show}`, `nosotros`, `contacto`, `reserva`, `cabanas/{index,show}`.
+- Páginas en la raíz de `views/`: `inicio`, `cultura`, `putre`, `entorno/{index,show}`, `nosotros`, `contacto`, `reserva`, `cabanas/{index,show}` (también sirven `/habitaciones`, textos según `$tipo`).
 - `livewire/formulario-{contacto,reserva}.blade.php` — formularios de leads.
 - `components/` — `galeria-lightbox` (lightbox Alpine), `imagen-placeholder`, `language-switcher`, `form-field`.
 

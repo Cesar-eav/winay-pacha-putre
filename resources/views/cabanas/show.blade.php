@@ -1,3 +1,5 @@
+@php $esHabitacion = $tipo === \App\Models\Cabana::TIPO_HABITACION; @endphp
+
 <x-winay-layout>
     <x-slot:titulo>{{ $cabana->nombre }}</x-slot:titulo>
 
@@ -16,9 +18,12 @@
                         <h2 class="text-xl font-display font-medium tracking-[-0.01em] text-winay-tierra">
                             {{ $ambito === 'cabana' ? __('Equipamiento de la cabaña') : __('Equipamiento de la habitación') }}
                         </h2>
-                        <ul class="mt-2 grid grid-cols-2 gap-2 text-sm text-stone-600">
+                        <ul class="mt-3 grid gap-x-8 sm:grid-cols-2 text-sm text-stone-600">
                             @foreach ($items as $item)
-                                <li>{{ $item->nombre }}</li>
+                                <li class="flex items-center gap-3 border-b border-winay-arena py-2.5">
+                                    <x-icono-equipamiento :equipamiento="$item" class="text-winay-terracota" />
+                                    {{ $item->nombre }}
+                                </li>
                             @endforeach
                         </ul>
                     </div>
@@ -27,7 +32,7 @@
 
             <aside class="rounded-2xl border border-winay-arena bg-white p-6 shadow-[0_4px_20px_rgb(107_68_35/0.08)] lg:sticky lg:top-28">
                 @if ($cabana->numero)
-                    <p class="text-sm font-semibold text-winay-terracota">{{ __('Cabaña N° :n', ['n' => $cabana->numero]) }}</p>
+                    <p class="text-sm font-semibold text-winay-terracota">{{ __($esHabitacion ? 'Habitación N° :n' : 'Cabaña N° :n', ['n' => $cabana->numero]) }}</p>
                 @endif
 
                 @if ($cabana->precio_texto)
@@ -36,7 +41,7 @@
 
                 <a href="{{ lroute('reserva', ['cabana' => $cabana->slug]) }}"
                    class="mt-5 flex w-full items-center justify-center px-5 py-2.5 rounded-full text-sm font-semibold text-white bg-winay-terracota hover:bg-winay-tierra transition">
-                    {{ __('Reservar esta cabaña') }}
+                    {{ $esHabitacion ? __('Reservar esta habitación') : __('Reservar esta cabaña') }}
                 </a>
             </aside>
         </section>

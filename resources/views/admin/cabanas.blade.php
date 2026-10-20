@@ -2,20 +2,20 @@
     @include('admin.partials.banner-exito')
 
     <div class="flex items-center justify-between mb-6">
-        <h1 class="text-2xl font-bold text-winay-tierra">Cabañas</h1>
+        <h1 class="text-2xl font-bold text-winay-tierra">{{ $etiquetas['plural'] }}</h1>
         <button type="button" wire:click="nuevo" class="inline-flex items-center px-4 py-2 rounded-full text-sm font-semibold text-white bg-winay-terracota hover:bg-winay-tierra">
-            + Nueva cabaña
+            + {{ $etiquetas['nueva'] }}
         </button>
     </div>
 
     @if ($mostrarFormulario)
         <div class="mb-8 bg-white rounded-2xl border border-stone-200 p-6">
-            <h2 class="font-semibold text-winay-tierra mb-4">{{ $editandoId ? 'Editar cabaña' : 'Nueva cabaña' }}</h2>
+            <h2 class="font-semibold text-winay-tierra mb-4">{{ $editandoId ? 'Editar '.Str::lower($etiquetas['singular']) : $etiquetas['nueva'] }}</h2>
 
             <form wire:submit="guardar" class="space-y-5">
                 <div class="grid gap-4 sm:grid-cols-[8rem_1fr_1fr]">
                     <div>
-                        <label class="block text-sm font-medium text-stone-700">N° de cabaña</label>
+                        <label class="block text-sm font-medium text-stone-700">N° de {{ Str::lower($etiquetas['singular']) }}</label>
                         <input type="number" min="1" wire:model="numero" class="mt-1 block w-full rounded-lg border-stone-300 focus:border-winay-terracota focus:ring-winay-terracota">
                         @error('numero') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
                     </div>
@@ -155,12 +155,12 @@
                         </td>
                         <td class="px-4 py-3 text-right space-x-3">
                             <button type="button" wire:click="editar({{ $cabana->id }})" class="text-winay-terracota hover:underline">Editar</button>
-                            <button type="button" wire:click="eliminar({{ $cabana->id }})" onclick="return confirm('¿Eliminar esta cabaña?')" class="text-red-600 hover:underline">Eliminar</button>
+                            <button type="button" wire:click="eliminar({{ $cabana->id }})" onclick="return confirm('¿Eliminar esta {{ Str::lower($etiquetas['singular']) }}?')" class="text-red-600 hover:underline">Eliminar</button>
                         </td>
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="8" class="px-4 py-6 text-center text-stone-500">No hay cabañas todavía.</td>
+                        <td colspan="8" class="px-4 py-6 text-center text-stone-500">No hay {{ Str::lower($etiquetas['plural']) }} todavía.</td>
                     </tr>
                 @endforelse
             </tbody>

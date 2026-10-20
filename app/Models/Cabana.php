@@ -14,10 +14,14 @@ class Cabana extends Model
 {
     use HasTranslations;
 
+    public const TIPO_CABANA = 'cabana';
+
+    public const TIPO_HABITACION = 'habitacion';
+
     public array $translatable = ['descripcion'];
 
     protected $fillable = [
-        'numero', 'slug', 'nombre', 'capacidad', 'cantidad_banos', 'bano_privado',
+        'tipo', 'numero', 'slug', 'nombre', 'capacidad', 'cantidad_banos', 'bano_privado',
         'descripcion', 'precio_desde', 'imagen_principal', 'orden', 'publicado',
     ];
 
@@ -28,6 +32,11 @@ class Cabana extends Model
         'capacidad' => 'integer',
         'cantidad_banos' => 'integer',
     ];
+
+    public function getUrlAttribute(): string
+    {
+        return lroute($this->tipo === self::TIPO_HABITACION ? 'habitaciones.show' : 'cabanas.show', $this);
+    }
 
     public function getPrecioTextoAttribute(): ?string
     {
@@ -92,6 +101,11 @@ class Cabana extends Model
     public function solicitudesReserva(): HasMany
     {
         return $this->hasMany(SolicitudReserva::class);
+    }
+
+    public function scopeTipo($query, string $tipo)
+    {
+        return $query->where('tipo', $tipo);
     }
 
     public function scopePublicado($query)

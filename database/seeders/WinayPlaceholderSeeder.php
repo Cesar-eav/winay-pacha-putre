@@ -40,20 +40,20 @@ class WinayPlaceholderSeeder extends Seeder
 
     private function equipamientos(): void
     {
-        $cabana = ['Cocina equipada', 'Estufa a leña', 'Agua caliente', 'Wifi', 'Estacionamiento'];
-        $habitacion = ['Cama matrimonial', 'Ropa de cama', 'Calefacción', 'Velador'];
+        $cabana = ['Cocina equipada' => 'cocina', 'Estufa a leña' => 'estufa', 'Agua caliente' => 'agua-caliente', 'Wifi' => 'wifi', 'Estacionamiento' => 'estacionamiento'];
+        $habitacion = ['Cama matrimonial' => 'cama', 'Ropa de cama' => 'ropa-cama', 'Calefacción' => 'calefaccion', 'Velador' => 'velador'];
 
-        foreach ($cabana as $orden => $nombre) {
+        foreach (array_keys($cabana) as $orden => $nombre) {
             Equipamiento::firstOrCreate(
                 ['nombre' => $nombre, 'ambito' => 'cabana'],
-                ['icono' => 'check', 'orden' => $orden]
+                ['icono' => $cabana[$nombre], 'orden' => $orden]
             );
         }
 
-        foreach ($habitacion as $orden => $nombre) {
+        foreach (array_keys($habitacion) as $orden => $nombre) {
             Equipamiento::firstOrCreate(
                 ['nombre' => $nombre, 'ambito' => 'habitacion'],
-                ['icono' => 'check', 'orden' => $orden]
+                ['icono' => $habitacion[$nombre], 'orden' => $orden]
             );
         }
     }

@@ -45,10 +45,20 @@ class Cabanas extends Component
 
     public array $equipamientosSeleccionados = [];
 
+    protected function tipo(): string
+    {
+        return Cabana::TIPO_CABANA;
+    }
+
+    protected function etiquetas(): array
+    {
+        return ['singular' => 'Cabaña', 'plural' => 'Cabañas', 'nueva' => 'Nueva cabaña', 'carpeta' => 'cabanas'];
+    }
+
     protected function rules(): array
     {
         return [
-            'numero' => ['nullable', 'integer', 'min:1', Rule::unique('cabanas', 'numero')->ignore($this->editandoId)],
+            'numero' => ['nullable', 'integer', 'min:1', Rule::unique('cabanas', 'numero')->where('tipo', $this->tipo())->ignore($this->editandoId)],
             'slug' => ['required', 'string', 'max:255', Rule::unique('cabanas', 'slug')->ignore($this->editandoId)],
             'nombre' => ['required', 'string', 'max:255'],
             'capacidad' => ['nullable', 'integer', 'min:1'],
@@ -93,7 +103,7 @@ class Cabanas extends Component
 
     public function editar(int $id): void
     {
-        $cabana = Cabana::with('equipamientos')->findOrFail($id);
+        $cabana = $this->consultaListado()->with('equipamientos')->findOrFail($id);
 
         $this->editandoId = $cabana->id;
         $this->numero = $cabana->numero;
@@ -123,6 +133,7 @@ class Cabanas extends Component
         $this->validate();
 
         $datos = [
+            'tipo' => $this->tipo(),
             'numero' => $this->numero !== null && $this->numero !== '' ? (int) $this->numero : null,
             'slug' => $this->slug,
             'nombre' => $this->nombre,
@@ -136,22 +147,22 @@ class Cabanas extends Component
         ];
 
         $cabana = $this->editandoId
-            ? tap(Cabana::findOrFail($this->editandoId))->update($datos)
+            ? tap($this->consultaListado()->findOrFail($this->editandoId))->update($datos)
             : Cabana::create($datos);
 
         $cabana->equipamientos()->sync($this->equipamientosSeleccionados);
 
-        $rutas = $this->guardarGaleria($cabana, 'cabanas');
+        $rutas = $this->guardarGaleria($cabana, $this->etiquetas()['carpeta']);
 
         $cabana->update(['imagen_principal' => $rutas[$this->clavePrincipal] ?? null]);
 
         $this->mostrarFormulario = false;
-        session()->flash('success', 'Cabaña guardada correctamente.');
+        session()->flash('success', $this->etiquetas()['singular'].' guardada correctamente.');
     }
 
     public function eliminar(int $id): void
     {
-        $cabana = Cabana::findOrFail($id);
+        $cabana = $this->consultaListado()->findOrFail($id);
 
         foreach ($cabana->imagenes as $imagen) {
             ProcesadorImagen::eliminar($imagen->path);
@@ -160,18 +171,19 @@ class Cabanas extends Component
 
         $cabana->delete();
 
-        session()->flash('success', 'Cabaña eliminada.');
+        session()->flash('success', $this->etiquetas()['singular'].' eliminada.');
     }
 
     protected function consultaListado(): Builder
     {
-        return Cabana::query();
+        return Cabana::tipo($this->tipo());
     }
 
     public function render()
     {
         return view('admin.cabanas', [
             'cabanas' => $this->consultaListado()->orderBy('orden')->get(),
+            'etiquetas' => $this->etiquetas(),
             'equipamientosPorAmbito' => Equipamiento::orderBy('orden')->get()->groupBy('ambito'),
         ]);
     }

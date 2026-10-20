@@ -34,6 +34,10 @@
                    class="block px-3 py-2 rounded-lg text-sm {{ request()->routeIs('admin.cabanas*') ? 'bg-white/10 text-white' : 'text-winay-arena/80 hover:bg-white/5' }}">
                     Cabañas
                 </a>
+                <a href="{{ route('admin.habitaciones') }}"
+                   class="block px-3 py-2 rounded-lg text-sm {{ request()->routeIs('admin.habitaciones*') ? 'bg-white/10 text-white' : 'text-winay-arena/80 hover:bg-white/5' }}">
+                    Habitaciones
+                </a>
                 <a href="{{ route('admin.lugares') }}"
                    class="block px-3 py-2 rounded-lg text-sm {{ request()->routeIs('admin.lugares*') ? 'bg-white/10 text-white' : 'text-winay-arena/80 hover:bg-white/5' }}">
                     Qué Visitar — Lugares
@@ -64,6 +68,7 @@
                 <a href="{{ route('admin.dashboard') }}" class="block px-2 py-2 rounded-md text-sm {{ request()->routeIs('admin.dashboard') ? 'text-white bg-white/10' : '' }}">Dashboard</a>
                 <a href="{{ route('admin.temas') }}" class="block px-2 py-2 rounded-md text-sm {{ request()->routeIs('admin.temas*') ? 'text-white bg-white/10' : '' }}">Temas</a>
                 <a href="{{ route('admin.cabanas') }}" class="block px-2 py-2 rounded-md text-sm {{ request()->routeIs('admin.cabanas*') ? 'text-white bg-white/10' : '' }}">Cabañas</a>
+                <a href="{{ route('admin.habitaciones') }}" class="block px-2 py-2 rounded-md text-sm {{ request()->routeIs('admin.habitaciones*') ? 'text-white bg-white/10' : '' }}">Habitaciones</a>
                 <a href="{{ route('admin.lugares') }}" class="block px-2 py-2 rounded-md text-sm {{ request()->routeIs('admin.lugares*') ? 'text-white bg-white/10' : '' }}">Qué Visitar — Lugares</a>
                 <a href="{{ route('admin.especies') }}" class="block px-2 py-2 rounded-md text-sm {{ request()->routeIs('admin.especies*') ? 'text-white bg-white/10' : '' }}">Qué Visitar — Flora y Fauna</a>
                 <a href="{{ route('inicio') }}" class="block px-2 py-2 rounded-md text-sm text-winay-arena/70">← Ver sitio público</a>

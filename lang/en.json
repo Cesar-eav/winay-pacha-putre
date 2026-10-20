@@ -7,7 +7,6 @@
     "Aún no hay contenido publicado.": "No content published yet.",
     "Aún no hay contenido publicado en esta sección.": "No content published yet in this section.",
     "Aún no hay lugares publicados.": "No places published yet.",
-    "Cabaña de interés (opcional)": "Cabin of interest (optional)",
     "Cabañas": "Cabins",
     "Cabañas en Putre, Región de Arica y Parinacota — difundiendo la cultura, cosmovisión y territorio del pueblo aymara.": "Cabins in Putre, Arica and Parinacota Region — sharing the culture, worldview and territory of the Aymara people.",
     "Cabañas Wiñaypacha Putre": "Wiñaypacha Putre Cabins",
@@ -51,7 +50,6 @@
     "Ingresa un correo válido.": "Enter a valid email.",
     "Inicio": "Home",
     "Ir a la imagen": "Go to image",
-    "La cabaña seleccionada no es válida.": "The selected cabin is not valid.",
     "La fecha de llegada es obligatoria.": "Arrival date is required.",
     "La fecha de llegada no puede ser en el pasado.": "Arrival date cannot be in the past.",
     "La fecha de salida debe ser posterior a la de llegada.": "Departure date must be after the arrival date.",
@@ -105,5 +103,11 @@
     ":n baño privado|:n baños privados": ":n private bathroom|:n private bathrooms",
     ":n baño compartido|:n baños compartidos": ":n shared bathroom|:n shared bathrooms",
     "Ver las :n fotos": "See all :n photos",
-    "Cerrar": "Close"
+    "Cerrar": "Close",
+    "Habitaciones": "Rooms",
+    "Habitación N° :n": "Room no. :n",
+    "Reservar esta habitación": "Book this room",
+    "Aún no hay habitaciones publicadas.": "No rooms published yet.",
+    "Alojamiento de interés (opcional)": "Accommodation of interest (optional)",
+    "El alojamiento seleccionado no es válido.": "The selected accommodation is not valid."
 }

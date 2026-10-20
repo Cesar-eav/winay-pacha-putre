@@ -11,7 +11,7 @@ class InicioController extends Controller
     public function __invoke(): View
     {
         $temaDestacado = Tema::categoria('cultura')->publicado()->ordenado()->with('imagenes')->first();
-        $cabanasDestacadas = Cabana::publicado()->ordenado()->with('imagenes')->take(3)->get();
+        $cabanasDestacadas = Cabana::tipo(Cabana::TIPO_CABANA)->publicado()->ordenado()->with('imagenes')->take(3)->get();
 
         return view('inicio', [
             'temaDestacado' => $temaDestacado,

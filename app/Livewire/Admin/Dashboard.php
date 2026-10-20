@@ -47,10 +47,19 @@ class Dashboard extends Component
                 [
                     'nombre' => 'Cabañas',
                     'ruta' => route('admin.cabanas'),
-                    'total' => Cabana::count(),
+                    'total' => Cabana::tipo(Cabana::TIPO_CABANA)->count(),
                     'detalle' => [
-                        'Publicadas' => Cabana::where('publicado', true)->count(),
-                        'Borrador' => Cabana::where('publicado', false)->count(),
+                        'Publicadas' => Cabana::tipo(Cabana::TIPO_CABANA)->where('publicado', true)->count(),
+                        'Borrador' => Cabana::tipo(Cabana::TIPO_CABANA)->where('publicado', false)->count(),
+                    ],
+                ],
+                [
+                    'nombre' => 'Habitaciones',
+                    'ruta' => route('admin.habitaciones'),
+                    'total' => Cabana::tipo(Cabana::TIPO_HABITACION)->count(),
+                    'detalle' => [
+                        'Publicadas' => Cabana::tipo(Cabana::TIPO_HABITACION)->where('publicado', true)->count(),
+                        'Borrador' => Cabana::tipo(Cabana::TIPO_HABITACION)->where('publicado', false)->count(),
                     ],
                 ],
                 [

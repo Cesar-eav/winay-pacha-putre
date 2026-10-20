@@ -22,6 +22,7 @@
             <p class="font-semibold text-white mb-2">{{ __('Enlaces') }}</p>
             <ul class="text-sm text-winay-arena/80 space-y-1">
                 <li><a href="{{ lroute('cabanas.index') }}" class="hover:text-white">{{ __('Cabañas') }}</a></li>
+                <li><a href="{{ lroute('habitaciones.index') }}" class="hover:text-white">{{ __('Habitaciones') }}</a></li>
                 <li><a href="{{ lroute('entorno') }}" class="hover:text-white">{{ __('Qué visitar') }}</a></li>
                 <li><a href="{{ lroute('contacto') }}" class="hover:text-white">{{ __('Contacto') }}</a></li>
             </ul>

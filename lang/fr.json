@@ -7,7 +7,6 @@
     "Aún no hay contenido publicado.": "Aucun contenu publié pour le moment.",
     "Aún no hay contenido publicado en esta sección.": "Aucun contenu publié dans cette section pour le moment.",
     "Aún no hay lugares publicados.": "Aucun lieu publié pour le moment.",
-    "Cabaña de interés (opcional)": "Cabane d'intérêt (facultatif)",
     "Cabañas": "Cabanes",
     "Cabañas en Putre, Región de Arica y Parinacota — difundiendo la cultura, cosmovisión y territorio del pueblo aymara.": "Cabanes à Putre, région d'Arica et Parinacota — pour faire connaître la culture, la cosmovision et le territoire du peuple aymara.",
     "Cabañas Wiñaypacha Putre": "Cabanes Wiñaypacha Putre",
@@ -51,7 +50,6 @@
     "Ingresa un correo válido.": "Saisissez un e-mail valide.",
     "Inicio": "Accueil",
     "Ir a la imagen": "Aller à l'image",
-    "La cabaña seleccionada no es válida.": "La cabane sélectionnée n'est pas valide.",
     "La fecha de llegada es obligatoria.": "La date d'arrivée est obligatoire.",
     "La fecha de llegada no puede ser en el pasado.": "La date d'arrivée ne peut pas être dans le passé.",
     "La fecha de salida debe ser posterior a la de llegada.": "La date de départ doit être postérieure à la date d'arrivée.",
@@ -105,5 +103,11 @@
     ":n baño privado|:n baños privados": ":n salle de bain privée|:n salles de bain privées",
     ":n baño compartido|:n baños compartidos": ":n salle de bain partagée|:n salles de bain partagées",
     "Ver las :n fotos": "Voir les :n photos",
-    "Cerrar": "Fermer"
+    "Cerrar": "Fermer",
+    "Habitaciones": "Chambres",
+    "Habitación N° :n": "Chambre n° :n",
+    "Reservar esta habitación": "Réserver cette chambre",
+    "Aún no hay habitaciones publicadas.": "Aucune chambre publiée pour le moment.",
+    "Alojamiento de interés (opcional)": "Hébergement d'intérêt (facultatif)",
+    "El alojamiento seleccionado no es válido.": "L'hébergement sélectionné n'est pas valide."
 }

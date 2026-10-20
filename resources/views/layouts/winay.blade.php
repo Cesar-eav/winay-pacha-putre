@@ -36,6 +36,7 @@
                             'cultura' => [__('Cultura Aymara'), lroute('cultura')],
                             'putre' => [__('Putre'), lroute('putre')],
                             'cabanas.index' => [__('Cabañas'), lroute('cabanas.index')],
+                            'habitaciones.index' => [__('Habitaciones'), lroute('habitaciones.index')],
                             'entorno' => [__('Qué Visitar'), lroute('entorno')],
                             'nosotros' => [__('Nosotros'), lroute('nosotros')],
                             'contacto' => [__('Contacto'), lroute('contacto')],

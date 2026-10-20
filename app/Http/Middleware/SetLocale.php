@@ -14,6 +14,7 @@ class SetLocale
      */
     private const RUTAS_PUBLICAS = [
         'inicio', 'cultura', 'putre', 'cabanas.index', 'cabanas.show',
+        'habitaciones.index', 'habitaciones.show',
         'entorno', 'entorno.show', 'nosotros', 'contacto', 'reserva',
     ];
 

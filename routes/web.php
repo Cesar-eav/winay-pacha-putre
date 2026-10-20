@@ -16,6 +16,8 @@ $rutasPublicas = function () {
     Route::get('/putre', PutreController::class)->name('putre');
     Route::get('/cabanas', [CabanaController::class, 'index'])->name('cabanas.index');
     Route::get('/cabanas/{cabana:slug}', [CabanaController::class, 'show'])->name('cabanas.show');
+    Route::get('/habitaciones', [CabanaController::class, 'habitaciones'])->name('habitaciones.index');
+    Route::get('/habitaciones/{habitacion:slug}', [CabanaController::class, 'habitacion'])->name('habitaciones.show');
     Route::get('/entorno', [EntornoController::class, 'index'])->name('entorno');
     Route::get('/entorno/{lugar:slug}', [EntornoController::class, 'show'])->name('entorno.show');
     Route::view('/nosotros', 'nosotros')->name('nosotros');
