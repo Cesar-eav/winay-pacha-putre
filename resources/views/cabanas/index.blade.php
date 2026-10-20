@@ -22,8 +22,8 @@
                         <h2 class="font-semibold text-winay-tierra">{{ $cabana->nombre }}</h2>
                         @include('cabanas.partials.detalles', ['clase' => 'mt-1 text-sm text-stone-500'])
                         <p class="mt-2 text-sm text-stone-600">{{ Str::limit(strip_tags($cabana->descripcion), 120) }}</p>
-                        @if ($cabana->precio_desde)
-                            <p class="mt-3 text-sm font-semibold text-winay-terracota">{{ __('Desde :precio', ['precio' => $cabana->precio_desde]) }}</p>
+                        @if ($cabana->precio_texto)
+                            <p class="mt-3 text-sm font-semibold text-winay-terracota">{{ $cabana->precio_texto }}</p>
                         @endif
                     </div>
                 </a>

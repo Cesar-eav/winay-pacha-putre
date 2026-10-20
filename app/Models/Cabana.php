@@ -29,6 +29,19 @@ class Cabana extends Model
         'cantidad_banos' => 'integer',
     ];
 
+    public function getPrecioTextoAttribute(): ?string
+    {
+        $precio = trim(preg_replace('/^desde\s*/iu', '', (string) $this->precio_desde));
+
+        if ($precio === '') {
+            return null;
+        }
+
+        return preg_match('/^[$\d]/', $precio)
+            ? __('Desde :precio', ['precio' => $precio])
+            : __($precio);
+    }
+
     public function getImagenPrincipalUrlAttribute(): ?string
     {
         return $this->imagen_principal ? ProcesadorImagen::urlVariante($this->imagen_principal, 'medium') : null;

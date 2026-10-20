@@ -11,8 +11,8 @@
             <h1 class="text-3xl font-bold text-winay-tierra">{{ $cabana->nombre }}</h1>
             @include('cabanas.partials.detalles')
 
-            @if ($cabana->precio_desde)
-                <p class="mt-3 text-lg font-semibold text-winay-terracota">{{ __('Desde :precio', ['precio' => $cabana->precio_desde]) }}</p>
+            @if ($cabana->precio_texto)
+                <p class="mt-3 text-lg font-semibold text-winay-terracota">{{ $cabana->precio_texto }}</p>
             @endif
 
             <div class="mt-4 text-stone-600 space-y-3">{!! $cabana->descripcion !!}</div>
