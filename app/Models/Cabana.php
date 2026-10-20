@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Services\ProcesadorImagen;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -36,6 +37,28 @@ class Cabana extends Model
     public function getImagenPrincipalThumbUrlAttribute(): ?string
     {
         return $this->imagen_principal ? ProcesadorImagen::urlVariante($this->imagen_principal, 'thumbs') : null;
+    }
+
+    public function getPortadaUrlAttribute(): ?string
+    {
+        return $this->imagen_principal_url ?? $this->imagenes->first()?->medium_url;
+    }
+
+    public function getPortadaAltAttribute(): string
+    {
+        return $this->imagen_principal ? $this->nombre : ($this->imagenes->first()?->alt ?: $this->nombre);
+    }
+
+    public function galeriaPublica(): Collection
+    {
+        if (! $this->imagen_principal) {
+            return $this->imagenes;
+        }
+
+        return new Collection([
+            new Imagen(['path' => $this->imagen_principal, 'alt' => $this->nombre]),
+            ...$this->imagenes->all(),
+        ]);
     }
 
     public function imagenes(): MorphMany

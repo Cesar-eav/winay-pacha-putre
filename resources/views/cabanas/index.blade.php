@@ -10,12 +10,17 @@
         <div class="mt-10 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
             @forelse ($cabanas as $cabana)
                 <a href="{{ lroute('cabanas.show', $cabana) }}" class="block rounded-2xl border border-winay-arena overflow-hidden hover:border-winay-terracota transition">
-                    <div class="aspect-video">
-                        <x-galeria-lightbox :imagenes="$cabana->imagenes" :titulo="$cabana->nombre" />
-                    </div>
+                    @if ($cabana->portada_url)
+                        <img src="{{ $cabana->portada_url }}" alt="{{ $cabana->portada_alt }}" loading="lazy" decoding="async" class="w-full aspect-video object-cover">
+                    @else
+                        <x-imagen-placeholder :label="$cabana->nombre" class="aspect-video" />
+                    @endif
                     <div class="p-5">
+                        @if ($cabana->numero)
+                            <p class="text-xs uppercase tracking-wide text-winay-terracota font-semibold">{{ __('Cabaña N° :n', ['n' => $cabana->numero]) }}</p>
+                        @endif
                         <h2 class="font-semibold text-winay-tierra">{{ $cabana->nombre }}</h2>
-                        <p class="mt-1 text-sm text-stone-500">{{ __('Hasta :n personas', ['n' => $cabana->capacidad]) }}</p>
+                        @include('cabanas.partials.detalles', ['clase' => 'mt-1 text-sm text-stone-500'])
                         <p class="mt-2 text-sm text-stone-600">{{ Str::limit(strip_tags($cabana->descripcion), 120) }}</p>
                         @if ($cabana->precio_desde)
                             <p class="mt-3 text-sm font-semibold text-winay-terracota">{{ __('Desde :precio', ['precio' => $cabana->precio_desde]) }}</p>
