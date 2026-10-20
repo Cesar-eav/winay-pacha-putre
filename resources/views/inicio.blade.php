@@ -108,9 +108,14 @@
         <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16 grid gap-10 lg:grid-cols-2 items-center">
             <div>
                 <p class="text-sm uppercase tracking-wide text-winay-terracota font-semibold mb-2">{{ __('Putre, Región de Arica y Parinacota') }}</p>
-                <h2 class="text-3xl sm:text-4xl font-bold text-winay-tierra">{{ $heroTitulo }}</h2>
-                <p class="mt-2 text-lg text-stone-600">{{ $heroSubtitulo }}</p>
-                <p class="mt-4 text-stone-600">{{ $heroTexto }}</p>
+                <h2 class="text-3xl sm:text-4xl font-bold text-winay-tierra">{{ __('¡Bienvenidos a Wiñay Pacha!') }}</h2>
+                <p class="mt-2 text-lg text-stone-600">{{ __('Tu refugio acogedor en el corazón del altiplano.') }}</p>
+                <div class="mt-4 space-y-3 text-stone-600">
+                    <p>{{ __('Te invitamos a descubrir Putre, un lugar donde la naturaleza, la cultura aymara y los paisajes de la cordillera se unen para regalarte una experiencia inolvidable.') }}</p>
+                    <p>{{ __('En Wiñay Pacha Cabañas y Turismo te recibimos con calidez y hospitalidad, ofreciéndote un lugar cómodo y acogedor para descansar, disfrutar de tu estadía y sentirte como en casa. Nuestras cabañas están equipadas para que vivas una experiencia independiente, ya sea que viajes en pareja, en familia o en busca de nuevas aventuras.') }}</p>
+                    <p>{{ __('Desde aquí podrás explorar los maravillosos paisajes del altiplano, descubrir pueblos llenos de historia y conectar con la riqueza natural y cultural de nuestra tierra.') }}</p>
+                    <p>{{ __('Ven a Putre, respira la tranquilidad de los Andes y déjate sorprender por la magia del altiplano. ¡Será un placer recibirte!') }}</p>
+                </div>
 
                 <div class="mt-8 flex flex-wrap gap-3">
                     <a href="{{ lroute('cabanas.index') }}" class="inline-flex items-center px-5 py-2.5 rounded-full text-sm font-semibold text-white bg-winay-terracota hover:bg-winay-tierra transition">

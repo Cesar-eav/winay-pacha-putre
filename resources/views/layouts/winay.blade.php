@@ -44,7 +44,7 @@
 
                     @foreach ($navLinks as $routeName => [$label, $url])
                         <a href="{{ $url }}"
-                           class="text-sm xl:text-base font-medium {{ str_starts_with($nombreRutaActual, $routeName) ? 'text-winay-terracota' : 'text-stone-600 hover:text-winay-terracota' }}">
+                           class="text-sm xl:text-sm font-medium {{ str_starts_with($nombreRutaActual, $routeName) ? 'text-winay-terracota' : 'text-stone-600 hover:text-winay-terracota' }}">
                             {{ $label }}
                         </a>
                     @endforeach
