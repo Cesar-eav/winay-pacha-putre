@@ -13,7 +13,7 @@ use Illuminate\Validation\Rule;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 
-#[Layout('layouts.admin', ['titulo' => 'Qué Visitar — Lugares'])]
+#[Layout('admin.layouts.admin', ['titulo' => 'Qué Visitar — Lugares'])]
 class Lugares extends Component
 {
     use ManagesGaleria, TranslatesWithDeepl, ManagesEstadoYOrden;
@@ -139,7 +139,7 @@ class Lugares extends Component
 
     public function render()
     {
-        return view('livewire.admin.lugares', [
+        return view('admin.lugares', [
             'lugares' => $this->consultaListado()->orderBy('orden')->get(),
         ]);
     }

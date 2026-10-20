@@ -11,7 +11,7 @@ use App\Models\Tema;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 
-#[Layout('layouts.admin', ['titulo' => 'Dashboard'])]
+#[Layout('admin.layouts.admin', ['titulo' => 'Dashboard'])]
 class Dashboard extends Component
 {
     protected const ETIQUETAS_CATEGORIA_TEMA = [
@@ -30,7 +30,7 @@ class Dashboard extends Component
             ->groupBy('tipo')
             ->pluck('total', 'tipo');
 
-        return view('livewire.admin.dashboard', [
+        return view('admin.dashboard', [
             'leadsContactoTotal' => LeadContacto::count(),
             'leadsContactoPendientes' => LeadContacto::where('atendido', false)->count(),
             'solicitudesReservaTotal' => SolicitudReserva::count(),

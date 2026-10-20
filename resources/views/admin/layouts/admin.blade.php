@@ -70,7 +70,7 @@
             </div>
 
             <header class="bg-white border-b border-winay-arena hidden lg:flex items-center justify-end px-6 h-14">
-                <x-dropdown align="right" width="48">
+                <x-admin::dropdown align="right" width="48">
                     <x-slot name="trigger">
                         <button class="inline-flex items-center text-sm text-stone-600 hover:text-winay-terracota">
                             {{ Auth::user()->name }}
@@ -80,16 +80,16 @@
                         </button>
                     </x-slot>
                     <x-slot name="content">
-                        <x-dropdown-link :href="route('profile.edit')">Perfil</x-dropdown-link>
+                        <x-admin::dropdown-link :href="route('profile.edit')">Perfil</x-admin::dropdown-link>
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
-                            <x-dropdown-link :href="route('logout')"
+                            <x-admin::dropdown-link :href="route('logout')"
                                 onclick="event.preventDefault(); this.closest('form').submit();">
                                 Cerrar sesión
-                            </x-dropdown-link>
+                            </x-admin::dropdown-link>
                         </form>
                     </x-slot>
-                </x-dropdown>
+                </x-admin::dropdown>
             </header>
 
             <main class="flex-1 p-4 sm:p-6 lg:p-8">

@@ -13,7 +13,7 @@ use Illuminate\Validation\Rule;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 
-#[Layout('layouts.admin', ['titulo' => 'Temas'])]
+#[Layout('admin.layouts.admin', ['titulo' => 'Temas'])]
 class Temas extends Component
 {
     use ManagesGaleria, TranslatesWithDeepl, ManagesEstadoYOrden;
@@ -135,7 +135,7 @@ class Temas extends Component
 
     public function render()
     {
-        return view('livewire.admin.temas', [
+        return view('admin.temas', [
             'temas' => $this->consultaListado()->orderBy('orden')->get(),
         ]);
     }

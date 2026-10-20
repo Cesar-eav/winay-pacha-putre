@@ -1,5 +1,5 @@
 <div>
-    @include('livewire.admin.partials.banner-exito')
+    @include('admin.partials.banner-exito')
 
     <div class="flex items-center justify-between mb-6">
         <h1 class="text-2xl font-bold text-winay-tierra">Cabañas</h1>
@@ -37,7 +37,7 @@
                     </div>
                 </div>
 
-                @include('livewire.admin.partials.campo-richtext', ['prop' => 'descripcion', 'label' => 'Descripción'])
+                @include('admin.partials.campo-richtext', ['prop' => 'descripcion', 'label' => 'Descripción'])
 
                 <div>
                     <label class="block text-sm font-medium text-stone-700 mb-2">Equipamiento</label>
@@ -70,7 +70,7 @@
                     </div>
                 </div>
 
-                @include('livewire.admin.partials.galeria-editor')
+                @include('admin.partials.galeria-editor')
 
                 <div class="flex gap-3 pt-2">
                     <button type="submit" class="inline-flex items-center px-5 py-2.5 rounded-full text-sm font-semibold text-white bg-winay-terracota hover:bg-winay-tierra"

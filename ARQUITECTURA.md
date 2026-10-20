@@ -30,7 +30,7 @@ Prefijo `/admin`, name `admin.*`, middleware `['auth', 'admin']` (alias `admin` 
 | `/admin/lugares` | `App\Livewire\Admin\Lugares` |
 | `/admin/especies` | `App\Livewire\Admin\Especies` |
 
-Vistas en `resources/views/livewire/admin/*.blade.php`, layout `layouts/admin.blade.php`.
+Vistas en `resources/views/admin/*.blade.php`, layout `admin/layouts/admin.blade.php`.
 
 Nota: no hay CRUD admin para `Fiesta`, `ServicioLocal` todavía (existen modelo + migración pero no componente Livewire admin) — verificar antes de asumir que están editables desde el panel. `Nosotros` (`/nosotros`) no tiene CMS: es vista estática, sin modelo ni admin.
 
@@ -71,12 +71,21 @@ Toda subida del admin pasa por `App\Services\ProcesadorImagen` (intervention/ima
 
 ## Vistas (`resources/views`)
 
-- `layouts/winay.blade.php` — layout del sitio público (el que tenías abierto).
-- `layouts/app.blade.php`, `layouts/guest.blade.php`, `layouts/navigation.blade.php` — stack Breeze (auth/profile).
-- `layouts/admin.blade.php` — layout del panel admin.
-- Páginas públicas en la raíz de `views/`: `inicio`, `cultura`, `putre`, `entorno`, `nosotros`, `contacto`, `reserva`, `cabanas/index`, `cabanas/show`.
-- `components/galeria-lightbox.blade.php` — lightbox Alpine para galerías.
-- `livewire/admin/partials/` — `campo-traducible` (input ES/EN/FR + botón DeepL), `galeria-editor` (UI de `ManagesGaleria`), `banner-exito`.
+Todo lo del admin vive en `admin/`; el resto de `views/` es sitio público.
+
+**Admin (`admin/`):**
+- `admin/{dashboard,temas,cabanas,lugares,especies}.blade.php` — vistas de los componentes Livewire `App\Livewire\Admin\*`.
+- `admin/partials/` — `campo-traducible` (input ES/EN/FR + botón DeepL), `campo-richtext`, `galeria-editor` (UI de `ManagesGaleria`), `banner-exito`.
+- `admin/layouts/admin.blade.php` — layout del panel. `admin/layouts/{app,guest,navigation}` — stack Breeze (`<x-app-layout>` / `<x-guest-layout>` para profile y auth).
+- `admin/auth/` — login, password reset, verify email (Breeze).
+- `admin/profile/` — perfil del admin (Breeze).
+- `admin/components/` — componentes Breeze (botones, inputs, dropdown, modal…), registrados con prefijo en `AppServiceProvider`: se usan como `<x-admin::primary-button>`, `<x-admin::dropdown>`, etc.
+
+**Público:**
+- `layouts/winay.blade.php` + `layouts/footer.blade.php` — layout del sitio público.
+- Páginas en la raíz de `views/`: `inicio`, `cultura`, `putre`, `entorno/{index,show}`, `nosotros`, `contacto`, `reserva`, `cabanas/{index,show}`.
+- `livewire/formulario-{contacto,reserva}.blade.php` — formularios de leads.
+- `components/` — `galeria-lightbox` (lightbox Alpine), `imagen-placeholder`, `language-switcher`, `form-field`.
 
 ## Paleta / CSS (`resources/css/app.css`)
 

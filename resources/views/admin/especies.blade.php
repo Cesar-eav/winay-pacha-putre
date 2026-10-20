@@ -1,5 +1,5 @@
 <div>
-    @include('livewire.admin.partials.banner-exito')
+    @include('admin.partials.banner-exito')
 
     <div class="flex items-center justify-between mb-6">
         <h1 class="text-2xl font-bold text-winay-tierra">Qué Visitar — Flora y Fauna</h1>
@@ -34,8 +34,8 @@
                     </select>
                 </div>
 
-                @include('livewire.admin.partials.campo-richtext', ['prop' => 'descripcion', 'label' => 'Descripción'])
-                @include('livewire.admin.partials.campo-richtext', ['prop' => 'dondeObservar', 'label' => 'Dónde observarla'])
+                @include('admin.partials.campo-richtext', ['prop' => 'descripcion', 'label' => 'Descripción'])
+                @include('admin.partials.campo-richtext', ['prop' => 'dondeObservar', 'label' => 'Dónde observarla'])
 
                 <div class="grid gap-4 sm:grid-cols-2">
                     <div>

@@ -12,7 +12,7 @@ use Livewire\Attributes\Layout;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 
-#[Layout('layouts.admin', ['titulo' => 'Qué Visitar — Flora y Fauna'])]
+#[Layout('admin.layouts.admin', ['titulo' => 'Qué Visitar — Flora y Fauna'])]
 class Especies extends Component
 {
     use TranslatesWithDeepl, WithFileUploads, ManagesEstadoYOrden;
@@ -156,7 +156,7 @@ class Especies extends Component
 
     public function render()
     {
-        return view('livewire.admin.especies', [
+        return view('admin.especies', [
             'especies' => $this->consultaListado()->orderBy('orden')->get(),
         ]);
     }

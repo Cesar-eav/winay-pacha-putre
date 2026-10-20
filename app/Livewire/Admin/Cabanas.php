@@ -14,7 +14,7 @@ use Illuminate\Validation\Rule;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 
-#[Layout('layouts.admin', ['titulo' => 'Cabañas'])]
+#[Layout('admin.layouts.admin', ['titulo' => 'Cabañas'])]
 class Cabanas extends Component
 {
     use ManagesGaleria, TranslatesWithDeepl, ManagesEstadoYOrden;
@@ -146,7 +146,7 @@ class Cabanas extends Component
 
     public function render()
     {
-        return view('livewire.admin.cabanas', [
+        return view('admin.cabanas', [
             'cabanas' => $this->consultaListado()->orderBy('orden')->get(),
             'equipamientosPorAmbito' => Equipamiento::orderBy('orden')->get()->groupBy('ambito'),
         ]);
