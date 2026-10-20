@@ -126,9 +126,13 @@
                     </a>
                 </div>
             </div>
-            <img src="{{ asset('images/placeholder/50.JPG') }}"
-                 alt="Wiñaypacha Putre"
-                 class="w-full aspect-video rounded-2xl object-cover">
+            <img src="{{ asset('images/inicio/bienvenida-1600.webp') }}"
+                 srcset="{{ asset('images/inicio/bienvenida-800.webp') }} 800w, {{ asset('images/inicio/bienvenida-1600.webp') }} 1600w"
+                 sizes="(min-width: 1024px) 560px, 100vw"
+                 width="1600" height="1067"
+                 alt="{{ __('Cabañas Wiñaypacha Putre') }}"
+                 loading="lazy" decoding="async"
+                 class="w-full aspect-3/2 rounded-2xl object-cover shadow-sm">
         </div>
     </section>
 
