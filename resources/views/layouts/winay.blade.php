@@ -22,7 +22,7 @@
 <body class="bg-white font-texto text-stone-800 antialiased">
 
     <header x-data="{ open: false }" class="bg-white border-b border-winay-arena sticky top-0 z-40">
-        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-4">
             <div class="flex justify-between items-center h-20">
                 <a href="{{ lroute('inicio') }}" class="flex items-center">
                     <img src="{{ asset('images/logo_12500x3655.png') }}" alt="Wiñaypacha Putre" class="h-10 sm:h-12 w-auto">
