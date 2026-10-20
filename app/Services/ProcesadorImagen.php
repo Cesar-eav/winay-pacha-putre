@@ -21,8 +21,12 @@ class ProcesadorImagen
 
     private const CALIDAD_FULL = 80;
 
+    private const MEMORIA_MINIMA = '512M';
+
     public static function guardar(UploadedFile|string $origen, string $carpeta, string $campoError = 'nuevasFotos'): string
     {
+        self::ampliarMemoria();
+
         $manager = new ImageManager(new Driver);
 
         try {
@@ -44,6 +48,21 @@ class ProcesadorImagen
         }
 
         return "$carpeta/$nombre";
+    }
+
+    /**
+     * GD descomprime la foto completa en memoria (~4 bytes por píxel), así que
+     * una foto de 25 MB de cámara o iPhone supera los 256M que da el hosting.
+     * Ahí no se puede cambiar memory_limit vía .htaccess ni .user.ini, pero sí
+     * con ini_set. Nunca baja un límite que ya sea mayor o ilimitado.
+     */
+    public static function ampliarMemoria(): void
+    {
+        $actual = ini_parse_quantity(ini_get('memory_limit'));
+
+        if ($actual !== -1 && $actual < ini_parse_quantity(self::MEMORIA_MINIMA)) {
+            ini_set('memory_limit', self::MEMORIA_MINIMA);
+        }
     }
 
     public static function eliminar(?string $path): void

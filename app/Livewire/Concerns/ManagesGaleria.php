@@ -323,6 +323,8 @@ trait ManagesGaleria
      */
     protected function heicAImagenGd($foto)
     {
+        ProcesadorImagen::ampliarMemoria();
+
         try {
             $jpg = HeicToJpg::convert($foto->getRealPath())->get();
         } catch (\Throwable $e) {
