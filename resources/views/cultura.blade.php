@@ -88,7 +88,7 @@
                 <p class="text-sm uppercase tracking-widest text-winay-arena/90 font-semibold mb-3 drop-shadow">
                     {{ __('Putre, territorio aymara') }}
                 </p>
-                <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-white drop-shadow-lg max-w-3xl">
+                <h1 class="text-4xl sm:text-5xl lg:text-6xl font-display font-medium tracking-[-0.01em] text-white drop-shadow-lg max-w-3xl">
                     {{ __('Cultura Aymara') }}
                 </h1>
                 <p class="mt-4 text-lg lg:text-xl text-white/90 max-w-2xl leading-relaxed drop-shadow">
@@ -131,7 +131,7 @@
             <div class="grid gap-10 lg:grid-cols-2 items-center">
                 <div>
                     <p class="text-sm uppercase tracking-wide text-winay-terracota font-semibold mb-2">{{ __('Cosmovisión') }}</p>
-                    <h2 class="text-3xl lg:text-5xl font-bold tracking-tight text-winay-tierra">{{ __('Vivir en equilibrio con la Pachamama') }}</h2>
+                    <h2 class="text-3xl lg:text-5xl font-display font-medium tracking-[-0.01em] text-winay-tierra">{{ __('Vivir en equilibrio con la Pachamama') }}</h2>
                     <p class="mt-4 text-lg lg:text-xl text-stone-600 leading-relaxed">
                         {{ __('La cosmovisión aymara no es solo un conjunto de creencias: es una manera de habitar el territorio que sigue guiando la vida cotidiana en Putre.') }}
                     </p>
@@ -150,7 +150,7 @@
             <div class="mt-14 grid gap-6 sm:grid-cols-3">
                 @foreach ($principios as $p)
                     <div class="p-6 rounded-2xl border border-winay-arena">
-                        <h3 class="font-semibold text-lg text-winay-tierra">{{ $p['nombre'] }}</h3>
+                        <h3 class="font-display font-medium tracking-[-0.01em] text-xl text-winay-tierra">{{ $p['nombre'] }}</h3>
                         <p class="mt-1 text-sm text-stone-500 italic">{{ $p['traduccion'] }}</p>
                         <p class="mt-3 text-stone-600 leading-relaxed">{{ $p['texto'] }}</p>
                     </div>
@@ -165,7 +165,7 @@
             <div class="grid gap-12 lg:grid-cols-2 items-start">
                 {{-- Diagrama de la Chakana --}}
                 <div>
-                    <h3 class="text-2xl font-bold text-winay-tierra">{{ __('La Chakana: la escalera entre tres mundos') }}</h3>
+                    <h3 class="text-2xl font-display font-medium tracking-[-0.01em] text-winay-tierra">{{ __('La Chakana: la escalera entre tres mundos') }}</h3>
                     <p class="mt-3 text-stone-600 leading-relaxed">{{ __('La cruz andina también ordena el tiempo, las cosechas y las fiestas que aún se celebran en Putre.') }}</p>
 
                     <div class="mt-8 space-y-3">
@@ -183,7 +183,7 @@
 
                 {{-- Legend Wiphala --}}
                 <div>
-                    <h3 class="text-2xl font-bold text-winay-tierra">{{ __('La Wiphala') }}</h3>
+                    <h3 class="text-2xl font-display font-medium tracking-[-0.01em] text-winay-tierra">{{ __('La Wiphala') }}</h3>
                     <p class="mt-3 text-stone-600 leading-relaxed">{{ __('La bandera de siete colores resume esta cosmovisión: cada color representa un valor propio del pueblo aymara.') }}</p>
                     <dl class="mt-6 space-y-2">
                         @foreach ($wiphala as $c)
@@ -205,7 +205,7 @@
     <section id="textiles" class="scroll-mt-32 bg-white border-t border-winay-arena">
         <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-24">
             <p class="text-sm uppercase tracking-wide text-winay-terracota font-semibold mb-2">{{ __('Artesanía') }}</p>
-            <h2 class="text-3xl lg:text-5xl font-bold tracking-tight text-winay-tierra max-w-3xl">{{ __('Textiles y artesanía') }}</h2>
+            <h2 class="text-3xl lg:text-5xl font-display font-medium tracking-[-0.01em] text-winay-tierra max-w-3xl">{{ __('Textiles y artesanía') }}</h2>
 
             <div class="mt-12 grid gap-10 lg:grid-cols-5 items-start">
                 <div class="lg:col-span-3">
@@ -231,7 +231,7 @@
     <section id="calendario" class="scroll-mt-32 bg-winay-arena/40 border-t border-winay-arena">
         <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-24">
             <p class="text-sm uppercase tracking-wide text-winay-terracota font-semibold mb-2">{{ __('El año aymara') }}</p>
-            <h2 class="text-3xl lg:text-5xl font-bold tracking-tight text-winay-tierra max-w-3xl">{{ __('Calendario de fiestas') }}</h2>
+            <h2 class="text-3xl lg:text-5xl font-display font-medium tracking-[-0.01em] text-winay-tierra max-w-3xl">{{ __('Calendario de fiestas') }}</h2>
             <p class="mt-4 text-lg text-stone-600 leading-relaxed max-w-2xl">
                 {{ __('El calendario aymara se mide en ciclos agrícolas, rituales y fiestas patronales que marcan el ritmo del año en Putre. Muchas celebraciones mezclan la tradición andina con el catolicismo llegado hace siglos. Si tu visita coincide con alguna de estas fechas, no te la pierdas.') }}
             </p>
@@ -242,35 +242,35 @@
                     <img src="{{ asset('images/culturaaymara/web/fiestas1.jpg') }}" alt="{{ __('Banda y bailarines en la plaza de Putre durante la Anata de los pueblos') }}" class="w-full aspect-4/3 object-cover">
                     <div class="p-5">
                         <p class="text-sm font-semibold text-winay-terracota">{{ __('30-31 de enero') }}</p>
-                        <h3 class="mt-1 font-semibold text-winay-tierra">{{ __('Anata de los pueblos') }}</h3>
+                        <h3 class="mt-1 text-xl font-display font-medium tracking-[-0.01em] text-winay-tierra">{{ __('Anata de los pueblos') }}</h3>
                     </div>
                 </div>
                 <div class="rounded-2xl overflow-hidden bg-white border border-winay-arena">
                     <img src="{{ asset('images/culturaaymara/web/fiestas3.jpg') }}" alt="{{ __('Procesión ascendiendo a los cerros sagrados a dejar las cruces') }}" class="w-full aspect-4/3 object-cover">
                     <div class="p-5">
                         <p class="text-sm font-semibold text-winay-terracota">{{ __('9 de mayo') }}</p>
-                        <h3 class="mt-1 font-semibold text-winay-tierra">{{ __('Ascenso a los cerros sagrados a dejar las cruces') }}</h3>
+                        <h3 class="mt-1 text-xl font-display font-medium tracking-[-0.01em] text-winay-tierra">{{ __('Ascenso a los cerros sagrados a dejar las cruces') }}</h3>
                     </div>
                 </div>
                 <div class="rounded-2xl overflow-hidden bg-white border border-winay-arena">
                     <img src="{{ asset('images/culturaaymara/web/fiestas2.jpg') }}" alt="{{ __('Autoridades y reina de fiesta en atuendo tradicional durante una celebración patronal de Putre') }}" class="w-full aspect-4/3 object-cover">
                     <div class="p-5">
                         <p class="text-sm font-semibold text-stone-400">{{ __('Fiesta patronal') }}</p>
-                        <h3 class="mt-1 font-semibold text-winay-tierra">{{ __('Autoridades y reina de fiesta') }}</h3>
+                        <h3 class="mt-1 text-xl font-display font-medium tracking-[-0.01em] text-winay-tierra">{{ __('Autoridades y reina de fiesta') }}</h3>
                     </div>
                 </div>
                 <div class="rounded-2xl overflow-hidden bg-white border border-winay-arena">
                     <img src="{{ asset('images/culturaaymara/web/fiestas4.jpg') }}" alt="{{ __('Mesa ritual con flores y hojas de coca durante una ceremonia comunitaria en Putre') }}" class="w-full aspect-4/3 object-cover">
                     <div class="p-5">
                         <p class="text-sm font-semibold text-stone-400">{{ __('Ceremonia ritual') }}</p>
-                        <h3 class="mt-1 font-semibold text-winay-tierra">{{ __('Mesa ritual y ofrenda a la Pachamama') }}</h3>
+                        <h3 class="mt-1 text-xl font-display font-medium tracking-[-0.01em] text-winay-tierra">{{ __('Mesa ritual y ofrenda a la Pachamama') }}</h3>
                     </div>
                 </div>
             </div>
 
             {{-- Timeline compacto del resto de fechas --}}
             <div class="mt-14 max-w-3xl">
-                <h3 class="text-lg font-semibold text-winay-tierra mb-4">{{ __('Calendario de fiestas y actividades tradicionales') }}</h3>
+                <h3 class="text-xl font-display font-medium tracking-[-0.01em] text-winay-tierra mb-4">{{ __('Calendario de fiestas y actividades tradicionales') }}</h3>
                 <div class="divide-y divide-winay-arena border-y border-winay-arena">
                     @foreach ($meses as $item)
                         <div x-data="{ open: false }" class="py-1">
@@ -306,7 +306,7 @@
     {{-- CTA de cierre --}}
     <section class="bg-white border-t border-winay-arena">
         <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16 text-center">
-            <h2 class="text-2xl lg:text-3xl font-bold text-winay-tierra">{{ __('Vive esta cultura desde tus propios ojos') }}</h2>
+            <h2 class="text-2xl lg:text-3xl font-display font-medium tracking-[-0.01em] text-winay-tierra">{{ __('Vive esta cultura desde tus propios ojos') }}</h2>
             <p class="mt-3 text-stone-600 max-w-xl mx-auto">{{ __('Nuestras cabañas son la base ideal para descubrir el altiplano de Putre y su gente.') }}</p>
             <div class="mt-8 flex flex-wrap justify-center gap-3">
                 <a href="{{ lroute('cabanas.index') }}" class="inline-flex items-center px-6 py-3 rounded-full text-sm font-semibold text-white bg-winay-terracota hover:bg-winay-tierra transition">

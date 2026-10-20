@@ -9,6 +9,9 @@
   --color-winay-tierra: #6b4423;
   --color-winay-andino: #2f4a5c;
   --color-winay-arena: #f4ede2;
+
+  --font-display: "Newsreader Variable", Georgia, "Times New Roman", serif;
+  --font-texto: "IBM Plex Sans Variable", ui-sans-serif, system-ui, sans-serif;
 }
 
 [x-cloak] {

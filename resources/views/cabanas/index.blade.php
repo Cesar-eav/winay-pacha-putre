@@ -2,7 +2,7 @@
     <x-slot:titulo>{{ __('Cabañas') }}</x-slot:titulo>
 
     <section class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <h1 class="text-3xl font-bold text-winay-tierra">{{ __('Cabañas') }}</h1>
+        <h1 class="text-3xl font-display font-medium tracking-[-0.01em] text-winay-tierra">{{ __('Cabañas') }}</h1>
         <p class="mt-2 text-stone-600 max-w-2xl">
             {{ __('Precios y disponibilidad son informativos — la reserva se confirma manualmente con el anfitrión.') }}
         </p>
@@ -19,7 +19,7 @@
                         @if ($cabana->numero)
                             <p class="text-xs uppercase tracking-wide text-winay-terracota font-semibold">{{ __('Cabaña N° :n', ['n' => $cabana->numero]) }}</p>
                         @endif
-                        <h2 class="font-semibold text-winay-tierra">{{ $cabana->nombre }}</h2>
+                        <h2 class="text-xl font-display font-medium tracking-[-0.01em] text-winay-tierra">{{ $cabana->nombre }}</h2>
                         @include('cabanas.partials.detalles', ['clase' => 'mt-1 text-sm text-stone-500'])
                         <p class="mt-2 text-sm text-stone-600">{{ Str::limit(strip_tags($cabana->descripcion), 120) }}</p>
                         @if ($cabana->precio_texto)

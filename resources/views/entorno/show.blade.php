@@ -29,7 +29,7 @@
                         {{ $lugar->ubicacion_texto }}
                     </p>
                 @endif
-                <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-white drop-shadow-lg max-w-3xl">
+                <h1 class="text-4xl sm:text-5xl lg:text-6xl font-display font-medium tracking-[-0.01em] text-white drop-shadow-lg max-w-3xl">
                     {{ $lugar->nombre }}
                 </h1>
             </div>
@@ -66,7 +66,7 @@
     {{-- CTA de cierre --}}
     <section class="bg-white border-t border-winay-arena">
         <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16 text-center">
-            <h2 class="text-2xl lg:text-3xl font-bold text-winay-tierra">{{ __('¿Listo para conocerlo en persona?') }}</h2>
+            <h2 class="text-2xl lg:text-3xl font-display font-medium tracking-[-0.01em] text-winay-tierra">{{ __('¿Listo para conocerlo en persona?') }}</h2>
             <p class="mt-3 text-stone-600 max-w-xl mx-auto">{{ __('Nuestras cabañas son la base ideal para explorar este rincón del altiplano de Putre.') }}</p>
             <div class="mt-8 flex flex-wrap justify-center gap-3">
                 <a href="{{ lroute('cabanas.index') }}" class="inline-flex items-center px-6 py-3 rounded-full text-sm font-semibold text-white bg-winay-terracota hover:bg-winay-tierra transition">

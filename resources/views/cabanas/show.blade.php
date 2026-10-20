@@ -6,14 +6,14 @@
 
         <section class="mt-8 lg:mt-10 grid gap-10 lg:grid-cols-3 lg:items-start">
             <div class="lg:col-span-2">
-                <h1 class="text-3xl font-bold text-winay-tierra text-balance">{{ $cabana->nombre }}</h1>
-                @include('cabanas.partials.detalles')
+                <h1 class="text-4xl sm:text-5xl font-display font-medium tracking-[-0.01em] text-winay-tierra text-balance">{{ $cabana->nombre }}</h1>
+                @include('cabanas.partials.detalles', ['clase' => 'mt-2 text-stone-500'])
 
                 <div class="mt-6 max-w-prose text-stone-600 space-y-3">{!! $cabana->descripcion !!}</div>
 
                 @foreach ($equipamientosPorAmbito as $ambito => $items)
                     <div class="mt-8">
-                        <h2 class="font-semibold text-winay-tierra">
+                        <h2 class="text-xl font-display font-medium tracking-[-0.01em] text-winay-tierra">
                             {{ $ambito === 'cabana' ? __('Equipamiento de la cabaña') : __('Equipamiento de la habitación') }}
                         </h2>
                         <ul class="mt-2 grid grid-cols-2 gap-2 text-sm text-stone-600">
@@ -31,7 +31,7 @@
                 @endif
 
                 @if ($cabana->precio_texto)
-                    <p class="mt-1 text-lg font-semibold text-winay-tierra">{{ $cabana->precio_texto }}</p>
+                    <p class="mt-1 font-display text-3xl font-medium tracking-[-0.01em] text-winay-tierra">{{ $cabana->precio_texto }}</p>
                 @endif
 
                 <a href="{{ lroute('reserva', ['cabana' => $cabana->slug]) }}"

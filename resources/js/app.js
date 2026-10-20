@@ -3,6 +3,8 @@
 // static import here would be hoisted above any inline config we set here).
 // Its presence stops Livewire's ESM build from self-starting on
 // DOMContentLoaded, since we start it manually below.
+import '@fontsource-variable/newsreader/opsz.css';
+import '@fontsource-variable/ibm-plex-sans';
 import { Livewire, Alpine } from '../../vendor/livewire/livewire/dist/livewire.esm';
 
 window.Alpine = Alpine;

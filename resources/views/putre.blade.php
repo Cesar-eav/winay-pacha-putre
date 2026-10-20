@@ -2,7 +2,7 @@
     <x-slot:titulo>Putre</x-slot:titulo>
 
     <section class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <h1 class="text-3xl font-bold tracking-tight text-winay-tierra">Putre</h1>
+        <h1 class="text-3xl font-display font-medium tracking-[-0.01em] text-winay-tierra">Putre</h1>
         <p class="mt-3 text-lg text-stone-600">
             {{ __('A 3.500 metros de altura, entre volcanes y cielos despejados, Putre conserva el trazo y el ritmo de un pueblo altiplánico centenario. Esto es lo que vas a encontrar al recorrerlo.') }}
         </p>
@@ -14,7 +14,7 @@
                         <x-galeria-lightbox :imagenes="$tema->imagenes" :titulo="$tema->titulo" />
                     </div>
                     <div class="max-w-prose {{ $loop->even ? 'lg:order-1' : '' }}">
-                        <h2 class="text-2xl font-bold tracking-tight text-winay-tierra">{{ $tema->titulo }}</h2>
+                        <h2 class="text-2xl font-display font-medium tracking-[-0.01em] text-winay-tierra">{{ $tema->titulo }}</h2>
                         <div class="mt-3 text-stone-600 leading-relaxed space-y-3">{!! $tema->cuerpo !!}</div>
                     </div>
                 </article>

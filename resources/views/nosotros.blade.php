@@ -6,7 +6,7 @@
              class="w-full rounded-2xl shadow-sm object-cover aspect-4/5">
 
         <div>
-            <h1 class="text-3xl font-bold text-winay-tierra">{{ __('Nosotros') }}</h1>
+            <h1 class="text-3xl font-display font-medium tracking-[-0.01em] text-winay-tierra">{{ __('Nosotros') }}</h1>
 
             <div class="mt-6 text-stone-600 space-y-4">
                 <p>{{ __('Somos una familia Aymara que hace más de 30 años hizo de Putre nuestro hogar. Aquí formamos nuestra familia y criamos a nuestros hijos, rodeados de las montañas, paisajes y tradiciones de nuestro querido Altiplano.') }}</p>

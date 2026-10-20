@@ -19,7 +19,7 @@
     @livewireScriptConfig
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body class="bg-white text-stone-800 antialiased">
+<body class="bg-white font-texto text-stone-800 antialiased">
 
     <header x-data="{ open: false }" class="bg-white border-b border-winay-arena sticky top-0 z-40">
         <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">

@@ -66,7 +66,7 @@
     {{-- BANNER VARIAS IMAGENES   --}}
     <section class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <p class="text-sm uppercase tracking-wide text-winay-terracota font-semibold mb-2">{{ __('Nuestras cabañas') }}</p>
-        <h1 class="text-2xl sm:text-3xl font-bold text-winay-tierra">{{ __('Cada cabaña, una forma distinta de vivir el altiplano') }}</h1>
+        <h1 class="text-2xl sm:text-3xl font-display font-medium tracking-[-0.01em] text-winay-tierra">{{ __('Cada cabaña, una forma distinta de vivir el altiplano') }}</h1>
 
         <div class="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-0">
             @foreach ($cabanasDestacadas as $cabana)
@@ -88,7 +88,7 @@
                     </span>
 
                     <span class="absolute inset-0 flex items-center justify-center p-4 text-center group-hover:opacity-0 transition duration-300">
-                        <span class="text-white font-semibold text-4xl drop-shadow">{{ $cabana->nombre }}</span>
+                        <span class="font-display text-4xl font-medium tracking-[-0.01em] text-white drop-shadow">{{ $cabana->nombre }}</span>
                     </span>
                 </a>
             @endforeach
@@ -107,7 +107,7 @@
         <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16 grid gap-10 lg:grid-cols-2 items-center">
             <div>
                 <p class="text-sm uppercase tracking-wide text-winay-terracota font-semibold mb-2">{{ __('Putre, Región de Arica y Parinacota') }}</p>
-                <h2 class="text-3xl sm:text-4xl font-bold text-winay-tierra">{{ __('¡Bienvenidos a Wiñay Pacha!') }}</h2>
+                <h2 class="text-3xl sm:text-4xl font-display font-medium tracking-[-0.01em] text-winay-tierra">{{ __('¡Bienvenidos a Wiñay Pacha!') }}</h2>
                 <p class="mt-2 text-lg text-stone-600">{{ __('Tu refugio acogedor en el corazón del altiplano.') }}</p>
                 <div class="mt-4 space-y-3 text-stone-600">
                     <p>{{ __('Te invitamos a descubrir Putre, un lugar donde la naturaleza, la cultura aymara y los paisajes de la cordillera se unen para regalarte una experiencia inolvidable.') }}</p>
@@ -141,7 +141,7 @@
                 <x-galeria-lightbox :imagenes="$temaDestacado->imagenes" :titulo="$temaDestacado->titulo" />
                 <div>
                     <p class="text-sm uppercase tracking-wide text-winay-terracota font-semibold mb-2">{{ __('Cultura Aymara') }}</p>
-                    <h2 class="text-2xl font-bold text-winay-tierra">{{ $temaDestacado->titulo }}</h2>
+                    <h2 class="text-2xl font-display font-medium tracking-[-0.01em] text-winay-tierra">{{ $temaDestacado->titulo }}</h2>
                     <p class="mt-4 text-stone-600">{{ Str::limit(strip_tags($temaDestacado->cuerpo), 280) }}</p>
                     <a href="{{ lroute('cultura') }}" class="mt-4 inline-block text-sm font-semibold text-winay-terracota hover:underline">
                         {{ __('Conocer más sobre la cultura aymara →') }}
@@ -153,19 +153,19 @@
 {{-- BOTONES --}}
     <section class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
         <a href="{{ lroute('putre') }}" class="p-6 rounded-2xl border border-winay-arena hover:border-winay-terracota transition">
-            <h3 class="font-semibold text-winay-tierra">Putre</h3>
+            <h3 class="text-xl font-display font-medium tracking-[-0.01em] text-winay-tierra">Putre</h3>
             <p class="mt-2 text-sm text-stone-600">{{ __('Qué hacer y cómo vivir Putre como un local.') }}</p>
         </a>
         <a href="{{ lroute('entorno') }}" class="p-6 rounded-2xl border border-winay-arena hover:border-winay-terracota transition">
-            <h3 class="font-semibold text-winay-tierra">{{ __('Qué visitar') }}</h3>
+            <h3 class="text-xl font-display font-medium tracking-[-0.01em] text-winay-tierra">{{ __('Qué visitar') }}</h3>
             <p class="mt-2 text-sm text-stone-600">{{ __('Lugares del entorno de Putre y el altiplano.') }}</p>
         </a>
         <a href="{{ lroute('nosotros') }}" class="p-6 rounded-2xl border border-winay-arena hover:border-winay-terracota transition">
-            <h3 class="font-semibold text-winay-tierra">{{ __('Nosotros') }}</h3>
+            <h3 class="text-xl font-display font-medium tracking-[-0.01em] text-winay-tierra">{{ __('Nosotros') }}</h3>
             <p class="mt-2 text-sm text-stone-600">{{ __('La historia detrás de WiñayPacha Putre.') }}</p>
         </a>
         <a href="{{ lroute('cultura') }}#calendario" class="p-6 rounded-2xl border border-winay-arena hover:border-winay-terracota transition">
-            <h3 class="font-semibold text-winay-tierra">{{ __('Calendario de fiestas') }}</h3>
+            <h3 class="text-xl font-display font-medium tracking-[-0.01em] text-winay-tierra">{{ __('Calendario de fiestas') }}</h3>
             <p class="mt-2 text-sm text-stone-600">{{ __('Fiestas y actividades tradicionales del año aymara.') }}</p>
         </a>
     </section>
