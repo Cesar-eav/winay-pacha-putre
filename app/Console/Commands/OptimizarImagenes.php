@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Models\Cabana;
 use App\Models\Especie;
 use App\Models\Imagen;
 use App\Services\ProcesadorImagen;
@@ -25,6 +26,7 @@ class OptimizarImagenes extends Command
         $tareas = [
             [Imagen::query(), 'path'],
             [Especie::query()->whereNotNull('imagen'), 'imagen'],
+            [Cabana::query()->whereNotNull('imagen_principal'), 'imagen_principal'],
         ];
 
         foreach ($tareas as [$query, $columna]) {
