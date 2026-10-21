@@ -6,16 +6,15 @@
         x-data="{
             slide: 0,
             slides: {{ Illuminate\Support\Js::from([
-                ['src' => asset('images/culturaaymara/cosmovision2.png'), 'alt' => __('Cabañas Wiñaypacha Putre')],
+                ['src' => asset('images/culturaaymara/cosmovision2.png'), 'alt' => __('Cabañas Wiñaypacha Putre'), 'pos' => 'object-top'],
                 ['src' => asset('images/inicio/61.JPG'), 'alt' => __('Vista del altiplano en Putre')],
                 ['src' => asset('images/placeholder/50.JPG'), 'alt' => 'Wiñaypacha Putre'],
-                
             ]) }},
             init() {
                 setInterval(() => { this.slide = (this.slide + 1) % this.slides.length }, 5000)
             },
         }"
-        class="relative w-full h-[70vh] min-h-96 max-h-160 overflow-hidden"
+        class="relative w-full h-[clamp(24rem,max(70vh,38vw),85vh)] overflow-hidden"
     >
         <template x-for="(item, i) in slides" :key="i">
             <picture
@@ -29,7 +28,7 @@
                 class="absolute inset-0"
             >
                 <source media="(max-width: 767px)" :srcset="item.srcMobile || item.src">
-                <img :src="item.src" :alt="item.alt" class="w-full h-full object-cover">
+                <img :src="item.src" :alt="item.alt" class="w-full h-full object-cover" :class="item.pos || 'object-center'">
             </picture>
         </template>
 
@@ -63,45 +62,24 @@
         </div>
     </section>
 
-    {{-- BANNER VARIAS IMAGENES   --}}
-    <section class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <p class="text-sm uppercase tracking-wide text-winay-terracota font-semibold mb-2">{{ __('Nuestras cabañas') }}</p>
-        <h1 class="text-2xl sm:text-3xl font-display font-medium tracking-[-0.01em] text-winay-tierra">{{ __('Cada cabaña, una forma distinta de vivir el altiplano') }}</h1>
+    <x-mosaico-alojamientos
+        :items="$cabanasDestacadas"
+        :etiqueta="__('Nuestras cabañas')"
+        :titulo="__('Cada cabaña, una forma distinta de vivir el altiplano')"
+        :ver-todos-url="lroute('cabanas.index')"
+        :ver-todos-texto="__('Conoce todas las cabañas')"
+        encabezado="h1"
+    />
 
-        <div class="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-0">
-            @foreach ($cabanasDestacadas as $cabana)
-                <a href="{{ lroute('cabanas.show', $cabana) }}"
-                   class="group relative block aspect-2/1 overflow-hidden border border-winay-arena hover:border-winay-terracota hover:shadow-xl transition">
-                    <img src="{{ $cabana->portada_url ?? asset('images/placeholder/cabana-ejemplo.jpg') }}"
-                         alt="{{ $cabana->portada_alt }}"
-                         loading="lazy" decoding="async" class="w-full h-full object-cover group-hover:scale-110 transition duration-500 ease-out">
-
-                    <span class="absolute inset-0 bg-linear-to-t from-black/80 via-black/10 to-transparent group-hover:from-black/90 group-hover:via-black/40 transition duration-300"></span>
-
-                    <span class="absolute inset-0 flex items-center justify-center">
-                        <span class="inline-flex items-center gap-1.5 text-sm font-semibold text-white bg-winay-terracota px-5 py-2.5 rounded-full shadow-lg opacity-0 scale-75 group-hover:opacity-100 group-hover:scale-100 transition duration-300 ease-out">
-                            {{ __('Leer más') }}
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="size-3.5">
-                                <path fill-rule="evenodd" d="M3 10a.75.75 0 0 1 .75-.75h10.638L10.23 5.29a.75.75 0 1 1 1.04-1.08l5.5 5.25a.75.75 0 0 1 0 1.08l-5.5 5.25a.75.75 0 1 1-1.04-1.08l4.158-3.96H3.75A.75.75 0 0 1 3 10Z" clip-rule="evenodd" />
-                            </svg>
-                        </span>
-                    </span>
-
-                    <span class="absolute inset-0 flex items-center justify-center p-4 text-center group-hover:opacity-0 transition duration-300">
-                        <span class="font-display text-4xl font-medium tracking-[-0.01em] text-white drop-shadow">{{ $cabana->nombre }}</span>
-                    </span>
-                </a>
-            @endforeach
-
-            <a href="{{ lroute('cabanas.index') }}"
-               class="group relative block aspect-2/1 overflow-hidden border border-winay-arena hover:border-winay-terracota transition">
-                <x-imagen-placeholder label="" color="andino" class="w-full h-full" />
-                <span class="absolute inset-0 flex items-center justify-center bg-linear-to-t from-black/60 to-transparent p-4">
-                    <span class="text-white font-semibold">{{ __('Conoce todas las cabañas') }}</span>
-                </span>
-            </a>
-        </div>
-    </section>
+    @if ($habitacionesDestacadas->isNotEmpty())
+        <x-mosaico-alojamientos
+            :items="$habitacionesDestacadas"
+            :etiqueta="__('Nuestras habitaciones')"
+            :titulo="__('Habitaciones cómodas para descansar en el corazón de Putre')"
+            :ver-todos-url="lroute('habitaciones.index')"
+            :ver-todos-texto="__('Conoce todas las habitaciones')"
+        />
+    @endif
 
     <section class="bg-white border-t border-winay-arena">
         <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16 grid gap-10 lg:grid-cols-2 items-center">
@@ -119,6 +97,9 @@
                 <div class="mt-8 flex flex-wrap gap-3">
                     <a href="{{ lroute('cabanas.index') }}" class="inline-flex items-center px-5 py-2.5 rounded-full text-sm font-semibold text-white bg-winay-terracota hover:bg-winay-tierra transition">
                         {{ __('Ver cabañas') }}
+                    </a>
+                    <a href="{{ lroute('habitaciones.index') }}" class="inline-flex items-center px-5 py-2.5 rounded-full text-sm font-semibold text-winay-tierra border border-winay-tierra hover:bg-winay-arena transition">
+                        {{ __('Ver habitaciones') }}
                     </a>
                     <a href="{{ lroute('cultura') }}" class="inline-flex items-center px-5 py-2.5 rounded-full text-sm font-semibold text-winay-tierra border border-winay-tierra hover:bg-winay-arena transition">
                         {{ __('Cultura Aymara') }}

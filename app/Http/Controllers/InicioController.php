@@ -12,10 +12,12 @@ class InicioController extends Controller
     {
         $temaDestacado = Tema::categoria('cultura')->publicado()->ordenado()->with('imagenes')->first();
         $cabanasDestacadas = Cabana::tipo(Cabana::TIPO_CABANA)->publicado()->ordenado()->with('imagenes')->take(3)->get();
+        $habitacionesDestacadas = Cabana::tipo(Cabana::TIPO_HABITACION)->publicado()->ordenado()->with('imagenes')->take(3)->get();
 
         return view('inicio', [
             'temaDestacado' => $temaDestacado,
             'cabanasDestacadas' => $cabanasDestacadas,
+            'habitacionesDestacadas' => $habitacionesDestacadas,
         ]);
     }
 }
