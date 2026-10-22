@@ -21,7 +21,7 @@
                         @if ($cabana->numero)
                             <p class="text-xs uppercase tracking-wide text-winay-terracota font-semibold">{{ __($esHabitacion ? 'Habitación N° :n' : 'Cabaña N° :n', ['n' => $cabana->numero]) }}</p>
                         @endif
-                        <h2 class="text-xl font-display font-medium tracking-[-0.01em] text-winay-tierra">{{ $cabana->nombre }}</h2>
+                        <h2 class="text-3xl nombre-alojamiento text-winay-tierra">{{ $cabana->nombre }}</h2>
                         @include('cabanas.partials.detalles', ['clase' => 'mt-1 text-sm text-stone-500'])
                         <p class="mt-2 text-sm text-stone-600">{{ Str::limit(strip_tags($cabana->descripcion), 120) }}</p>
                         @if ($cabana->precio_texto)

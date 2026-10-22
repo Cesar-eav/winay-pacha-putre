@@ -5,6 +5,7 @@
 // DOMContentLoaded, since we start it manually below.
 import '@fontsource-variable/newsreader/opsz.css';
 import '@fontsource-variable/ibm-plex-sans';
+import '@fontsource-variable/fraunces/soft.css';
 import { Livewire, Alpine } from '../../vendor/livewire/livewire/dist/livewire.esm';
 
 window.Alpine = Alpine;

@@ -8,7 +8,7 @@
 
         <section class="mt-8 lg:mt-10 grid gap-10 lg:grid-cols-3 lg:items-start">
             <div class="lg:col-span-2">
-                <h1 class="text-4xl sm:text-5xl font-display font-medium tracking-[-0.01em] text-winay-tierra text-balance">{{ $cabana->nombre }}</h1>
+                <h1 class="text-5xl sm:text-6xl nombre-alojamiento text-winay-tierra text-balance">{{ $cabana->nombre }}</h1>
                 @include('cabanas.partials.detalles', ['clase' => 'mt-2 text-stone-500'])
 
                 <div class="mt-6 max-w-prose text-stone-600 space-y-3">{!! $cabana->descripcion !!}</div>

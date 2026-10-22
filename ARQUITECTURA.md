@@ -92,7 +92,7 @@ Todo lo del admin vive en `admin/`; el resto de `views/` es sitio público.
 - `layouts/winay.blade.php` + `layouts/footer.blade.php` — layout del sitio público.
 - Páginas en la raíz de `views/`: `inicio`, `cultura`, `putre`, `entorno/{index,show}`, `nosotros`, `contacto`, `reserva`, `cabanas/{index,show}` (también sirven `/habitaciones`, textos según `$tipo`).
 - `livewire/formulario-{contacto,reserva}.blade.php` — formularios de leads.
-- `components/` — `galeria-lightbox` (lightbox Alpine), `imagen-placeholder`, `language-switcher`, `form-field`.
+- `components/` — `galeria-lightbox` (lightbox Alpine), `alojamientos/grilla` y `alojamientos/editorial` (cabañas y habitaciones en el inicio), `imagen-placeholder`, `language-switcher`, `form-field`.
 
 ## Paleta / CSS (`resources/css/app.css`)
 

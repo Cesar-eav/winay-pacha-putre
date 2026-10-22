@@ -12,6 +12,15 @@
 
   --font-display: "Newsreader Variable", Georgia, "Times New Roman", serif;
   --font-texto: "IBM Plex Sans Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-nombre: "Fraunces Variable", Georgia, "Times New Roman", serif;
+}
+
+@utility nombre-alojamiento {
+  font-family: var(--font-nombre);
+  font-variation-settings: "SOFT" 100;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1;
 }
 
 [x-cloak] {

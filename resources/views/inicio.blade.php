@@ -62,22 +62,23 @@
         </div>
     </section>
 
-    <x-mosaico-alojamientos
+    <x-alojamientos.grilla
         :items="$cabanasDestacadas"
         :etiqueta="__('Nuestras cabañas')"
         :titulo="__('Cada cabaña, una forma distinta de vivir el altiplano')"
-        :ver-todos-url="lroute('cabanas.index')"
-        :ver-todos-texto="__('Conoce todas las cabañas')"
+        :url="lroute('cabanas.index')"
+        :enlace-texto="__('Precios y detalles')"
         encabezado="h1"
     />
 
     @if ($habitacionesDestacadas->isNotEmpty())
-        <x-mosaico-alojamientos
+        <x-alojamientos.editorial
             :items="$habitacionesDestacadas"
             :etiqueta="__('Nuestras habitaciones')"
             :titulo="__('Habitaciones cómodas para descansar en el corazón de Putre')"
-            :ver-todos-url="lroute('habitaciones.index')"
-            :ver-todos-texto="__('Conoce todas las habitaciones')"
+            :texto="__('Dos habitaciones que llevan el nombre de paisajes del altiplano, pensadas para descansar después de recorrerlo.')"
+            :url="lroute('habitaciones.index')"
+            :enlace-texto="__('Ver habitaciones')"
         />
     @endif
 
