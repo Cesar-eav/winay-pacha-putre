@@ -52,7 +52,7 @@
 
                     <a href="{{ lroute('reserva') }}"
                        class="inline-flex items-center px-4 py-2 rounded-full text-sm xl:text-base font-semibold text-white bg-winay-terracota hover:bg-winay-tierra transition">
-                        {{ __('Reserva ahora') }}
+                        {{ __('Reservar') }}
                     </a>
 
                     <x-language-switcher />
@@ -77,7 +77,7 @@
                 @endforeach
                 <a href="{{ lroute('reserva') }}"
                    class="block mt-2 px-2 py-2 rounded-md text-base font-semibold text-white bg-winay-terracota text-center">
-                    {{ __('Reserva ahora') }}
+                    {{ __('Reservar') }}
                 </a>
                 <x-language-switcher class="justify-center pt-3 mt-3 border-t border-winay-arena" />
             </div>
