@@ -6,7 +6,7 @@ Mapa de rutas, modelos, Livewire y vistas ya construidos: ver `ARQUITECTURA.md` 
 
 ## Stack
 
-- **Laravel 13** / **PHP 8.3** / MySQL (`winay_pacha_putre`)
+- **Laravel 13** / **PHP 8.3** / MySQL (local: `cwi118900_winay_pacha_putre`, mismo nombre que en producción; `winay_pacha_putre` es una base local antigua que la app no usa)
 - **Blade** + **Alpine.js** + **Livewire 4** + **Tailwind CSS v4** (sin `tailwind.config.js`, plugin `@tailwindcss/vite`)
 - **Vite** para assets (`npm run dev` / `npm run build`)
 - Auth: Laravel Breeze (blade stack) — un solo rol `admin`, sin registro público (pendiente deshabilitar rutas de registro de Breeze)
@@ -38,6 +38,7 @@ Mapa de rutas, modelos, Livewire y vistas ya construidos: ver `ARQUITECTURA.md` 
   3. Si cambiaron assets: `npm run build` en local y subir `public/build` a `~/public_html/build`
   4. Si hay imágenes subidas antes del procesador: `php artisan imagenes:optimizar` (requiere GD con WebP en el servidor)
   4b. Si hay contenido con EN/FR vacíos (p. ej. cargado antes de la auto-traducción): `php artisan traducciones:completar [--dry-run]` (solo rellena vacíos, no pisa nada)
+  4c. Para cargar o actualizar las fichas reales de cabañas y habitaciones: `php artisan alojamientos:actualizar --dry-run` y luego sin `--dry-run` (idempotente; retraduce EN/FR de las descripciones que cambien)
   5. `php artisan config:cache route:cache view:cache` si aplica
 
 ## Alcance explícitamente fuera de este proyecto

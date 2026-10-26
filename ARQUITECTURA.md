@@ -76,6 +76,8 @@ Toda subida del admin pasa por `App\Services\ProcesadorImagen` (intervention/ima
 
 Rutas públicas duplicadas con prefijo `/en` y `/fr` (names `en.*`, `fr.*`), `SetLocale` fija el idioma, `lroute()` (`app/helpers.php`) genera la URL en el idioma actual. Textos fijos: `__()` + `lang/{en,fr}.json` (incluye nombres de `Equipamiento` y `ServicioLocal`, que son catálogos sin CRUD; ojo con claves dinámicas como el calendario de `cultura.blade.php`). Contenido del CMS: columnas JSON de `spatie/translatable`, auto-traducidas con DeepL al guardar (ver `TranslatesWithDeepl`). Rellenar vacíos existentes: `php artisan traducciones:completar [--dry-run]`.
 
+Fichas reales de cabañas y habitaciones (enviadas por el cliente): `php artisan alojamientos:actualizar [--dry-run]` (`app/Console/Commands/ActualizarAlojamientos.php`). Busca por slug, fija número, capacidad, orden, publicado y descripción ES (retraduce EN/FR con DeepL), crea el equipamiento que falte y sincroniza el de cada alojamiento conservando Wifi/Estacionamiento/Agua caliente/Ropa de cama. Es idempotente. En fichas de tipo habitación, todo el equipamiento se muestra bajo un solo bloque.
+
 ## Vistas (`resources/views`)
 
 Todo lo del admin vive en `admin/`; el resto de `views/` es sitio público.

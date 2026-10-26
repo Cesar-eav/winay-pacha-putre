@@ -44,7 +44,9 @@ class CabanaController extends Controller
         return view('cabanas.show', [
             'tipo' => $tipo,
             'cabana' => $cabana,
-            'equipamientosPorAmbito' => $cabana->equipamientos->groupBy('ambito'),
+            'equipamientosPorAmbito' => $tipo === Cabana::TIPO_HABITACION
+                ? collect(['habitacion' => $cabana->equipamientos])
+                : $cabana->equipamientos->groupBy('ambito'),
         ]);
     }
 }
