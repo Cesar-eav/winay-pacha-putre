@@ -2,39 +2,57 @@
     <x-slot:titulo>{{ __('Inicio') }}</x-slot:titulo>
 
     {{-- SLIDER BANNER ANCHO COMPLETO --}}
+    @php
+        // sizes: con object-cover en un banner alto (móvil), la foto se dibuja más ancha que la pantalla (~70vh × aspecto).
+        $banner = collect([
+            ['img' => 'cabanas-cerros', 'anchos' => [640, 960, 1440, 2000], 'sizes' => 'max(100vw, 94vh)', 'pos' => 'object-[50%_65%]', 'alt' => __('Cabañas Wiñaypacha Putre al pie de los cerros')],
+            ['img' => 'laguna-flamenco', 'anchos' => [640, 1024, 1536], 'sizes' => 'max(100vw, 53vh)', 'pos' => 'object-[50%_70%]', 'alt' => __('Flamenco en una laguna del altiplano')],
+            ['img' => 'cabanas', 'anchos' => [640, 960, 1440, 2000], 'sizes' => 'max(100vw, 94vh)', 'pos' => 'object-[50%_65%]', 'alt' => __('Cabañas Wiñaypacha Putre')],
+            ['img' => 'recinto', 'anchos' => [640, 960, 1440, 2000], 'sizes' => 'max(100vw, 94vh)', 'pos' => 'object-[50%_60%]', 'alt' => 'Wiñaypacha Putre'],
+        ])->map(fn ($s) => $s + [
+            'srcset' => collect($s['anchos'])->map(fn ($w) => asset("images/inicio/banner/{$s['img']}-{$w}.webp")." {$w}w")->implode(', '),
+        ]);
+    @endphp
     <section
         x-data="{
             slide: 0,
-            slides: {{ Illuminate\Support\Js::from([
-                ['src' => asset('images/culturaaymara/cosmovision2.png'), 'alt' => __('Cabañas Wiñaypacha Putre'), 'pos' => 'object-top'],
-                ['src' => asset('images/inicio/61.JPG'), 'alt' => __('Vista del altiplano en Putre')],
-                ['src' => asset('images/placeholder/50.JPG'), 'alt' => 'Wiñaypacha Putre'],
-            ]) }},
+            total: {{ $banner->count() }},
+            cargadas: 0,
+            ir(i) {
+                this.slide = (i + this.total) % this.total
+                this.cargadas = Math.max(this.cargadas, this.slide + 1)
+            },
             init() {
-                setInterval(() => { this.slide = (this.slide + 1) % this.slides.length }, 5000)
+                const precargar = () => this.cargadas = Math.max(this.cargadas, 1)
+                document.readyState === 'complete' ? precargar() : window.addEventListener('load', precargar, { once: true })
+                if (! matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                    setInterval(() => this.ir(this.slide + 1), 5000)
+                }
             },
         }"
-        class="relative w-full h-[clamp(24rem,max(70vh,38vw),85vh)] overflow-hidden"
+        class="relative w-full h-[clamp(24rem,max(70vh,38vw),85vh)] overflow-hidden bg-winay-andino"
     >
-        <template x-for="(item, i) in slides" :key="i">
-            <picture
-                x-show="slide === i"
-                x-transition:enter="transition ease-out duration-700"
-                x-transition:enter-start="opacity-0"
-                x-transition:enter-end="opacity-100"
-                x-transition:leave="transition ease-in duration-700"
-                x-transition:leave-start="opacity-100"
-                x-transition:leave-end="opacity-0"
-                class="absolute inset-0"
+        @foreach ($banner as $i => $item)
+            <img
+                @if ($i === 0)
+                    src="{{ asset("images/inicio/banner/{$item['img']}-1440.webp") }}"
+                    srcset="{{ $item['srcset'] }}"
+                    fetchpriority="high"
+                @else
+                    x-bind:srcset="cargadas >= {{ $i }} ? '{{ $item['srcset'] }}' : null"
+                    decoding="async"
+                @endif
+                sizes="{{ $item['sizes'] }}"
+                alt="{{ $item['alt'] }}"
+                x-bind:aria-hidden="slide !== {{ $i }}"
+                class="absolute inset-0 size-full object-cover {{ $item['pos'] }} transition-opacity duration-700 motion-reduce:transition-none {{ $i ? 'opacity-0' : '' }}"
+                :class="{ 'opacity-0': slide !== {{ $i }} }"
             >
-                <source media="(max-width: 767px)" :srcset="item.srcMobile || item.src">
-                <img :src="item.src" :alt="item.alt" class="w-full h-full object-cover" :class="item.pos || 'object-center'">
-            </picture>
-        </template>
+        @endforeach
 
         <button
             type="button"
-            @click="slide = slide === 0 ? slides.length - 1 : slide - 1"
+            @click="ir(slide - 1)"
             class="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 size-10 sm:size-14 flex items-center justify-center rounded-full bg-black/30 hover:bg-black/50 text-white transition"
             aria-label="{{ __('Anterior') }}"
         >
@@ -42,7 +60,7 @@
         </button>
         <button
             type="button"
-            @click="slide = slide === slides.length - 1 ? 0 : slide + 1"
+            @click="ir(slide + 1)"
             class="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 size-10 sm:size-14 flex items-center justify-center rounded-full bg-black/30 hover:bg-black/50 text-white transition"
             aria-label="{{ __('Siguiente') }}"
         >
@@ -50,15 +68,15 @@
         </button>
 
         <div class="absolute bottom-4 inset-x-0 flex items-center justify-center gap-2">
-            <template x-for="(item, i) in slides" :key="i">
+            @foreach ($banner as $i => $item)
                 <button
                     type="button"
-                    @click="slide = i"
+                    @click="ir({{ $i }})"
                     class="size-2.5 rounded-full transition"
-                    :class="slide === i ? 'bg-winay-terracota' : 'bg-white/60 hover:bg-white/80'"
-                    :aria-label="'{{ __('Ir a la imagen') }} ' + (i + 1)"
+                    :class="slide === {{ $i }} ? 'bg-winay-terracota' : 'bg-white/60 hover:bg-white/80'"
+                    aria-label="{{ __('Ir a la imagen') }} {{ $i + 1 }}"
                 ></button>
-            </template>
+            @endforeach
         </div>
     </section>
 
