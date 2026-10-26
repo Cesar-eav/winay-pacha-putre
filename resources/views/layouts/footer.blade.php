@@ -4,6 +4,15 @@
             <div class="inline-block bg-white rounded-xl p-2 mb-3">
                 <img src="{{ asset('images/logo_12500x3655.png') }}" alt="Wiñaypacha Putre" class="h-10 w-auto">
             </div>
+            <a href="https://www.instagram.com/winaypacha_putre/" target="_blank" rel="noopener"
+               class="flex items-center gap-2 text-sm text-winay-arena/80 hover:text-white mb-3">
+                <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <rect x="3" y="3" width="18" height="18" rx="5"/>
+                    <circle cx="12" cy="12" r="4"/>
+                    <circle cx="17.5" cy="6.5" r="0.5" fill="currentColor"/>
+                </svg>
+                @winaypacha_putre
+            </a>
             <p class="text-sm text-winay-arena/80">
                 {{ __('Cabañas en Putre, Región de Arica y Parinacota — difundiendo la cultura, cosmovisión y territorio del pueblo aymara.') }}
             </p>
