@@ -11,6 +11,7 @@
     @vite(['resources/css/app.css', 'resources/js/admin.js'])
 </head>
 <body class="bg-winay-arena text-stone-800 antialiased">
+    @php($contactoPendientes = \App\Models\LeadContacto::where('atendido', false)->count())
 
     <div x-data="{ open: false }" class="lg:flex min-h-screen">
 
@@ -23,6 +24,15 @@
                 <a href="{{ route('admin.dashboard') }}"
                    class="block px-3 py-2 rounded-lg text-sm {{ request()->routeIs('admin.dashboard') ? 'bg-white/10 text-white' : 'text-winay-arena/80 hover:bg-white/5' }}">
                     Dashboard
+                </a>
+
+                <p class="px-3 pt-4 pb-1 text-xs uppercase tracking-wide text-winay-arena/50">Mensajes</p>
+                <a href="{{ route('admin.contacto') }}"
+                   class="flex items-center justify-between px-3 py-2 rounded-lg text-sm {{ request()->routeIs('admin.contacto*') ? 'bg-white/10 text-white' : 'text-winay-arena/80 hover:bg-white/5' }}">
+                    Contacto
+                    @if ($contactoPendientes)
+                        <span class="min-w-5 px-1.5 rounded-full bg-winay-terracota text-white text-xs text-center">{{ $contactoPendientes }}</span>
+                    @endif
                 </a>
 
                 <p class="px-3 pt-4 pb-1 text-xs uppercase tracking-wide text-winay-arena/50">Catálogo</p>
@@ -66,6 +76,7 @@
 
             <div x-show="open" x-cloak class="lg:hidden bg-winay-tierra text-winay-arena px-4 py-3 space-y-1">
                 <a href="{{ route('admin.dashboard') }}" class="block px-2 py-2 rounded-md text-sm {{ request()->routeIs('admin.dashboard') ? 'text-white bg-white/10' : '' }}">Dashboard</a>
+                <a href="{{ route('admin.contacto') }}" class="block px-2 py-2 rounded-md text-sm {{ request()->routeIs('admin.contacto*') ? 'text-white bg-white/10' : '' }}">Contacto @if ($contactoPendientes)<span class="ml-1 px-1.5 rounded-full bg-winay-terracota text-white text-xs">{{ $contactoPendientes }}</span>@endif</a>
                 <a href="{{ route('admin.temas') }}" class="block px-2 py-2 rounded-md text-sm {{ request()->routeIs('admin.temas*') ? 'text-white bg-white/10' : '' }}">Temas</a>
                 <a href="{{ route('admin.cabanas') }}" class="block px-2 py-2 rounded-md text-sm {{ request()->routeIs('admin.cabanas*') ? 'text-white bg-white/10' : '' }}">Cabañas</a>
                 <a href="{{ route('admin.habitaciones') }}" class="block px-2 py-2 rounded-md text-sm {{ request()->routeIs('admin.habitaciones*') ? 'text-white bg-white/10' : '' }}">Habitaciones</a>

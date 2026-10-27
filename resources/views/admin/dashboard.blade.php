@@ -2,13 +2,13 @@
     <h1 class="text-2xl font-bold text-winay-tierra mb-6">Dashboard</h1>
 
     <div class="grid gap-4 sm:grid-cols-2 mb-8">
-        <div class="bg-white rounded-xl border border-stone-200 p-5">
+        <a href="{{ route('admin.contacto') }}" class="block bg-white rounded-xl border border-stone-200 p-5 hover:border-winay-terracota transition-colors">
             <p class="text-sm text-stone-500">Mensajes de contacto</p>
             <p class="mt-1 text-3xl font-bold text-winay-tierra">{{ $leadsContactoTotal }}</p>
             <p class="mt-1 text-xs text-stone-500">
                 {{ $leadsContactoPendientes }} {{ Str::plural('pendiente', $leadsContactoPendientes) }} por atender
             </p>
-        </div>
+        </a>
 
         <div class="bg-white rounded-xl border border-stone-200 p-5">
             <p class="text-sm text-stone-500">Solicitudes de reserva</p>

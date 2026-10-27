@@ -3,6 +3,7 @@
 
 @source "../views/**/*.blade.php";
 @source "../js/**/*.js";
+@source "../../vendor/livewire/livewire/src/Features/SupportPagination/views/tailwind.blade.php";
 
 @theme {
   --color-winay-terracota: #b5502f;

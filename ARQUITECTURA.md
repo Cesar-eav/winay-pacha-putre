@@ -27,6 +27,7 @@ Prefijo `/admin`, name `admin.*`, middleware `['auth', 'admin']` (alias `admin` 
 | Ruta | Componente |
 |---|---|
 | `/admin` | `App\Livewire\Admin\Dashboard` |
+| `/admin/contacto` | `App\Livewire\Admin\Contacto` (mensajes de `LeadContacto`: filtro pendientes/atendidos/todos, marcar atendido, eliminar) |
 | `/admin/temas` | `App\Livewire\Admin\Temas` |
 | `/admin/cabanas` | `App\Livewire\Admin\Cabanas` |
 | `/admin/habitaciones` | `App\Livewire\Admin\Habitaciones` (extiende `Cabanas`, solo cambia `tipo()` y `etiquetas()`) |
@@ -62,7 +63,7 @@ Modelos publicables usan scopes `publicado()` / `ordenado()` consistentemente (c
 - `FormularioContacto` — crea `LeadContacto`
 - `FormularioReserva` — crea `SolicitudReserva`
 
-**Admin CRUD:** `Admin\Dashboard`, `Admin\Temas`, `Admin\Cabanas` (+ `Admin\Habitaciones`), `Admin\Lugares`, `Admin\Especies` — todos componentes full-page, usan los traits de `Concerns/`.
+**Admin CRUD:** `Admin\Dashboard`, `Admin\Contacto` (bandeja de mensajes, sin formulario), `Admin\Temas`, `Admin\Cabanas` (+ `Admin\Habitaciones`), `Admin\Lugares`, `Admin\Especies` — todos componentes full-page, usan los traits de `Concerns/`.
 
 **Traits reutilizables (`app/Livewire/Concerns`):**
 - `TranslatesWithDeepl` — `traducir()`: botón "Traducir con DeepL" para previsualizar en el formulario. `completarTraducciones($props, $guardado)`: se llama en cada `guardar()` del admin y traduce EN/FR si están vacíos, o si el ES cambió respecto a lo guardado y ese idioma no se editó a mano (si DeepL falla, guarda igual y deja `session('aviso')`, que muestra `banner-exito`). `DeepLTranslator` (`app/Services`) manda `source_lang=ES` y `tag_handling=html` cuando el texto trae HTML (Quill).
@@ -83,7 +84,7 @@ Fichas reales de cabañas y habitaciones (enviadas por el cliente): `php artisan
 Todo lo del admin vive en `admin/`; el resto de `views/` es sitio público.
 
 **Admin (`admin/`):**
-- `admin/{dashboard,temas,cabanas,lugares,especies}.blade.php` — vistas de los componentes Livewire `App\Livewire\Admin\*`.
+- `admin/{dashboard,contacto,temas,cabanas,lugares,especies}.blade.php` — vistas de los componentes Livewire `App\Livewire\Admin\*`.
 - `admin/partials/` — `campo-traducible` (input ES/EN/FR + botón DeepL), `campo-richtext`, `galeria-editor` (UI de `ManagesGaleria`), `banner-exito` (`session('success')` y `session('aviso')`).
 - `admin/layouts/admin.blade.php` — layout del panel. `admin/layouts/{app,guest,navigation}` — stack Breeze (`<x-app-layout>` / `<x-guest-layout>` para profile y auth).
 - `admin/auth/` — login, password reset, verify email (Breeze).
