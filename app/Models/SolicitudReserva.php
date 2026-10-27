@@ -9,6 +9,13 @@ class SolicitudReserva extends Model
 {
     protected $table = 'solicitudes_reserva';
 
+    public const ESTADOS = [
+        'nuevo' => 'Nueva',
+        'contactado' => 'Contactada',
+        'confirmado' => 'Confirmada',
+        'cerrado' => 'Cerrada',
+    ];
+
     protected $fillable = [
         'nombre', 'apellido', 'correo', 'whatsapp',
         'fecha_llegada', 'fecha_salida', 'num_personas',

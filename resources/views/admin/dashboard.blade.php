@@ -10,13 +10,13 @@
             </p>
         </a>
 
-        <div class="bg-white rounded-xl border border-stone-200 p-5">
+        <a href="{{ route('admin.reservas') }}" class="block bg-white rounded-xl border border-stone-200 p-5 hover:border-winay-terracota transition-colors">
             <p class="text-sm text-stone-500">Solicitudes de reserva</p>
             <p class="mt-1 text-3xl font-bold text-winay-tierra">{{ $solicitudesReservaTotal }}</p>
             <p class="mt-1 text-xs text-stone-500">
                 {{ $solicitudesReservaNuevas }} {{ Str::plural('nueva', $solicitudesReservaNuevas) }} sin gestionar
             </p>
-        </div>
+        </a>
     </div>
 
     <h2 class="text-sm font-semibold uppercase tracking-wide text-stone-500 mb-3">Contenido por sección</h2>

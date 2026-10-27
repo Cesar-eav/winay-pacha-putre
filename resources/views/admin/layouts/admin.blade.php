@@ -12,6 +12,7 @@
 </head>
 <body class="bg-winay-arena text-stone-800 antialiased">
     @php($contactoPendientes = \App\Models\LeadContacto::where('atendido', false)->count())
+    @php($reservasNuevas = \App\Models\SolicitudReserva::where('estado', 'nuevo')->count())
 
     <div x-data="{ open: false }" class="lg:flex min-h-screen">
 
@@ -32,6 +33,13 @@
                     Contacto
                     @if ($contactoPendientes)
                         <span class="min-w-5 px-1.5 rounded-full bg-winay-terracota text-white text-xs text-center">{{ $contactoPendientes }}</span>
+                    @endif
+                </a>
+                <a href="{{ route('admin.reservas') }}"
+                   class="flex items-center justify-between px-3 py-2 rounded-lg text-sm {{ request()->routeIs('admin.reservas*') ? 'bg-white/10 text-white' : 'text-winay-arena/80 hover:bg-white/5' }}">
+                    Reservas
+                    @if ($reservasNuevas)
+                        <span class="min-w-5 px-1.5 rounded-full bg-winay-terracota text-white text-xs text-center">{{ $reservasNuevas }}</span>
                     @endif
                 </a>
 
@@ -77,6 +85,7 @@
             <div x-show="open" x-cloak class="lg:hidden bg-winay-tierra text-winay-arena px-4 py-3 space-y-1">
                 <a href="{{ route('admin.dashboard') }}" class="block px-2 py-2 rounded-md text-sm {{ request()->routeIs('admin.dashboard') ? 'text-white bg-white/10' : '' }}">Dashboard</a>
                 <a href="{{ route('admin.contacto') }}" class="block px-2 py-2 rounded-md text-sm {{ request()->routeIs('admin.contacto*') ? 'text-white bg-white/10' : '' }}">Contacto @if ($contactoPendientes)<span class="ml-1 px-1.5 rounded-full bg-winay-terracota text-white text-xs">{{ $contactoPendientes }}</span>@endif</a>
+                <a href="{{ route('admin.reservas') }}" class="block px-2 py-2 rounded-md text-sm {{ request()->routeIs('admin.reservas*') ? 'text-white bg-white/10' : '' }}">Reservas @if ($reservasNuevas)<span class="ml-1 px-1.5 rounded-full bg-winay-terracota text-white text-xs">{{ $reservasNuevas }}</span>@endif</a>
                 <a href="{{ route('admin.temas') }}" class="block px-2 py-2 rounded-md text-sm {{ request()->routeIs('admin.temas*') ? 'text-white bg-white/10' : '' }}">Temas</a>
                 <a href="{{ route('admin.cabanas') }}" class="block px-2 py-2 rounded-md text-sm {{ request()->routeIs('admin.cabanas*') ? 'text-white bg-white/10' : '' }}">Cabañas</a>
                 <a href="{{ route('admin.habitaciones') }}" class="block px-2 py-2 rounded-md text-sm {{ request()->routeIs('admin.habitaciones*') ? 'text-white bg-white/10' : '' }}">Habitaciones</a>
