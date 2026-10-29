@@ -60,9 +60,11 @@
                 @include('admin.partials.galeria-editor')
 
                 <div class="flex gap-3 pt-2">
-                    <button type="submit" class="inline-flex items-center px-5 py-2.5 rounded-full text-sm font-semibold text-white bg-winay-terracota hover:bg-winay-tierra"
+                    <button type="submit" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-semibold text-white bg-winay-terracota hover:bg-winay-tierra disabled:opacity-70 disabled:cursor-wait"
                             wire:loading.attr="disabled" wire:target="guardar">
-                        Guardar
+                        <x-spinner wire:loading wire:target="guardar" />
+                        <span wire:loading.remove wire:target="guardar">Guardar</span>
+                        <span wire:loading wire:target="guardar">Guardando…</span>
                     </button>
                     <button type="button" wire:click="cancelar" class="text-sm text-stone-500 hover:text-stone-700">
                         Cancelar
@@ -101,7 +103,7 @@
                             </button>
                         </td>
                         <td class="px-4 py-3 text-right space-x-3">
-                            <button type="button" wire:click="editar({{ $tema->id }})" class="text-winay-terracota hover:underline">Editar</button>
+                            <button type="button" wire:click="editar({{ $tema->id }})" wire:loading.attr="disabled" wire:target="editar({{ $tema->id }})" class="inline-flex items-center gap-1 text-winay-terracota hover:underline disabled:cursor-wait"><x-spinner wire:loading wire:target="editar({{ $tema->id }})"/>Editar</button>
                             <button type="button" wire:click="eliminar({{ $tema->id }})" onclick="return confirm('¿Eliminar este tema?')" class="text-red-600 hover:underline">Eliminar</button>
                         </td>
                     </tr>

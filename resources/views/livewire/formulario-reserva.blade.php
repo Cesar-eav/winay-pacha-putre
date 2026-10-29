@@ -65,8 +65,9 @@
             </fieldset>
 
             <button type="submit"
-                    class="inline-flex items-center px-5 py-2.5 rounded-full text-sm font-semibold text-white bg-winay-terracota hover:bg-winay-tierra transition"
-                    wire:loading.attr="disabled">
+                    class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-semibold text-white bg-winay-terracota hover:bg-winay-tierra transition disabled:opacity-70 disabled:cursor-wait"
+                    wire:loading.attr="disabled" wire:target="guardar">
+                <x-spinner wire:loading wire:target="guardar" />
                 <span wire:loading.remove wire:target="guardar">{{ __('Enviar solicitud') }}</span>
                 <span wire:loading wire:target="guardar">{{ __('Enviando…') }}</span>
             </button>

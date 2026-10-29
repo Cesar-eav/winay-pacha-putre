@@ -96,10 +96,7 @@
                     <button type="submit" x-data="{ subiendo: false }" x-on:galeria-subiendo.window="subiendo = $event.detail" x-bind:disabled="subiendo"
                             wire:loading.attr="disabled" wire:target="guardar"
                             class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-semibold text-white bg-winay-terracota hover:bg-winay-tierra disabled:opacity-70 disabled:cursor-wait">
-                        <svg wire:loading wire:target="guardar" class="animate-spin h-4 w-4" viewBox="0 0 24 24" fill="none">
-                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
-                        </svg>
+                        <x-spinner wire:loading wire:target="guardar" />
                         <span wire:loading.remove wire:target="guardar">Guardar</span>
                         <span wire:loading wire:target="guardar">Guardando…</span>
                     </button>
@@ -154,7 +151,7 @@
                             </button>
                         </td>
                         <td class="px-4 py-3 text-right space-x-3">
-                            <button type="button" wire:click="editar({{ $cabana->id }})" class="text-winay-terracota hover:underline">Editar</button>
+                            <button type="button" wire:click="editar({{ $cabana->id }})" wire:loading.attr="disabled" wire:target="editar({{ $cabana->id }})" class="inline-flex items-center gap-1 text-winay-terracota hover:underline disabled:cursor-wait"><x-spinner wire:loading wire:target="editar({{ $cabana->id }})"/>Editar</button>
                             <button type="button" wire:click="eliminar({{ $cabana->id }})" onclick="return confirm('¿Eliminar esta {{ Str::lower($etiquetas['singular']) }}?')" class="text-red-600 hover:underline">Eliminar</button>
                         </td>
                     </tr>
@@ -184,8 +181,11 @@
             @endforeach
 
             <div class="flex flex-wrap items-center gap-4 pt-2">
-                <button type="submit" class="inline-flex items-center px-5 py-2.5 rounded-full text-sm font-semibold text-white bg-winay-terracota hover:bg-winay-tierra">
-                    Guardar precios
+                <button type="submit" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-semibold text-white bg-winay-terracota hover:bg-winay-tierra disabled:opacity-70 disabled:cursor-wait"
+                        wire:loading.attr="disabled" wire:target="guardarTarifas">
+                    <x-spinner wire:loading wire:target="guardarTarifas" />
+                    <span wire:loading.remove wire:target="guardarTarifas">Guardar precios</span>
+                    <span wire:loading wire:target="guardarTarifas">Guardando…</span>
                 </button>
                 <button type="button" wire:click="agregarTarifa" class="text-sm text-winay-terracota hover:underline">+ Agregar fila</button>
                 @if ($tarifas)
