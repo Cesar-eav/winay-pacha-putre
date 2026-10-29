@@ -119,4 +119,7 @@ return [
         'name' => env('MAIL_FROM_NAME', env('APP_NAME', 'Laravel')),
     ],
 
+    // Correo público del sitio (pie de página y /contacto) y destinatario de los avisos de mensajes y reservas.
+    'contacto' => env('MAIL_CONTACTO_ADDRESS', 'winaypachaputre@gmail.com'),
+
 ];

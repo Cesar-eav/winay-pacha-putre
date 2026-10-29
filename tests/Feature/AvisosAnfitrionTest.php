@@ -31,7 +31,7 @@ class AvisosAnfitrionTest extends TestCase
             ->assertSet('enviado', true);
 
         Mail::assertSent(NuevoMensajeContacto::class, function (NuevoMensajeContacto $correo) {
-            return $correo->hasTo('contacto@winaypachaputre.cl')
+            return $correo->hasTo(config('mail.contacto'))
                 && $correo->hasReplyTo('ana@example.com');
         });
     }
@@ -60,7 +60,7 @@ class AvisosAnfitrionTest extends TestCase
         Mail::assertSent(NuevaSolicitudReserva::class, function (NuevaSolicitudReserva $correo) {
             $html = $correo->render();
 
-            return $correo->hasTo('contacto@winaypachaputre.cl')
+            return $correo->hasTo(config('mail.contacto'))
                 && $correo->hasReplyTo('luis@example.com')
                 && str_contains($html, 'Cabaña Uno');
         });

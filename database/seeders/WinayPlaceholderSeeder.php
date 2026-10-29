@@ -34,7 +34,6 @@ class WinayPlaceholderSeeder extends Seeder
         Configuracion::set('contacto_direccion', 'Camino a Putre s/n, Putre, Región de Arica y Parinacota');
         Configuracion::set('contacto_telefono', '+56 9 1234 5678');
         Configuracion::set('contacto_whatsapp', '+56 9 1234 5678');
-        Configuracion::set('contacto_email', 'contacto@winaypachaputre.cl');
         Configuracion::set('redes_instagram', 'https://instagram.com/winaypachaputre');
         Configuracion::set('redes_facebook', 'https://facebook.com/winaypachaputre');
     }

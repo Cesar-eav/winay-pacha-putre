@@ -23,7 +23,7 @@
             <ul class="text-sm text-winay-arena/80 space-y-1">
                 <li>{{ \App\Models\Configuracion::get('contacto_direccion', 'Putre, Región de Arica y Parinacota') }}</li>
                 <li>{{ \App\Models\Configuracion::get('contacto_telefono', '+56 9 0000 0000') }}</li>
-                <li>{{ \App\Models\Configuracion::get('contacto_email', 'contacto@winaypachaputre.cl') }}</li>
+                <li>{{ config('mail.contacto') }}</li>
             </ul>
         </div>
 

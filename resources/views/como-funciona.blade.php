@@ -87,11 +87,12 @@
                 'ruta' => 'contacto',
                 'estado' => 'mixta',
                 'admin' => [
-                    'Los mensajes que envían los visitantes llegan a Admin → Contacto y además como aviso al correo de contacto.',
+                    'Los mensajes que envían los visitantes llegan a Admin → Contacto y además como aviso a '.config('mail.contacto').'.',
                     'El bloque "¿Para quién es Wiñaypacha?": temas de la categoría "Público objetivo" (Admin → Temas).',
                 ],
                 'dev' => [
-                    'Dirección, teléfono, WhatsApp y correo: se guardan en la configuración del sitio, pero el admin no tiene una pantalla para cambiarlos. El correo es también el que recibe los avisos de mensajes y reservas.',
+                    'Dirección, teléfono y WhatsApp: se guardan en la configuración del sitio, pero el admin no tiene una pantalla para cambiarlos.',
+                    'El correo ('.config('mail.contacto').'): es uno solo para todo el sitio y para recibir los avisos; se cambia en la configuración del proyecto.',
                     'La lista "Servicios en Putre".',
                 ],
             ],
@@ -111,7 +112,7 @@
 
         $comunes = [
             'Menú, logo y botón "Reservar" del encabezado.',
-            'Pie de página: descripción, enlace a Instagram y enlaces. Los datos de contacto del pie y el número del botón flotante de WhatsApp salen de la misma configuración sin pantalla en el admin.',
+            'Pie de página: descripción, enlace a Instagram y enlaces. Los datos de contacto del pie (el correo es el mismo de la página Contacto) y el número del botón flotante de WhatsApp salen de la misma configuración sin pantalla en el admin.',
             'Textos fijos de las páginas en inglés y francés (títulos, botones, avisos): se traducen a mano en archivos del proyecto.',
             'Colores, tipografías, diseño y orden de las secciones.',
             'Agregar páginas nuevas o cambiar el menú.',
@@ -247,7 +248,7 @@
                 <h3 class="text-xl font-display font-medium tracking-[-0.01em] text-winay-tierra">Reservas</h3>
                 <div class="mt-3 space-y-3 text-sm text-stone-600">
                     <p>El sitio no confirma reservas ni cobra pagos. El formulario solo envía una solicitud, que hay que responder por correo o WhatsApp.</p>
-                    <p>Cada solicitud de reserva y cada mensaje de contacto llega también como aviso al correo de contacto (contacto@winaypachaputre.cl). Al responder ese correo, la respuesta va directo al visitante. Todo queda igual guardado en el panel, aunque el aviso no llegue.</p>
+                    <p>Cada solicitud de reserva y cada mensaje de contacto llega también como aviso a {{ config('mail.contacto') }}. Al responder ese correo, la respuesta va directo al visitante. Todo queda igual guardado en el panel, aunque el aviso no llegue.</p>
                 </div>
             </div>
         </div>

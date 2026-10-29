@@ -12,7 +12,8 @@ Mapa de rutas, modelos, Livewire y vistas ya construidos: ver `ARQUITECTURA.md` 
 - **Vite** para assets (`npm run dev` / `npm run build`)
 - Auth: Laravel Breeze (blade stack) — un solo rol `admin`, sin registro público (rutas de registro de Breeze eliminadas)
 - `spatie/laravel-translatable` para contenido multi-idioma (ES/EN/FR) editado a mano en el admin
-- Mailgun (`MAIL_MAILER=mailgun`, `MAILGUN_DOMAIN`, `MAILGUN_SECRET`, `MAILGUN_ENDPOINT` en `.env`): avisa a `contacto@winaypachaputre.cl` de cada mensaje de contacto y solicitud de reserva. Dominio de envío `mg.winaypachaputre.cl` (verificado; sus registros SPF, DKIM `smtp._domainkey.mg`, CNAME `email.mg` y MX a `mxa`/`mxb.mailgun.org` están en el Editor de zona de cPanel), remitente `avisos@mg.winaypachaputre.cl`. No crear `mg` como subdominio en cPanel: solo registros DNS
+- Correo de contacto: una sola línea, `'contacto'` en `config/mail.php` (`winaypachaputre@gmail.com`). Lo usan el pie de página, `/contacto` y los avisos; cambiarlo solo ahí
+- Mailgun (`MAIL_MAILER=mailgun`, `MAILGUN_DOMAIN`, `MAILGUN_SECRET`, `MAILGUN_ENDPOINT` en `.env`): avisa a `config('mail.contacto')` de cada mensaje de contacto y solicitud de reserva. Dominio de envío `mg.winaypachaputre.cl` (verificado; sus registros SPF, DKIM `smtp._domainkey.mg`, CNAME `email.mg` y MX a `mxa`/`mxb.mailgun.org` están en el Editor de zona de cPanel), remitente `avisos@mg.winaypachaputre.cl`. No crear `mg` como subdominio en cPanel: solo registros DNS
 - DeepL API (`DEEPL_API_KEY` en `.env`): al guardar en el admin, traduce automáticamente a EN/FR los campos vacíos o desactualizados (ES cambió y ese idioma no se editó a mano). Las pestañas EN/FR del admin quedan para revisar/corregir. Textos fijos de las vistas van en `lang/{en,fr}.json` vía `__()`, traducidos a mano
 
 ## Proyecto hermano de referencia

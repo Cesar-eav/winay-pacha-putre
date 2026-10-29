@@ -15,7 +15,7 @@ class ContactoController extends Controller
             'direccion' => Configuracion::get('contacto_direccion', 'Putre, Región de Arica y Parinacota'),
             'telefono' => Configuracion::get('contacto_telefono', '+56 9 0000 0000'),
             'whatsapp' => Configuracion::get('contacto_whatsapp', '+56 9 0000 0000'),
-            'email' => Configuracion::get('contacto_email', 'contacto@winaypachaputre.cl'),
+            'email' => config('mail.contacto'),
             'servicios' => ServicioLocal::ordenado()->get(),
             'temasPublicoObjetivo' => Tema::categoria('publico_objetivo')->publicado()->ordenado()->get(),
         ]);
