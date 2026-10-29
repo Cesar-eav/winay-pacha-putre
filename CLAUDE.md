@@ -8,8 +8,9 @@ Mapa de rutas, modelos, Livewire y vistas ya construidos: ver `ARQUITECTURA.md` 
 
 - **Laravel 13** / **PHP 8.3** / MySQL (local: `cwi118900_winay_pacha_putre`, mismo nombre que en producción; `winay_pacha_putre` es una base local antigua que la app no usa)
 - **Blade** + **Alpine.js** + **Livewire 4** + **Tailwind CSS v4** (sin `tailwind.config.js`, plugin `@tailwindcss/vite`)
+- Tests (`php artisan test`): SQLite en memoria (`phpunit.xml`), requiere `php8.3-sqlite3`. Las migraciones deben ser portables MySQL/SQLite: usar Schema (`->change()`, etc.), nunca SQL crudo de MySQL (`ALTER TABLE ... MODIFY`)
 - **Vite** para assets (`npm run dev` / `npm run build`)
-- Auth: Laravel Breeze (blade stack) — un solo rol `admin`, sin registro público (pendiente deshabilitar rutas de registro de Breeze)
+- Auth: Laravel Breeze (blade stack) — un solo rol `admin`, sin registro público (rutas de registro de Breeze eliminadas)
 - `spatie/laravel-translatable` para contenido multi-idioma (ES/EN/FR) editado a mano en el admin
 - DeepL API (`DEEPL_API_KEY` en `.env`): al guardar en el admin, traduce automáticamente a EN/FR los campos vacíos o desactualizados (ES cambió y ese idioma no se editó a mano). Las pestañas EN/FR del admin quedan para revisar/corregir. Textos fijos de las vistas van en `lang/{en,fr}.json` vía `__()`, traducidos a mano
 
