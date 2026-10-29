@@ -66,8 +66,10 @@ Modelos publicables usan scopes `publicado()` / `ordenado()` consistentemente (c
 ## Livewire (`app/Livewire`)
 
 **Público:**
-- `FormularioContacto` — crea `LeadContacto`
-- `FormularioReserva` — crea `SolicitudReserva`
+- `FormularioContacto` — crea `LeadContacto` y avisa al anfitrión (`App\Mail\NuevoMensajeContacto`)
+- `FormularioReserva` — crea `SolicitudReserva` y avisa al anfitrión (`App\Mail\NuevaSolicitudReserva`)
+
+Avisos por correo: `App\Support\Avisos::notificarAnfitrion()` envía síncrono (sin worker de colas en cPanel) a `Configuracion` `contacto_email` (fallback `contacto@winaypachaputre.cl`), en español, con `replyTo` del visitante; si el envío falla hace `report()` y el lead queda guardado igual. Transporte Mailgun (`symfony/mailgun-mailer`, `MAIL_MAILER=mailgun`, `MAILGUN_DOMAIN`/`MAILGUN_SECRET`/`MAILGUN_ENDPOINT` en `.env`, config en `config/services.php`). Plantillas markdown en `resources/views/mail/`.
 
 **Admin CRUD:** `Admin\Dashboard`, `Admin\Contacto` y `Admin\Reservas` (bandejas de leads, sin formulario), `Admin\Carrusel`, `Admin\Huespedes`, `Admin\Temas`, `Admin\Cabanas` (+ `Admin\Habitaciones`), `Admin\Lugares`, `Admin\Especies` — todos componentes full-page, usan los traits de `Concerns/`.
 

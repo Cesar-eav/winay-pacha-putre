@@ -87,11 +87,11 @@
                 'ruta' => 'contacto',
                 'estado' => 'mixta',
                 'admin' => [
-                    'Los mensajes que envían los visitantes llegan a Admin → Contacto.',
+                    'Los mensajes que envían los visitantes llegan a Admin → Contacto y además como aviso al correo de contacto.',
                     'El bloque "¿Para quién es Wiñaypacha?": temas de la categoría "Público objetivo" (Admin → Temas).',
                 ],
                 'dev' => [
-                    'Dirección, teléfono, WhatsApp y correo: se guardan en la configuración del sitio, pero el admin no tiene una pantalla para cambiarlos.',
+                    'Dirección, teléfono, WhatsApp y correo: se guardan en la configuración del sitio, pero el admin no tiene una pantalla para cambiarlos. El correo es también el que recibe los avisos de mensajes y reservas.',
                     'La lista "Servicios en Putre".',
                 ],
             ],
@@ -247,7 +247,7 @@
                 <h3 class="text-xl font-display font-medium tracking-[-0.01em] text-winay-tierra">Reservas</h3>
                 <div class="mt-3 space-y-3 text-sm text-stone-600">
                     <p>El sitio no confirma reservas ni cobra pagos. El formulario solo envía una solicitud, que hay que responder por correo o WhatsApp.</p>
-                    <p>No llega un aviso por correo: las solicitudes y mensajes nuevos se ven en el panel.</p>
+                    <p>Cada solicitud de reserva y cada mensaje de contacto llega también como aviso al correo de contacto (contacto@winaypachaputre.cl). Al responder ese correo, la respuesta va directo al visitante. Todo queda igual guardado en el panel, aunque el aviso no llegue.</p>
                 </div>
             </div>
         </div>

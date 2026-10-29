@@ -12,6 +12,7 @@ Mapa de rutas, modelos, Livewire y vistas ya construidos: ver `ARQUITECTURA.md` 
 - **Vite** para assets (`npm run dev` / `npm run build`)
 - Auth: Laravel Breeze (blade stack) — un solo rol `admin`, sin registro público (rutas de registro de Breeze eliminadas)
 - `spatie/laravel-translatable` para contenido multi-idioma (ES/EN/FR) editado a mano en el admin
+- Mailgun (`MAIL_MAILER=mailgun`, `MAILGUN_DOMAIN`, `MAILGUN_SECRET`, `MAILGUN_ENDPOINT` en `.env`): avisa a `contacto@winaypachaputre.cl` de cada mensaje de contacto y solicitud de reserva. Dominio de envío `mg.winaypachaputre.cl` (verificado; sus registros SPF, DKIM `smtp._domainkey.mg`, CNAME `email.mg` y MX a `mxa`/`mxb.mailgun.org` están en el Editor de zona de cPanel), remitente `avisos@mg.winaypachaputre.cl`. No crear `mg` como subdominio en cPanel: solo registros DNS
 - DeepL API (`DEEPL_API_KEY` en `.env`): al guardar en el admin, traduce automáticamente a EN/FR los campos vacíos o desactualizados (ES cambió y ese idioma no se editó a mano). Las pestañas EN/FR del admin quedan para revisar/corregir. Textos fijos de las vistas van en `lang/{en,fr}.json` vía `__()`, traducidos a mano
 
 ## Proyecto hermano de referencia
@@ -37,6 +38,7 @@ Mapa de rutas, modelos, Livewire y vistas ya construidos: ver `ARQUITECTURA.md` 
 - Flujo para actualizar producción tras un push a GitHub:
   1. `cd ~/winay-pacha-putre && git pull`
   2. Si cambió `composer.lock`: `php composer.phar install --no-dev --optimize-autoloader`
+  2a. Si es la primera vez con Mailgun: agregar en `~/winay-pacha-putre/.env` `MAIL_MAILER=mailgun`, `MAILGUN_DOMAIN=mg.winaypachaputre.cl`, `MAILGUN_SECRET`, `MAILGUN_ENDPOINT=api.mailgun.net` y `MAIL_FROM_ADDRESS="avisos@mg.winaypachaputre.cl"`
   2b. Si hay migraciones nuevas: `php artisan migrate --force` (las del carrusel del inicio y de fotos de huéspedes además importan sus fotos, requieren GD con WebP; la del catálogo de equipamiento carga sus ~107 ítems y no requiere nada extra)
   3. Si cambiaron assets: `npm run build` en local (Vite exige Node 20+: el Node del sistema es 18, usar el de nvm, `~/.nvm/versions/node/v22.*`) y subir `public/build` a `~/public_html/build`
   4. Si hay imágenes subidas antes del procesador: `php artisan imagenes:optimizar` (requiere GD con WebP en el servidor)
