@@ -14,7 +14,6 @@
             <li><strong>Composición:</strong> deja a las personas al centro y con algo de espacio sobre la cabeza, para que no queden cortadas.</li>
             <li><strong>Cantidad:</strong> entre 8 y 16 fotos. En computador se ven 4 a la vez y el resto se recorre con las flechas.</li>
             <li><strong>Texto alternativo:</strong> describe brevemente la foto (por ejemplo "Huéspedes en el mirador de Putre"). No se ve en la página, pero lo usan lectores de pantalla y buscadores.</li>
-            <li><strong>Permiso:</strong> usa solo fotos de huéspedes que hayan aceptado aparecer en el sitio.</li>
             <li><strong>Formato de archivo:</strong> JPG, PNG, WebP o HEIC (iPhone), hasta 25 MB cada una. El sitio las achica y optimiza solo.</li>
         </ul>
     </details>
