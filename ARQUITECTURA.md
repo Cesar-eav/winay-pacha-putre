@@ -30,7 +30,7 @@ Prefijo `/admin`, name `admin.*`, middleware `['auth', 'admin']` (alias `admin` 
 | `/admin/contacto` | `App\Livewire\Admin\Contacto` (mensajes de `LeadContacto`: filtro pendientes/atendidos/todos, marcar atendido, eliminar) |
 | `/admin/reservas` | `App\Livewire\Admin\Reservas` (`SolicitudReserva`: filtro por estado `SolicitudReserva::ESTADOS`, cambiar estado, eliminar) |
 | `/admin/temas` | `App\Livewire\Admin\Temas` |
-| `/admin/cabanas` | `App\Livewire\Admin\Cabanas` |
+| `/admin/cabanas` | `App\Livewire\Admin\Cabanas` (incluye bloque "Precios por noche" por cantidad de personas, guardado en `Configuracion`) |
 | `/admin/habitaciones` | `App\Livewire\Admin\Habitaciones` (extiende `Cabanas`, solo cambia `tipo()` y `etiquetas()`) |
 | `/admin/lugares` | `App\Livewire\Admin\Lugares` |
 | `/admin/especies` | `App\Livewire\Admin\Especies` |
@@ -43,14 +43,14 @@ Nota: no hay CRUD admin para `Fiesta`, `ServicioLocal` todavía (existen modelo 
 
 | Modelo | Tabla | Traducible (`spatie/translatable`) | Relaciones |
 |---|---|---|---|
-| `Cabana` | `cabanas` | `descripcion` | columna `tipo` (`Cabana::TIPO_CABANA` / `TIPO_HABITACION`, scope `tipo()`): cabañas y habitaciones comparten tabla, modelo y vistas; `numero` es único por tipo; accessor `url` elige la ruta pública según el tipo. Portada en columna `imagen_principal` (path de una de las fotos de su galería, elegida con un tap en el admin), `imagenes` (morphMany), `equipamientos` (belongsToMany vía `cabana_equipamiento`), `solicitudesReserva` (hasMany) |
+| `Cabana` | `cabanas` | `descripcion` | columna `tipo` (`Cabana::TIPO_CABANA` / `TIPO_HABITACION`, scope `tipo()`): cabañas y habitaciones comparten tabla, modelo y vistas; `numero` es único por tipo; accessor `url` elige la ruta pública según el tipo. Portada en columna `imagen_principal` (path de una de las fotos de su galería, elegida con un tap en el admin), `imagenes` (morphMany), `equipamientos` (belongsToMany vía `cabana_equipamiento`), `solicitudesReserva` (hasMany). Precios por persona por tipo: `Cabana::tarifas($tipo)` lee `Configuracion` `tarifas_cabana` / `tarifas_habitacion` (JSON `{personas: monto}`) con fallback a `TARIFAS_POR_DEFECTO`; accessor `tarifas` las filtra hasta `capacidad` para la ficha pública. `precio_desde` queda solo para los listados |
 | `Tema` | `temas` | `titulo`, `cuerpo` | `imagenes` (morphMany) |
 | `Fiesta` | `fiestas` | `titulo`, `descripcion` | `imagenes` (morphMany) |
 | `LugarEntorno` | `lugares_entorno` | `descripcion` | `imagenes` (morphMany) |
 | `Especie` | `especies` | `descripcion`, `donde_observar` | — (imagen simple vía columna `imagen`, no morphMany) |
 | `Equipamiento` | `equipamientos` | — | `cabanas` (belongsToMany) |
 | `ServicioLocal` | `servicios_locales` | — | — |
-| `Configuracion` | `configuraciones` | — | key/value global (`clave` PK string), `Configuracion::get()/set()` — mismo patrón que en el proyecto hermano `pindoor` |
+| `Configuracion` | `configuraciones` | — | key/value global (`clave` PK string), `Configuracion::get()/set()` (también guarda `tarifas_cabana` / `tarifas_habitacion`) — mismo patrón que en el proyecto hermano `pindoor` |
 | `Imagen` | `imagenes` | — | `imageable` (morphTo) — polimórfica, usada por Cabana/Tema/Fiesta/LugarEntorno |
 | `LeadContacto` | `leads_contacto` | — | formulario de contacto (`atendido` boolean) |
 | `SolicitudReserva` | `solicitudes_reserva` | — | `cabana` (belongsTo) — el lead de reserva, NO reserva real (ver alcance en CLAUDE.md) |
