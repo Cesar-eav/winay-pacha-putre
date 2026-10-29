@@ -2,21 +2,14 @@
     <x-slot:titulo>{{ __('Inicio') }}</x-slot:titulo>
 
     {{-- SLIDER BANNER ANCHO COMPLETO --}}
+    @if ($carrusel->isNotEmpty())
     @php
-        // sizes: con object-cover en un banner alto (móvil), la foto se dibuja más ancha que la pantalla (~70vh × aspecto).
-        $banner = collect([
-            ['img' => 'cabanas-cerros', 'anchos' => [640, 960, 1440, 2000], 'sizes' => 'max(100vw, 94vh)', 'pos' => 'object-[50%_65%]', 'alt' => __('Cabañas Wiñaypacha Putre al pie de los cerros')],
-            ['img' => 'laguna-flamenco', 'anchos' => [640, 1024, 1536], 'sizes' => 'max(100vw, 53vh)', 'pos' => 'object-[50%_70%]', 'alt' => __('Flamenco en una laguna del altiplano')],
-            ['img' => 'cabanas', 'anchos' => [640, 960, 1440, 2000], 'sizes' => 'max(100vw, 94vh)', 'pos' => 'object-[50%_65%]', 'alt' => __('Cabañas Wiñaypacha Putre')],
-            ['img' => 'recinto', 'anchos' => [640, 960, 1440, 2000], 'sizes' => 'max(100vw, 94vh)', 'pos' => 'object-[50%_60%]', 'alt' => 'Wiñaypacha Putre'],
-        ])->map(fn ($s) => $s + [
-            'srcset' => collect($s['anchos'])->map(fn ($w) => asset("images/inicio/banner/{$s['img']}-{$w}.webp")." {$w}w")->implode(', '),
-        ]);
+        $varias = $carrusel->count() > 1;
     @endphp
     <section
         x-data="{
             slide: 0,
-            total: {{ $banner->count() }},
+            total: {{ $carrusel->count() }},
             cargadas: 0,
             ir(i) {
                 this.slide = (i + this.total) % this.total
@@ -25,60 +18,78 @@
             init() {
                 const precargar = () => this.cargadas = Math.max(this.cargadas, 1)
                 document.readyState === 'complete' ? precargar() : window.addEventListener('load', precargar, { once: true })
-                if (! matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                if (this.total > 1 && ! matchMedia('(prefers-reduced-motion: reduce)').matches) {
                     setInterval(() => this.ir(this.slide + 1), 5000)
                 }
             },
         }"
         class="relative w-full h-[clamp(24rem,max(70vh,38vw),85vh)] overflow-hidden bg-winay-andino"
     >
-        @foreach ($banner as $i => $item)
-            <img
-                @if ($i === 0)
-                    src="{{ asset("images/inicio/banner/{$item['img']}-1440.webp") }}"
-                    srcset="{{ $item['srcset'] }}"
-                    fetchpriority="high"
-                @else
-                    x-bind:srcset="cargadas >= {{ $i }} ? '{{ $item['srcset'] }}' : null"
-                    decoding="async"
-                @endif
-                sizes="{{ $item['sizes'] }}"
-                alt="{{ $item['alt'] }}"
+        @foreach ($carrusel as $i => $item)
+            @php
+                $srcset = "{$item->thumb_url} 480w, {$item->medium_url} 1200w, {$item->url} 2000w";
+                $frase = $item->frase;
+            @endphp
+            {{-- sizes: con object-cover en un banner alto (móvil), una foto 16:9 se dibuja más ancha que la pantalla (~70vh × 16/9). --}}
+            <div
                 x-bind:aria-hidden="slide !== {{ $i }}"
-                class="absolute inset-0 size-full object-cover {{ $item['pos'] }} transition-opacity duration-700 motion-reduce:transition-none {{ $i ? 'opacity-0' : '' }}"
+                class="absolute inset-0 transition-opacity duration-700 motion-reduce:transition-none {{ $i ? 'opacity-0' : '' }}"
                 :class="{ 'opacity-0': slide !== {{ $i }} }"
             >
+                <img
+                    @if ($i === 0)
+                        src="{{ $item->medium_url }}"
+                        srcset="{{ $srcset }}"
+                        fetchpriority="high"
+                    @else
+                        x-bind:srcset="cargadas >= {{ $i }} ? '{{ $srcset }}' : null"
+                        decoding="async"
+                    @endif
+                    sizes="max(100vw, 125vh)"
+                    alt="{{ $frase ?: 'Wiñaypacha Putre' }}"
+                    class="absolute inset-0 size-full object-cover {{ $item->clase_encuadre }}"
+                >
+                @if ($frase)
+                    <div class="absolute inset-x-0 bottom-0 h-1/2 bg-linear-to-t from-black/60 to-transparent"></div>
+                    <p class="absolute left-4 right-4 sm:left-8 bottom-12 sm:bottom-14 max-w-2xl text-2xl sm:text-4xl font-display font-medium tracking-[-0.01em] text-white text-balance drop-shadow-sm" aria-hidden="true">
+                        {{ $frase }}
+                    </p>
+                @endif
+            </div>
         @endforeach
 
-        <button
-            type="button"
-            @click="ir(slide - 1)"
-            class="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 size-10 sm:size-14 flex items-center justify-center rounded-full bg-black/30 hover:bg-black/50 text-white transition"
-            aria-label="{{ __('Anterior') }}"
-        >
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="size-6 sm:size-8" aria-hidden="true"><path d="m15 18-6-6 6-6" /></svg>
-        </button>
-        <button
-            type="button"
-            @click="ir(slide + 1)"
-            class="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 size-10 sm:size-14 flex items-center justify-center rounded-full bg-black/30 hover:bg-black/50 text-white transition"
-            aria-label="{{ __('Siguiente') }}"
-        >
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="size-6 sm:size-8" aria-hidden="true"><path d="m9 18 6-6-6-6" /></svg>
-        </button>
+        @if ($varias)
+            <button
+                type="button"
+                @click="ir(slide - 1)"
+                class="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 size-10 sm:size-14 flex items-center justify-center rounded-full bg-black/30 hover:bg-black/50 text-white transition"
+                aria-label="{{ __('Anterior') }}"
+            >
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="size-6 sm:size-8" aria-hidden="true"><path d="m15 18-6-6 6-6" /></svg>
+            </button>
+            <button
+                type="button"
+                @click="ir(slide + 1)"
+                class="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 size-10 sm:size-14 flex items-center justify-center rounded-full bg-black/30 hover:bg-black/50 text-white transition"
+                aria-label="{{ __('Siguiente') }}"
+            >
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="size-6 sm:size-8" aria-hidden="true"><path d="m9 18 6-6-6-6" /></svg>
+            </button>
 
-        <div class="absolute bottom-4 inset-x-0 flex items-center justify-center gap-2">
-            @foreach ($banner as $i => $item)
-                <button
-                    type="button"
-                    @click="ir({{ $i }})"
-                    class="size-2.5 rounded-full transition"
-                    :class="slide === {{ $i }} ? 'bg-winay-terracota' : 'bg-white/60 hover:bg-white/80'"
-                    aria-label="{{ __('Ir a la imagen') }} {{ $i + 1 }}"
-                ></button>
-            @endforeach
-        </div>
+            <div class="absolute bottom-4 inset-x-0 flex items-center justify-center gap-2">
+                @foreach ($carrusel as $i => $item)
+                    <button
+                        type="button"
+                        @click="ir({{ $i }})"
+                        class="size-2.5 rounded-full transition"
+                        :class="slide === {{ $i }} ? 'bg-winay-terracota' : 'bg-white/60 hover:bg-white/80'"
+                        aria-label="{{ __('Ir a la imagen') }} {{ $i + 1 }}"
+                    ></button>
+                @endforeach
+            </div>
+        @endif
     </section>
+    @endif
 
     <x-alojamientos.grilla
         :items="$cabanasDestacadas"
@@ -135,13 +146,7 @@
         </div>
     </section>
 
-    @php
-        $turistas = collect(range(1, 9))->map(fn ($n) => [
-            'src' => asset("images/inicio/turistas/turista-{$n}-480.webp"),
-            'srcset' => in_array($n, [8, 9]) ? null : asset("images/inicio/turistas/turista-{$n}-480.webp").' 480w, '.asset("images/inicio/turistas/turista-{$n}-960.webp").' 960w',
-            'alt' => $n === 5 ? __('Huéspedes fotografiando el valle de Putre') : __('Huéspedes en Wiñaypacha Putre'),
-        ]);
-    @endphp
+    @if ($fotosHuespedes->isNotEmpty())
     <section class="bg-winay-arena/40 border-t border-winay-arena">
         <div
             x-data="{
@@ -168,12 +173,13 @@
             </div>
 
             <ul x-ref="pista" class="flex gap-4 overflow-x-auto snap-x snap-mandatory -mx-4 px-4 sm:mx-0 sm:px-0 scroll-px-4 sm:scroll-px-0 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-                @foreach ($turistas as $foto)
+                @foreach ($fotosHuespedes as $foto)
                     <li class="snap-start shrink-0 w-[72%] sm:w-[calc((100%-2rem)/3)] lg:w-[calc((100%-3rem)/4)]">
-                        <img src="{{ $foto['src'] }}"
-                             @if ($foto['srcset']) srcset="{{ $foto['srcset'] }}" sizes="(min-width: 1024px) 260px, (min-width: 640px) 31vw, 72vw" @endif
+                        <img src="{{ $foto->thumb_url }}"
+                             srcset="{{ $foto->thumb_url }} 480w, {{ $foto->medium_url }} 1200w"
+                             sizes="(min-width: 1024px) 260px, (min-width: 640px) 31vw, 72vw"
                              width="480" height="640"
-                             alt="{{ $foto['alt'] }}"
+                             alt="{{ __($foto->alt ?: 'Huéspedes en Wiñaypacha Putre') }}"
                              loading="lazy" decoding="async"
                              class="w-full aspect-3/4 rounded-2xl object-cover bg-winay-arena shadow-sm">
                     </li>
@@ -181,6 +187,7 @@
             </ul>
         </div>
     </section>
+    @endif
 
     @if ($temaDestacado)
         <section class="bg-white border-t border-winay-arena">

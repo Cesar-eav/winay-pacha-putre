@@ -44,6 +44,14 @@
                 </a>
 
                 <p class="px-3 pt-4 pb-1 text-xs uppercase tracking-wide text-winay-arena/50">Catálogo</p>
+                <a href="{{ route('admin.carrusel') }}"
+                   class="block px-3 py-2 rounded-lg text-sm {{ request()->routeIs('admin.carrusel*') ? 'bg-white/10 text-white' : 'text-winay-arena/80 hover:bg-white/5' }}">
+                    Carrusel del inicio
+                </a>
+                <a href="{{ route('admin.huespedes') }}"
+                   class="block px-3 py-2 rounded-lg text-sm {{ request()->routeIs('admin.huespedes*') ? 'bg-white/10 text-white' : 'text-winay-arena/80 hover:bg-white/5' }}">
+                    Fotos de huéspedes
+                </a>
                 <a href="{{ route('admin.temas') }}"
                    class="block px-3 py-2 rounded-lg text-sm {{ request()->routeIs('admin.temas*') ? 'bg-white/10 text-white' : 'text-winay-arena/80 hover:bg-white/5' }}">
                     Temas
@@ -86,6 +94,8 @@
                 <a href="{{ route('admin.dashboard') }}" class="block px-2 py-2 rounded-md text-sm {{ request()->routeIs('admin.dashboard') ? 'text-white bg-white/10' : '' }}">Dashboard</a>
                 <a href="{{ route('admin.contacto') }}" class="block px-2 py-2 rounded-md text-sm {{ request()->routeIs('admin.contacto*') ? 'text-white bg-white/10' : '' }}">Contacto @if ($contactoPendientes)<span class="ml-1 px-1.5 rounded-full bg-winay-terracota text-white text-xs">{{ $contactoPendientes }}</span>@endif</a>
                 <a href="{{ route('admin.reservas') }}" class="block px-2 py-2 rounded-md text-sm {{ request()->routeIs('admin.reservas*') ? 'text-white bg-white/10' : '' }}">Reservas @if ($reservasNuevas)<span class="ml-1 px-1.5 rounded-full bg-winay-terracota text-white text-xs">{{ $reservasNuevas }}</span>@endif</a>
+                <a href="{{ route('admin.carrusel') }}" class="block px-2 py-2 rounded-md text-sm {{ request()->routeIs('admin.carrusel*') ? 'text-white bg-white/10' : '' }}">Carrusel del inicio</a>
+                <a href="{{ route('admin.huespedes') }}" class="block px-2 py-2 rounded-md text-sm {{ request()->routeIs('admin.huespedes*') ? 'text-white bg-white/10' : '' }}">Fotos de huéspedes</a>
                 <a href="{{ route('admin.temas') }}" class="block px-2 py-2 rounded-md text-sm {{ request()->routeIs('admin.temas*') ? 'text-white bg-white/10' : '' }}">Temas</a>
                 <a href="{{ route('admin.cabanas') }}" class="block px-2 py-2 rounded-md text-sm {{ request()->routeIs('admin.cabanas*') ? 'text-white bg-white/10' : '' }}">Cabañas</a>
                 <a href="{{ route('admin.habitaciones') }}" class="block px-2 py-2 rounded-md text-sm {{ request()->routeIs('admin.habitaciones*') ? 'text-white bg-white/10' : '' }}">Habitaciones</a>

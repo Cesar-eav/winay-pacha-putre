@@ -4,6 +4,8 @@ namespace App\Livewire\Admin;
 
 use App\Models\Cabana;
 use App\Models\Especie;
+use App\Models\Galeria;
+use App\Models\ImagenCarrusel;
 use App\Models\LeadContacto;
 use App\Models\LugarEntorno;
 use App\Models\SolicitudReserva;
@@ -36,6 +38,21 @@ class Dashboard extends Component
             'solicitudesReservaTotal' => SolicitudReserva::count(),
             'solicitudesReservaNuevas' => SolicitudReserva::where('estado', 'nuevo')->count(),
             'secciones' => [
+                [
+                    'nombre' => 'Carrusel del inicio',
+                    'ruta' => route('admin.carrusel'),
+                    'total' => ImagenCarrusel::count(),
+                    'detalle' => [
+                        'Publicadas' => ImagenCarrusel::where('publicado', true)->count(),
+                        'Borrador' => ImagenCarrusel::where('publicado', false)->count(),
+                    ],
+                ],
+                [
+                    'nombre' => 'Fotos de huéspedes',
+                    'ruta' => route('admin.huespedes'),
+                    'total' => Galeria::where('clave', Galeria::HUESPEDES)->first()?->imagenes()->count() ?? 0,
+                    'detalle' => [],
+                ],
                 [
                     'nombre' => 'Temas',
                     'ruta' => route('admin.temas'),

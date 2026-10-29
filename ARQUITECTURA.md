@@ -29,6 +29,8 @@ Prefijo `/admin`, name `admin.*`, middleware `['auth', 'admin']` (alias `admin` 
 | `/admin` | `App\Livewire\Admin\Dashboard` |
 | `/admin/contacto` | `App\Livewire\Admin\Contacto` (mensajes de `LeadContacto`: filtro pendientes/atendidos/todos, marcar atendido, eliminar) |
 | `/admin/reservas` | `App\Livewire\Admin\Reservas` (`SolicitudReserva`: filtro por estado `SolicitudReserva::ESTADOS`, cambiar estado, eliminar) |
+| `/admin/carrusel` | `App\Livewire\Admin\Carrusel` (carrusel del inicio: una foto por `ImagenCarrusel` con frase traducible, encuadre, orden y publicado; vista previa computador/celular y recomendaciones de tamaño; rechaza fotos de menos de 1200 px de ancho salvo HEIC) |
+| `/admin/huespedes` | `App\Livewire\Admin\Huespedes` (fotos de "Quienes ya vivieron Wiñaypacha" del inicio: `ManagesGaleria` sobre `Galeria::de(Galeria::HUESPEDES)`, máx. 24, rechaza fotos de menos de 600 px de ancho salvo HEIC; sin listado, la página es el editor de galería) |
 | `/admin/temas` | `App\Livewire\Admin\Temas` |
 | `/admin/cabanas` | `App\Livewire\Admin\Cabanas` (incluye bloque "Precios por noche" por cantidad de personas, guardado en `Configuracion`) |
 | `/admin/habitaciones` | `App\Livewire\Admin\Habitaciones` (extiende `Cabanas`, solo cambia `tipo()` y `etiquetas()`) |
@@ -48,10 +50,12 @@ Nota: no hay CRUD admin para `Fiesta`, `ServicioLocal` todavía (existen modelo 
 | `Fiesta` | `fiestas` | `titulo`, `descripcion` | `imagenes` (morphMany) |
 | `LugarEntorno` | `lugares_entorno` | `descripcion` | `imagenes` (morphMany) |
 | `Especie` | `especies` | `descripcion`, `donde_observar` | — (imagen simple vía columna `imagen`, no morphMany) |
+| `ImagenCarrusel` | `imagenes_carrusel` | `frase` | — (imagen simple en columna `imagen`, variantes vía `ProcesadorImagen`). `ENCUADRES` mapea `arriba`/`centro`/`abajo` a clases `object-*` (accessor `clase_encuadre`). La migración que crea la tabla importa las 4 fotos que antes estaban fijas en `public/images/inicio/banner` (se salta en tests) |
+| `Galeria` | `galerias` | — | `imagenes` (morphMany). Galerías fijas del sitio que no pertenecen a otro contenido, identificadas por `clave` (`Galeria::HUESPEDES`); `Galeria::de($clave)` hace firstOrCreate. Su migración importa las 9 fotos que antes estaban fijas en `public/images/inicio/turistas` (se salta en tests) |
 | `Equipamiento` | `equipamientos` | — | `cabanas` (belongsToMany) |
 | `ServicioLocal` | `servicios_locales` | — | — |
 | `Configuracion` | `configuraciones` | — | key/value global (`clave` PK string), `Configuracion::get()/set()` (también guarda `tarifas_cabana` / `tarifas_habitacion`) — mismo patrón que en el proyecto hermano `pindoor` |
-| `Imagen` | `imagenes` | — | `imageable` (morphTo) — polimórfica, usada por Cabana/Tema/Fiesta/LugarEntorno |
+| `Imagen` | `imagenes` | — | `imageable` (morphTo) — polimórfica, usada por Cabana/Tema/Fiesta/LugarEntorno/Galeria |
 | `LeadContacto` | `leads_contacto` | — | formulario de contacto (`atendido` boolean) |
 | `SolicitudReserva` | `solicitudes_reserva` | — | `cabana` (belongsTo) — el lead de reserva, NO reserva real (ver alcance en CLAUDE.md) |
 | `User` | `users` | — | columna `is_admin` (único rol admin, sin roles múltiples) |
@@ -64,7 +68,7 @@ Modelos publicables usan scopes `publicado()` / `ordenado()` consistentemente (c
 - `FormularioContacto` — crea `LeadContacto`
 - `FormularioReserva` — crea `SolicitudReserva`
 
-**Admin CRUD:** `Admin\Dashboard`, `Admin\Contacto` y `Admin\Reservas` (bandejas de leads, sin formulario), `Admin\Temas`, `Admin\Cabanas` (+ `Admin\Habitaciones`), `Admin\Lugares`, `Admin\Especies` — todos componentes full-page, usan los traits de `Concerns/`.
+**Admin CRUD:** `Admin\Dashboard`, `Admin\Contacto` y `Admin\Reservas` (bandejas de leads, sin formulario), `Admin\Carrusel`, `Admin\Huespedes`, `Admin\Temas`, `Admin\Cabanas` (+ `Admin\Habitaciones`), `Admin\Lugares`, `Admin\Especies` — todos componentes full-page, usan los traits de `Concerns/`.
 
 **Traits reutilizables (`app/Livewire/Concerns`):**
 - `TranslatesWithDeepl` — `traducir()`: botón "Traducir con DeepL" para previsualizar en el formulario. `completarTraducciones($props, $guardado)`: se llama en cada `guardar()` del admin y traduce EN/FR si están vacíos, o si el ES cambió respecto a lo guardado y ese idioma no se editó a mano (si DeepL falla, guarda igual y deja `session('aviso')`, que muestra `banner-exito`). `DeepLTranslator` (`app/Services`) manda `source_lang=ES` y `tag_handling=html` cuando el texto trae HTML (Quill).
@@ -85,7 +89,7 @@ Fichas reales de cabañas y habitaciones (enviadas por el cliente): `php artisan
 Todo lo del admin vive en `admin/`; el resto de `views/` es sitio público.
 
 **Admin (`admin/`):**
-- `admin/{dashboard,contacto,reservas,temas,cabanas,lugares,especies}.blade.php` — vistas de los componentes Livewire `App\Livewire\Admin\*`.
+- `admin/{dashboard,contacto,reservas,carrusel,huespedes,temas,cabanas,lugares,especies}.blade.php` — vistas de los componentes Livewire `App\Livewire\Admin\*`.
 - `admin/partials/` — `campo-traducible` (input ES/EN/FR + botón DeepL), `campo-richtext`, `galeria-editor` (UI de `ManagesGaleria`), `banner-exito` (`session('success')` y `session('aviso')`).
 - `admin/layouts/admin.blade.php` — layout del panel. `admin/layouts/{app,guest,navigation}` — stack Breeze (`<x-app-layout>` / `<x-guest-layout>` para profile y auth).
 - `admin/auth/` — login, password reset, verify email (Breeze).
@@ -94,7 +98,7 @@ Todo lo del admin vive en `admin/`; el resto de `views/` es sitio público.
 
 **Público:**
 - `layouts/winay.blade.php` + `layouts/footer.blade.php` — layout del sitio público.
-- Páginas en la raíz de `views/`: `inicio`, `cultura`, `putre`, `entorno/{index,show}`, `nosotros`, `contacto`, `reserva`, `cabanas/{index,show}` (también sirven `/habitaciones`, textos según `$tipo`).
+- Páginas en la raíz de `views/`: `inicio` (el carrusel sale de `ImagenCarrusel` y las fotos de huéspedes de `Galeria::HUESPEDES`; cada sección se oculta si no tiene fotos), `cultura`, `putre`, `entorno/{index,show}`, `nosotros`, `contacto`, `reserva`, `cabanas/{index,show}` (también sirven `/habitaciones`, textos según `$tipo`).
 - `livewire/formulario-{contacto,reserva}.blade.php` — formularios de leads.
 - `components/` — `galeria-lightbox` (lightbox Alpine), `alojamientos/grilla` y `alojamientos/editorial` (cabañas y habitaciones en el inicio), `imagen-placeholder`, `language-switcher`, `form-field`.
 
