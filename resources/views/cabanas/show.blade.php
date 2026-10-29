@@ -13,21 +13,24 @@
 
                 <div class="mt-6 max-w-prose text-stone-600 space-y-3">{!! $cabana->descripcion !!}</div>
 
-                @foreach ($equipamientosPorAmbito as $ambito => $items)
+                @if ($equipamientosPorCategoria->isNotEmpty())
                     <div class="mt-8">
-                        <h2 class="text-xl font-display font-medium tracking-[-0.01em] text-winay-tierra">
-                            {{ $ambito === 'cabana' ? __('Equipamiento de la cabaña') : __('Equipamiento de la habitación') }}
-                        </h2>
-                        <ul class="mt-3 grid gap-x-8 sm:grid-cols-2 text-sm text-stone-600">
-                            @foreach ($items as $item)
-                                <li class="flex items-center gap-3 border-b border-winay-arena py-2.5">
-                                    <x-icono-equipamiento :equipamiento="$item" class="text-winay-terracota" />
-                                    {{ __($item->nombre) }}
-                                </li>
-                            @endforeach
-                        </ul>
+                        <h2 class="text-xl font-display font-medium tracking-[-0.01em] text-winay-tierra">{{ __('Equipamiento') }}</h2>
+                        @foreach ($equipamientosPorCategoria as $categoria => $items)
+                            <h3 class="mt-5 text-xs font-semibold uppercase tracking-wide text-stone-500">
+                                {{ \App\Support\CatalogoEquipamiento::categoriaNombre($categoria) }}
+                            </h3>
+                            <ul class="mt-1 grid gap-x-8 sm:grid-cols-2 text-sm text-stone-600">
+                                @foreach ($items as $item)
+                                    <li class="flex items-center gap-3 border-b border-winay-arena py-2.5">
+                                        <x-icono-equipamiento :equipamiento="$item" class="text-winay-terracota" />
+                                        {{ $item->nombre }}
+                                    </li>
+                                @endforeach
+                            </ul>
+                        @endforeach
                     </div>
-                @endforeach
+                @endif
             </div>
 
             <aside class="rounded-2xl border border-winay-arena bg-white p-6 shadow-[0_4px_20px_rgb(107_68_35/0.08)] lg:sticky lg:top-28">

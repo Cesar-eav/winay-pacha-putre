@@ -4,18 +4,23 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Spatie\Translatable\HasTranslations;
 
 class Equipamiento extends Model
 {
-    protected $fillable = ['nombre', 'icono', 'ambito', 'orden'];
+    use HasTranslations;
+
+    protected $fillable = ['clave', 'nombre', 'icono', 'categoria', 'orden'];
+
+    public array $translatable = ['nombre'];
 
     public function cabanas(): BelongsToMany
     {
         return $this->belongsToMany(Cabana::class, 'cabana_equipamiento');
     }
 
-    public function scopeAmbito($query, string $ambito)
+    public function getPersonalizadoAttribute(): bool
     {
-        return $query->where('ambito', $ambito);
+        return $this->clave === null;
     }
 }

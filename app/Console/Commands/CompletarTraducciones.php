@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Models\Cabana;
+use App\Models\Equipamiento;
 use App\Models\Especie;
 use App\Models\Fiesta;
 use App\Models\LugarEntorno;
@@ -22,7 +23,7 @@ class CompletarTraducciones extends Command
         $traducidas = 0;
         $fallidas = 0;
 
-        foreach ([Tema::class, Cabana::class, LugarEntorno::class, Especie::class, Fiesta::class] as $modelo) {
+        foreach ([Tema::class, Cabana::class, LugarEntorno::class, Especie::class, Fiesta::class, Equipamiento::class] as $modelo) {
             foreach ($modelo::all() as $registro) {
                 $cambios = false;
 

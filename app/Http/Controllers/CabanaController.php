@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cabana;
+use App\Support\CatalogoEquipamiento;
 use Illuminate\View\View;
 
 class CabanaController extends Controller
@@ -44,9 +45,7 @@ class CabanaController extends Controller
         return view('cabanas.show', [
             'tipo' => $tipo,
             'cabana' => $cabana,
-            'equipamientosPorAmbito' => $tipo === Cabana::TIPO_HABITACION
-                ? collect(['habitacion' => $cabana->equipamientos])
-                : $cabana->equipamientos->groupBy('ambito'),
+            'equipamientosPorCategoria' => CatalogoEquipamiento::agrupar($cabana->equipamientos),
         ]);
     }
 }

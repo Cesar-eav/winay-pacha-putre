@@ -14,27 +14,14 @@ class ActualizarAlojamientos extends Command
 
     protected $description = 'Carga las fichas reales de cabañas y habitaciones (descripción, capacidad, número, equipamiento) enviadas por el cliente.';
 
-    private const EQUIPAMIENTOS = [
-        ['nombre' => 'Comedor', 'ambito' => 'cabana', 'icono' => 'comedor'],
-        ['nombre' => 'Frigobar', 'ambito' => 'cabana', 'icono' => 'frigobar'],
-        ['nombre' => 'Microondas', 'ambito' => 'cabana', 'icono' => 'microondas'],
-        ['nombre' => 'Hervidor', 'ambito' => 'cabana', 'icono' => 'hervidor'],
-        ['nombre' => 'TV 34"', 'ambito' => 'cabana', 'icono' => 'tv'],
-        ['nombre' => 'Lavaplatos', 'ambito' => 'cabana', 'icono' => 'lavaplatos'],
-        ['nombre' => 'Sofá', 'ambito' => 'cabana', 'icono' => 'sofa'],
-        ['nombre' => 'Calefactor eléctrico', 'ambito' => 'habitacion', 'icono' => 'calefaccion'],
-        ['nombre' => 'Mueble para ropa', 'ambito' => 'habitacion', 'icono' => 'ropero'],
-        ['nombre' => 'Ropero', 'ambito' => 'habitacion', 'icono' => 'ropero'],
-    ];
-
-    private const GENERICOS_CONSERVADOS = ['Wifi', 'Estacionamiento', 'Agua caliente', 'Ropa de cama'];
+    private const GENERICOS_CONSERVADOS = ['wifi', 'estacionamiento', 'agua-caliente', 'ropa-cama'];
 
     private const BASE_CABANA = [
-        'Cocina equipada', 'Comedor', 'Frigobar', 'Microondas', 'Hervidor', 'TV 34"', 'Lavaplatos',
-        'Calefactor eléctrico', 'Velador',
+        'cocina-equipada', 'comedor', 'frigobar', 'microondas', 'hervidor', 'tv', 'lavaplatos',
+        'calefactor-electrico', 'velador',
     ];
 
-    private const BASE_HABITACION = ['Ropero', 'TV 34"', 'Comedor', 'Hervidor', 'Frigobar', 'Velador'];
+    private const BASE_HABITACION = ['ropero', 'tv', 'comedor', 'hervidor', 'frigobar', 'velador'];
 
     private const COCINA = '<p>La cocina cuenta con artículos básicos para cocinar y preparar el desayuno.</p>';
 
@@ -43,8 +30,6 @@ class ActualizarAlojamientos extends Command
     public function handle(DeepLTranslator $translator): int
     {
         $dry = $this->option('dry-run');
-
-        $this->equipamientos($dry);
 
         foreach ($this->alojamientos() as $slug => $datos) {
             $cabana = Cabana::with('equipamientos')->where('slug', $slug)->first();
@@ -61,35 +46,6 @@ class ActualizarAlojamientos extends Command
         $this->info($dry ? 'Dry-run: no se guardó nada.' : 'Alojamientos actualizados.');
 
         return self::SUCCESS;
-    }
-
-    private function equipamientos(bool $dry): void
-    {
-        if (! Equipamiento::where('nombre', 'Calefactor eléctrico')->exists()
-            && Equipamiento::where('nombre', 'Calefacción')->exists()) {
-            $this->line(($dry ? '[dry] ' : '').'Equipamiento: Calefacción → Calefactor eléctrico');
-
-            if (! $dry) {
-                Equipamiento::where('nombre', 'Calefacción')->update(['nombre' => 'Calefactor eléctrico']);
-            }
-        }
-
-        foreach (self::EQUIPAMIENTOS as $orden => $item) {
-            $existente = Equipamiento::where('nombre', $item['nombre'])->first();
-
-            if ($existente && $existente->icono === $item['icono']) {
-                continue;
-            }
-
-            $this->line(($dry ? '[dry] ' : '').'Equipamiento: '.($existente ? 'ícono de ' : 'nuevo ').$item['nombre']);
-
-            if (! $dry) {
-                Equipamiento::updateOrCreate(
-                    ['nombre' => $item['nombre']],
-                    ['ambito' => $item['ambito'], 'icono' => $item['icono'], 'orden' => $existente->orden ?? 10 + $orden],
-                );
-            }
-        }
     }
 
     private function actualizar(Cabana $cabana, array $datos, bool $dry, DeepLTranslator $translator): void
@@ -110,17 +66,17 @@ class ActualizarAlojamientos extends Command
         $equipamientoIds = null;
 
         if ($equipamiento !== null) {
-            $conservados = $cabana->equipamientos->whereIn('nombre', self::GENERICOS_CONSERVADOS)->pluck('nombre')->all();
-            $nombres = array_unique([...$equipamiento, ...$conservados]);
-            $faltantes = array_diff($nombres, Equipamiento::whereIn('nombre', $nombres)->pluck('nombre')->all());
-            $equipamientoIds = Equipamiento::whereIn('nombre', $nombres)->pluck('id')->sort()->values()->all();
+            $conservados = $cabana->equipamientos->whereIn('clave', self::GENERICOS_CONSERVADOS)->pluck('clave')->all();
+            $claves = array_unique([...$equipamiento, ...$conservados]);
+            $faltantes = array_diff($claves, Equipamiento::whereIn('clave', $claves)->pluck('clave')->all());
+            $equipamientoIds = Equipamiento::whereIn('clave', $claves)->pluck('id')->sort()->values()->all();
 
             if ($faltantes && ! $dry) {
-                $this->warn("  {$cabana->slug}: equipamiento inexistente: ".implode(', ', $faltantes));
+                $this->warn("  {$cabana->slug}: equipamiento inexistente (¿falta `php artisan migrate`?): ".implode(', ', $faltantes));
             }
 
             if ($faltantes || $equipamientoIds !== $cabana->equipamientos->pluck('id')->sort()->values()->all()) {
-                $cambios[] = 'equipamiento ('.implode(', ', $nombres).')';
+                $cambios[] = 'equipamiento ('.implode(', ', $claves).')';
             }
         }
 
@@ -176,7 +132,7 @@ class ActualizarAlojamientos extends Command
                     .'<p><strong>Habitación 2</strong>: 2 camas de 1,5 plazas.</p>'
                     .'<p>Cada habitación tiene veladores y un pequeño mueble para guardar sus cosas.</p>'
                     .self::COCINA,
-                'equipamiento' => [...self::BASE_CABANA, 'Mueble para ropa'],
+                'equipamiento' => [...self::BASE_CABANA, 'mueble-ropa'],
             ],
             'cabana-anata' => [
                 ...$publicado,
@@ -187,7 +143,7 @@ class ActualizarAlojamientos extends Command
                     .'<p><strong>Habitación 2</strong>: 2 camas de 1,5 plazas.</p>'
                     .'<p>Cada habitación tiene veladores y un pequeño mueble para guardar sus cosas.</p>'
                     .self::COCINA,
-                'equipamiento' => [...self::BASE_CABANA, 'Mueble para ropa'],
+                'equipamiento' => [...self::BASE_CABANA, 'mueble-ropa'],
             ],
             'vicuna' => [
                 ...$publicado,
@@ -197,7 +153,7 @@ class ActualizarAlojamientos extends Command
                 'descripcion' => '<p>Una habitación con 1 cama de 2 plazas y 1 cama de 1,5 plazas, con veladores.</p>'
                     .'<p>Living-comedor con sofá.</p>'
                     .self::COCINA,
-                'equipamiento' => [...self::BASE_CABANA, 'Sofá'],
+                'equipamiento' => [...self::BASE_CABANA, 'sofa'],
             ],
             'vizcacha' => [
                 ...$publicado,
@@ -209,7 +165,7 @@ class ActualizarAlojamientos extends Command
                     .'<p><strong>Habitación 2</strong>: 1 cama de 1,5 plazas y 1 cama nido.</p>'
                     .'<p>Ambas habitaciones tienen veladores.</p>'
                     .self::COCINA,
-                'equipamiento' => [...self::BASE_CABANA, 'Mueble para ropa'],
+                'equipamiento' => [...self::BASE_CABANA, 'mueble-ropa'],
             ],
             'warmi' => ['publicado' => false, 'orden' => 10],
             'cabana-suriplaza' => ['publicado' => false, 'orden' => 11],

@@ -11,6 +11,7 @@
     @vite(['resources/css/app.css', 'resources/js/admin.js'])
 </head>
 <body class="bg-winay-arena text-stone-800 antialiased">
+    <x-iconos-equipamiento-sprite />
     @php($contactoPendientes = \App\Models\LeadContacto::where('atendido', false)->count())
     @php($reservasNuevas = \App\Models\SolicitudReserva::where('estado', 'nuevo')->count())
 

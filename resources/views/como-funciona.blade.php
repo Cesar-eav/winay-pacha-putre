@@ -53,11 +53,12 @@
                 'admin' => [
                     'Crear, editar, ocultar o reordenar cada cabaña y habitación (Admin → Cabañas / Habitaciones).',
                     'Nombre, capacidad, baños, descripción, precio "desde" del listado y galería de fotos (hasta 12), eligiendo cuál es la portada.',
-                    'Equipamiento: marcar qué tiene cada alojamiento (cocina equipada, estufa a leña, wifi…).',
+                    'Equipamiento: tocar lo que tiene cada alojamiento entre más de 100 opciones con dibujo, ordenadas por grupo (cocina, dormitorio, baño, calefacción, exterior…) y con un buscador. En la página se muestra agrupado igual.',
+                    'Si algo no está en la lista, se escribe en el buscador y se agrega ahí mismo: el sitio le elige un dibujo según el nombre (o se elige otro, o ninguno) y lo traduce solo al inglés y francés. Lo agregado sirve para todos los alojamientos y se puede quitar de la lista.',
                     'Precios por noche según cantidad de personas, uno para todas las cabañas y otro para todas las habitaciones.',
                 ],
                 'dev' => [
-                    'Agregar un tipo de equipamiento nuevo que no esté en la lista (y su ícono y traducción).',
+                    'Sumar opciones a la lista oficial de equipamiento o dibujos nuevos a la galería, y corregir la traducción de un equipamiento agregado desde el panel.',
                     'Los textos de encabezado de los listados.',
                 ],
             ],

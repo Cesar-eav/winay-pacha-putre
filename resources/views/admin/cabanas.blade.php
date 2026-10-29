@@ -59,23 +59,7 @@
 
                 @include('admin.partials.campo-richtext', ['prop' => 'descripcion', 'label' => 'Descripción'])
 
-                <div>
-                    <label class="block text-sm font-medium text-stone-700 mb-2">Equipamiento</label>
-                    @foreach ($equipamientosPorAmbito as $ambito => $items)
-                        <p class="text-xs uppercase tracking-wide text-stone-500 mt-3 mb-1">
-                            {{ $ambito === 'cabana' ? 'Cabaña' : 'Habitación' }}
-                        </p>
-                        <div class="grid grid-cols-2 sm:grid-cols-3 gap-2">
-                            @foreach ($items as $item)
-                                <label class="inline-flex items-center gap-2 text-sm text-stone-700">
-                                    <input type="checkbox" value="{{ $item->id }}" wire:model="equipamientosSeleccionados"
-                                           class="rounded border-stone-300 text-winay-terracota focus:ring-winay-terracota">
-                                    {{ $item->nombre }}
-                                </label>
-                            @endforeach
-                        </div>
-                    @endforeach
-                </div>
+                @include('admin.partials.selector-equipamiento')
 
                 <div class="grid gap-4 sm:grid-cols-2">
                     <div>

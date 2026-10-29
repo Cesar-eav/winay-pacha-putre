@@ -36,8 +36,8 @@ Mapa de rutas, modelos, Livewire y vistas ya construidos: ver `ARQUITECTURA.md` 
 - Flujo para actualizar producción tras un push a GitHub:
   1. `cd ~/winay-pacha-putre && git pull`
   2. Si cambió `composer.lock`: `php composer.phar install --no-dev --optimize-autoloader`
-  2b. Si hay migraciones nuevas: `php artisan migrate --force` (las del carrusel del inicio y de fotos de huéspedes además importan sus fotos, requieren GD con WebP)
-  3. Si cambiaron assets: `npm run build` en local y subir `public/build` a `~/public_html/build`
+  2b. Si hay migraciones nuevas: `php artisan migrate --force` (las del carrusel del inicio y de fotos de huéspedes además importan sus fotos, requieren GD con WebP; la del catálogo de equipamiento carga sus ~107 ítems y no requiere nada extra)
+  3. Si cambiaron assets: `npm run build` en local (Vite exige Node 20+: el Node del sistema es 18, usar el de nvm, `~/.nvm/versions/node/v22.*`) y subir `public/build` a `~/public_html/build`
   4. Si hay imágenes subidas antes del procesador: `php artisan imagenes:optimizar` (requiere GD con WebP en el servidor)
   4b. Si hay contenido con EN/FR vacíos (p. ej. cargado antes de la auto-traducción): `php artisan traducciones:completar [--dry-run]` (solo rellena vacíos, no pisa nada)
   4c. Para cargar o actualizar las fichas reales de cabañas y habitaciones: `php artisan alojamientos:actualizar --dry-run` y luego sin `--dry-run` (idempotente; retraduce EN/FR de las descripciones que cambien)

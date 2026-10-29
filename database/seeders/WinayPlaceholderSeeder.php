@@ -9,6 +9,7 @@ use App\Models\Especie;
 use App\Models\LugarEntorno;
 use App\Models\ServicioLocal;
 use App\Models\Tema;
+use App\Support\CatalogoEquipamiento;
 use Illuminate\Database\Seeder;
 
 class WinayPlaceholderSeeder extends Seeder
@@ -40,22 +41,7 @@ class WinayPlaceholderSeeder extends Seeder
 
     private function equipamientos(): void
     {
-        $cabana = ['Cocina equipada' => 'cocina', 'Estufa a leña' => 'estufa', 'Agua caliente' => 'agua-caliente', 'Wifi' => 'wifi', 'Estacionamiento' => 'estacionamiento'];
-        $habitacion = ['Cama matrimonial' => 'cama', 'Ropa de cama' => 'ropa-cama', 'Calefacción' => 'calefaccion', 'Velador' => 'velador'];
-
-        foreach (array_keys($cabana) as $orden => $nombre) {
-            Equipamiento::firstOrCreate(
-                ['nombre' => $nombre, 'ambito' => 'cabana'],
-                ['icono' => $cabana[$nombre], 'orden' => $orden]
-            );
-        }
-
-        foreach (array_keys($habitacion) as $orden => $nombre) {
-            Equipamiento::firstOrCreate(
-                ['nombre' => $nombre, 'ambito' => 'habitacion'],
-                ['icono' => $habitacion[$nombre], 'orden' => $orden]
-            );
-        }
+        CatalogoEquipamiento::sincronizar();
     }
 
     private function temas(): void
@@ -95,8 +81,7 @@ class WinayPlaceholderSeeder extends Seeder
             ['slug' => 'cabana-lauca', 'nombre' => 'Cabaña Lauca', 'capacidad' => 6, 'precio_desde' => 'Consultar', 'descripcion' => '<p>Descripción placeholder de la Cabaña Lauca: ambientes, vista y distribución. Pendiente de contenido definitivo.</p>'],
         ];
 
-        $equipamientoCabana = Equipamiento::ambito('cabana')->pluck('id');
-        $equipamientoHabitacion = Equipamiento::ambito('habitacion')->pluck('id');
+        $equipamiento = Equipamiento::whereIn('clave', ['cocina-equipada', 'estufa-lena', 'agua-caliente', 'wifi', 'estacionamiento', 'cama-matrimonial', 'ropa-cama', 'velador'])->pluck('id');
         $placeholders = ['placeholder/cabana-ejemplo.jpg', 'placeholder/cabana-ejemplo.jpg', 'placeholder/cabana-ejemplo.jpg'];
 
         foreach ($cabanas as $orden => $data) {
@@ -112,7 +97,7 @@ class WinayPlaceholderSeeder extends Seeder
                 ]
             );
 
-            $cabana->equipamientos()->sync($equipamientoCabana->merge($equipamientoHabitacion));
+            $cabana->equipamientos()->sync($equipamiento);
 
             if ($cabana->imagenes()->count() === 0) {
                 foreach ($placeholders as $i => $path) {

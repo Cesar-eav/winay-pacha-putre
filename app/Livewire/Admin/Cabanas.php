@@ -5,9 +5,12 @@ namespace App\Livewire\Admin;
 use App\Livewire\Concerns\ManagesEstadoYOrden;
 use App\Livewire\Concerns\ManagesGaleria;
 use App\Livewire\Concerns\TranslatesWithDeepl;
+use App\Services\DeepLTranslator;
 use App\Services\ProcesadorImagen;
 use App\Models\Cabana;
 use App\Models\Equipamiento;
+use App\Support\CatalogoEquipamiento;
+use App\Support\IconosEquipamiento;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
@@ -44,6 +47,16 @@ class Cabanas extends Component
     public bool $publicado = true;
 
     public array $equipamientosSeleccionados = [];
+
+    public string $nuevoEquipamiento = '';
+
+    public string $nuevaCategoria = 'otros';
+
+    public ?string $nuevoIcono = null;
+
+    public bool $eligiendoIcono = false;
+
+    public ?string $avisoEquipamiento = null;
 
     public array $tarifas = [];
 
@@ -103,6 +116,7 @@ class Cabanas extends Component
         $this->orden = 0;
         $this->publicado = true;
         $this->equipamientosSeleccionados = [];
+        $this->limpiarNuevoEquipamiento();
         $this->cargarGaleria(null);
         $this->resetValidation();
         $this->mostrarFormulario = true;
@@ -124,6 +138,7 @@ class Cabanas extends Component
         $this->orden = $cabana->orden;
         $this->publicado = $cabana->publicado;
         $this->equipamientosSeleccionados = $cabana->equipamientos->pluck('id')->all();
+        $this->limpiarNuevoEquipamiento();
         $this->cargarGaleria($cabana, $cabana->imagen_principal);
         $this->resetValidation();
         $this->mostrarFormulario = true;
@@ -167,6 +182,84 @@ class Cabanas extends Component
 
         $this->mostrarFormulario = false;
         session()->flash('success', $this->etiquetas()['singular'].' guardada correctamente.');
+    }
+
+    public function agregarEquipamiento(DeepLTranslator $translator): void
+    {
+        $this->avisoEquipamiento = null;
+        $this->nuevoEquipamiento = Str::ucfirst(trim(preg_replace('/\s+/', ' ', $this->nuevoEquipamiento)));
+
+        $this->validate(
+            [
+                'nuevoEquipamiento' => ['required', 'string', 'max:60'],
+                'nuevaCategoria' => ['required', Rule::in(array_keys(CatalogoEquipamiento::CATEGORIAS))],
+                'nuevoIcono' => ['nullable', Rule::in(array_keys(IconosEquipamiento::TRAZOS))],
+            ],
+            [],
+            ['nuevoEquipamiento' => 'nombre'],
+        );
+
+        $normalizado = Str::lower(Str::ascii($this->nuevoEquipamiento));
+        $existente = Equipamiento::all()
+            ->first(fn ($e) => Str::lower(Str::ascii($e->getTranslation('nombre', 'es'))) === $normalizado);
+
+        if ($existente) {
+            $this->avisoEquipamiento = "\"{$existente->getTranslation('nombre', 'es')}\" ya estaba en la lista y quedó marcado.";
+        } else {
+            $nombre = ['es' => $this->nuevoEquipamiento];
+
+            foreach (['en', 'fr'] as $locale) {
+                if ($traduccion = $translator->translate($this->nuevoEquipamiento, $locale)) {
+                    $nombre[$locale] = $traduccion;
+                }
+            }
+
+            $existente = Equipamiento::create([
+                'nombre' => $nombre,
+                'categoria' => $this->nuevaCategoria,
+                'icono' => $this->nuevoIcono ?? CatalogoEquipamiento::sugerirIcono($this->nuevoEquipamiento),
+                'orden' => (Equipamiento::max('orden') ?? 0) + 1,
+            ]);
+
+            $this->avisoEquipamiento = "\"{$this->nuevoEquipamiento}\" se agregó a la lista y quedó marcado.";
+        }
+
+        $this->equipamientosSeleccionados = collect($this->equipamientosSeleccionados)
+            ->map(fn ($id) => (int) $id)
+            ->push($existente->id)
+            ->unique()
+            ->values()
+            ->all();
+
+        $aviso = $this->avisoEquipamiento;
+        $this->limpiarNuevoEquipamiento();
+        $this->avisoEquipamiento = $aviso;
+        $this->dispatch('equipamiento-agregado');
+    }
+
+    public function eliminarEquipamiento(int $id): void
+    {
+        $equipamiento = Equipamiento::findOrFail($id);
+
+        abort_unless($equipamiento->personalizado, 403);
+
+        $equipamiento->cabanas()->detach();
+        $equipamiento->delete();
+
+        $this->equipamientosSeleccionados = array_values(array_filter(
+            $this->equipamientosSeleccionados,
+            fn ($seleccionado) => (int) $seleccionado !== $id,
+        ));
+    }
+
+    protected function limpiarNuevoEquipamiento(): void
+    {
+        $this->nuevoEquipamiento = '';
+        $this->nuevaCategoria = 'otros';
+        $this->nuevoIcono = null;
+        $this->eligiendoIcono = false;
+        $this->avisoEquipamiento = null;
+        $this->resetValidation(['nuevoEquipamiento', 'nuevaCategoria', 'nuevoIcono']);
     }
 
     public function agregarTarifa(): void
@@ -221,7 +314,7 @@ class Cabanas extends Component
         return view('admin.cabanas', [
             'cabanas' => $this->consultaListado()->orderBy('orden')->get(),
             'etiquetas' => $this->etiquetas(),
-            'equipamientosPorAmbito' => Equipamiento::orderBy('orden')->get()->groupBy('ambito'),
+            'equipamientosPorCategoria' => CatalogoEquipamiento::agrupar(Equipamiento::all()),
         ]);
     }
 }

@@ -33,7 +33,7 @@ Prefijo `/admin`, name `admin.*`, middleware `['auth', 'admin']` (alias `admin` 
 | `/admin/carrusel` | `App\Livewire\Admin\Carrusel` (carrusel del inicio: una foto por `ImagenCarrusel` con frase traducible, encuadre, orden y publicado; vista previa computador/celular y recomendaciones de tamaño; rechaza fotos de menos de 1200 px de ancho salvo HEIC) |
 | `/admin/huespedes` | `App\Livewire\Admin\Huespedes` (fotos de "Quienes ya vivieron Wiñaypacha" del inicio: `ManagesGaleria` sobre `Galeria::de(Galeria::HUESPEDES)`, máx. 24, rechaza fotos de menos de 600 px de ancho salvo HEIC; sin listado, la página es el editor de galería) |
 | `/admin/temas` | `App\Livewire\Admin\Temas` |
-| `/admin/cabanas` | `App\Livewire\Admin\Cabanas` (incluye bloque "Precios por noche" por cantidad de personas, guardado en `Configuracion`) |
+| `/admin/cabanas` | `App\Livewire\Admin\Cabanas` (incluye bloque "Precios por noche" por cantidad de personas, guardado en `Configuracion`; selector de equipamiento con `agregarEquipamiento()` — crea uno personalizado traducido con DeepL o marca el existente con el mismo nombre — y `eliminarEquipamiento()`, solo personalizados) |
 | `/admin/habitaciones` | `App\Livewire\Admin\Habitaciones` (extiende `Cabanas`, solo cambia `tipo()` y `etiquetas()`) |
 | `/admin/lugares` | `App\Livewire\Admin\Lugares` |
 | `/admin/especies` | `App\Livewire\Admin\Especies` |
@@ -53,7 +53,7 @@ Nota: no hay CRUD admin para `Fiesta`, `ServicioLocal` todavía (existen modelo 
 | `Especie` | `especies` | `descripcion`, `donde_observar` | — (imagen simple vía columna `imagen`, no morphMany) |
 | `ImagenCarrusel` | `imagenes_carrusel` | `frase` | — (imagen simple en columna `imagen`, variantes vía `ProcesadorImagen`). `ENCUADRES` mapea `arriba`/`centro`/`abajo` a clases `object-*` (accessor `clase_encuadre`). La migración que crea la tabla importa las 4 fotos que antes estaban fijas en `public/images/inicio/banner` (se salta en tests) |
 | `Galeria` | `galerias` | — | `imagenes` (morphMany). Galerías fijas del sitio que no pertenecen a otro contenido, identificadas por `clave` (`Galeria::HUESPEDES`); `Galeria::de($clave)` hace firstOrCreate. Su migración importa las 9 fotos que antes estaban fijas en `public/images/inicio/turistas` (se salta en tests) |
-| `Equipamiento` | `equipamientos` | — | `cabanas` (belongsToMany) |
+| `Equipamiento` | `equipamientos` | `nombre` | `cabanas` (belongsToMany). `clave` del catálogo (`null` = agregado por el cliente, accessor `personalizado`), `categoria`, `icono`. Catálogo oficial (~107 ítems con EN/FR a mano y sinónimos para el buscador) en `App\Support\CatalogoEquipamiento::ITEMS`; `sincronizar()` lo crea/actualiza por clave sin pisar nombres existentes (lo llaman la migración `amplia_catalogo_equipamientos` y el seeder). `sugerirIcono()` deduce el ícono de un nombre (`PALABRAS`, portado también a JS en el selector). Íconos Lucide en `App\Support\IconosEquipamiento::TRAZOS`, dibujados con `<x-icono-equipamiento>` (inline, o `sprite` con `<use>` contra `<x-iconos-equipamiento-sprite>` del layout admin). `agrupar()` ordena y agrupa por categoría para el admin y la ficha pública |
 | `ServicioLocal` | `servicios_locales` | — | — |
 | `Configuracion` | `configuraciones` | — | key/value global (`clave` PK string), `Configuracion::get()/set()` (también guarda `tarifas_cabana` / `tarifas_habitacion`) — mismo patrón que en el proyecto hermano `pindoor` |
 | `Imagen` | `imagenes` | — | `imageable` (morphTo) — polimórfica, usada por Cabana/Tema/Fiesta/LugarEntorno/Galeria |
@@ -81,9 +81,9 @@ Toda subida del admin pasa por `App\Services\ProcesadorImagen` (intervention/ima
 
 ## Idiomas
 
-Rutas públicas duplicadas con prefijo `/en` y `/fr` (names `en.*`, `fr.*`), `SetLocale` fija el idioma, `lroute()` (`app/helpers.php`) genera la URL en el idioma actual. Textos fijos: `__()` + `lang/{en,fr}.json` (incluye nombres de `Equipamiento` y `ServicioLocal`, que son catálogos sin CRUD; ojo con claves dinámicas como el calendario de `cultura.blade.php`). Contenido del CMS: columnas JSON de `spatie/translatable`, auto-traducidas con DeepL al guardar (ver `TranslatesWithDeepl`). Rellenar vacíos existentes: `php artisan traducciones:completar [--dry-run]`.
+Rutas públicas duplicadas con prefijo `/en` y `/fr` (names `en.*`, `fr.*`), `SetLocale` fija el idioma, `lroute()` (`app/helpers.php`) genera la URL en el idioma actual. Textos fijos: `__()` + `lang/{en,fr}.json` (incluye nombres de `ServicioLocal`, catálogo sin CRUD; ojo con claves dinámicas como el calendario de `cultura.blade.php`). Contenido del CMS: columnas JSON de `spatie/translatable`, auto-traducidas con DeepL al guardar (ver `TranslatesWithDeepl`). Rellenar vacíos existentes: `php artisan traducciones:completar [--dry-run]`.
 
-Fichas reales de cabañas y habitaciones (enviadas por el cliente): `php artisan alojamientos:actualizar [--dry-run]` (`app/Console/Commands/ActualizarAlojamientos.php`). Busca por slug, fija número, capacidad, orden, publicado y descripción ES (retraduce EN/FR con DeepL), crea el equipamiento que falte y sincroniza el de cada alojamiento conservando Wifi/Estacionamiento/Agua caliente/Ropa de cama. Es idempotente. En fichas de tipo habitación, todo el equipamiento se muestra bajo un solo bloque.
+Fichas reales de cabañas y habitaciones (enviadas por el cliente): `php artisan alojamientos:actualizar [--dry-run]` (`app/Console/Commands/ActualizarAlojamientos.php`). Busca por slug, fija número, capacidad, orden, publicado y descripción ES (retraduce EN/FR con DeepL), y sincroniza el equipamiento de cada alojamiento por `clave` del catálogo, conservando wifi/estacionamiento/agua-caliente/ropa-cama. Es idempotente. La ficha pública agrupa el equipamiento por categoría (igual para cabañas y habitaciones).
 
 ## Vistas (`resources/views`)
 
@@ -91,7 +91,7 @@ Todo lo del admin vive en `admin/`; el resto de `views/` es sitio público.
 
 **Admin (`admin/`):**
 - `admin/{dashboard,contacto,reservas,carrusel,huespedes,temas,cabanas,lugares,especies}.blade.php` — vistas de los componentes Livewire `App\Livewire\Admin\*`.
-- `admin/partials/` — `campo-traducible` (input ES/EN/FR + botón DeepL), `campo-richtext`, `galeria-editor` (UI de `ManagesGaleria`), `banner-exito` (`session('success')` y `session('aviso')`).
+- `admin/partials/` — `campo-traducible` (input ES/EN/FR + botón DeepL), `campo-richtext`, `galeria-editor` (UI de `ManagesGaleria`), `selector-equipamiento` (buscador, chips de lo marcado, tarjetas por categoría y alta de equipamiento nuevo; búsqueda, conteos y sugerencia de ícono en Alpine sin ir al servidor), `banner-exito` (`session('success')` y `session('aviso')`).
 - `admin/layouts/admin.blade.php` — layout del panel. `admin/layouts/{app,guest,navigation}` — stack Breeze (`<x-app-layout>` / `<x-guest-layout>` para profile y auth).
 - `admin/auth/` — login, password reset, verify email (Breeze).
 - `admin/profile/` — perfil del admin (Breeze).
