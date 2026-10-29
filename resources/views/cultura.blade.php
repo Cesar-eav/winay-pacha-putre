@@ -68,7 +68,7 @@
             [
                 'mes' => 'Noviembre',
                 'fechas' => [
-                    ['fecha' => '1 de noviembre', 'texto' => 'Wiñay Pacha, día de las almas.'],
+                    ['fecha' => '1 de noviembre', 'texto' => 'Wiñaypacha, día de las almas.'],
                     ['fecha' => '3-4 de noviembre', 'texto' => 'Pachallampi.'],
                 ],
             ],
