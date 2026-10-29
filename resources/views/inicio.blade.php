@@ -135,6 +135,53 @@
         </div>
     </section>
 
+    @php
+        $turistas = collect(range(1, 9))->map(fn ($n) => [
+            'src' => asset("images/inicio/turistas/turista-{$n}-480.webp"),
+            'srcset' => in_array($n, [8, 9]) ? null : asset("images/inicio/turistas/turista-{$n}-480.webp").' 480w, '.asset("images/inicio/turistas/turista-{$n}-960.webp").' 960w',
+            'alt' => $n === 5 ? __('Huéspedes fotografiando el valle de Putre') : __('Huéspedes en Wiñaypacha Putre'),
+        ]);
+    @endphp
+    <section class="bg-winay-arena/40 border-t border-winay-arena">
+        <div
+            x-data="{
+                pasar(dir) {
+                    const pista = this.$refs.pista
+                    pista.scrollBy({ left: dir * pista.firstElementChild.offsetWidth * 1.05, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' })
+                },
+            }"
+            class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16"
+        >
+            <div class="flex items-end justify-between gap-4 mb-8">
+                <div>
+                    <p class="text-sm uppercase tracking-wide text-winay-terracota font-semibold mb-2">{{ __('Nuestros huéspedes') }}</p>
+                    <h2 class="text-3xl sm:text-4xl font-display font-medium tracking-[-0.01em] text-winay-tierra">{{ __('Quienes ya vivieron Wiñaypacha') }}</h2>
+                </div>
+                <div class="hidden sm:flex gap-2 shrink-0">
+                    <button type="button" @click="pasar(-1)" class="size-10 flex items-center justify-center rounded-full border border-winay-tierra text-winay-tierra hover:bg-winay-tierra hover:text-white transition" aria-label="{{ __('Anterior') }}">
+                        <svg class="size-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7" /></svg>
+                    </button>
+                    <button type="button" @click="pasar(1)" class="size-10 flex items-center justify-center rounded-full border border-winay-tierra text-winay-tierra hover:bg-winay-tierra hover:text-white transition" aria-label="{{ __('Siguiente') }}">
+                        <svg class="size-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7" /></svg>
+                    </button>
+                </div>
+            </div>
+
+            <ul x-ref="pista" class="flex gap-4 overflow-x-auto snap-x snap-mandatory -mx-4 px-4 sm:mx-0 sm:px-0 scroll-px-4 sm:scroll-px-0 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+                @foreach ($turistas as $foto)
+                    <li class="snap-start shrink-0 w-[72%] sm:w-[calc((100%-2rem)/3)] lg:w-[calc((100%-3rem)/4)]">
+                        <img src="{{ $foto['src'] }}"
+                             @if ($foto['srcset']) srcset="{{ $foto['srcset'] }}" sizes="(min-width: 1024px) 260px, (min-width: 640px) 31vw, 72vw" @endif
+                             width="480" height="640"
+                             alt="{{ $foto['alt'] }}"
+                             loading="lazy" decoding="async"
+                             class="w-full aspect-3/4 rounded-2xl object-cover bg-winay-arena shadow-sm">
+                    </li>
+                @endforeach
+            </ul>
+        </div>
+    </section>
+
     @if ($temaDestacado)
         <section class="bg-white border-t border-winay-arena">
             <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16 grid gap-8 lg:grid-cols-2 items-center">
