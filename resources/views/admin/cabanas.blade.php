@@ -52,7 +52,7 @@
 
                 <div class="grid gap-4 sm:grid-cols-2">
                     <div>
-                        <label class="block text-sm font-medium text-stone-700">Precio desde (texto libre, opcional)</label>
+                        <label class="block text-sm font-medium text-stone-700">Precio en listados (texto libre, opcional)</label>
                         <input type="text" wire:model="precioDesde" placeholder="Consultar" class="mt-1 block w-full rounded-lg border-stone-300 focus:border-winay-terracota focus:ring-winay-terracota">
                     </div>
                 </div>
@@ -165,5 +165,36 @@
                 @endforelse
             </tbody>
         </table>
+    </div>
+
+    <div class="mt-8 bg-white rounded-2xl border border-stone-200 p-6">
+        <h2 class="font-semibold text-winay-tierra">Precios por noche ({{ Str::lower($etiquetas['plural']) }})</h2>
+        <p class="mt-1 text-sm text-stone-500">Se muestran en la ficha de cada {{ Str::lower($etiquetas['singular']) }}, solo hasta su capacidad.</p>
+
+        <form wire:submit="guardarTarifas" class="mt-4 space-y-3">
+            @foreach ($tarifas as $i => $monto)
+                <div wire:key="tarifa-{{ $i }}" class="flex items-center gap-4">
+                    <span class="w-24 text-sm text-stone-700">{{ $i + 1 }} {{ $i === 0 ? 'persona' : 'personas' }}</span>
+                    <div class="relative w-40">
+                        <span class="absolute inset-y-0 left-3 flex items-center text-sm text-stone-500">$</span>
+                        <input type="number" min="0" step="1000" wire:model="tarifas.{{ $i }}" class="block w-full pl-7 rounded-lg border-stone-300 focus:border-winay-terracota focus:ring-winay-terracota">
+                    </div>
+                    @error('tarifas.'.$i) <p class="text-sm text-red-600">{{ $message }}</p> @enderror
+                </div>
+            @endforeach
+
+            <div class="flex flex-wrap items-center gap-4 pt-2">
+                <button type="submit" class="inline-flex items-center px-5 py-2.5 rounded-full text-sm font-semibold text-white bg-winay-terracota hover:bg-winay-tierra">
+                    Guardar precios
+                </button>
+                <button type="button" wire:click="agregarTarifa" class="text-sm text-winay-terracota hover:underline">+ Agregar fila</button>
+                @if ($tarifas)
+                    <button type="button" wire:click="quitarTarifa" class="text-sm text-stone-500 hover:text-stone-700">Quitar última</button>
+                @endif
+                @if (session('tarifas'))
+                    <span class="text-sm text-winay-andino">{{ session('tarifas') }}</span>
+                @endif
+            </div>
+        </form>
     </div>
 </div>

@@ -45,6 +45,13 @@ class Cabanas extends Component
 
     public array $equipamientosSeleccionados = [];
 
+    public array $tarifas = [];
+
+    public function mount(): void
+    {
+        $this->tarifas = array_values(Cabana::tarifas($this->tipo()));
+    }
+
     protected function tipo(): string
     {
         return Cabana::TIPO_CABANA;
@@ -160,6 +167,34 @@ class Cabanas extends Component
 
         $this->mostrarFormulario = false;
         session()->flash('success', $this->etiquetas()['singular'].' guardada correctamente.');
+    }
+
+    public function agregarTarifa(): void
+    {
+        $this->tarifas[] = '';
+    }
+
+    public function quitarTarifa(): void
+    {
+        array_pop($this->tarifas);
+    }
+
+    public function guardarTarifas(): void
+    {
+        $this->validate(
+            ['tarifas' => ['array'], 'tarifas.*' => ['required', 'integer', 'min:0']],
+            [],
+            ['tarifas.*' => 'precio'],
+        );
+
+        $porPersonas = [];
+        foreach (array_values($this->tarifas) as $i => $monto) {
+            $porPersonas[$i + 1] = (int) $monto;
+        }
+
+        Cabana::guardarTarifas($this->tipo(), $porPersonas);
+
+        session()->flash('tarifas', 'Precios guardados.');
     }
 
     public function eliminar(int $id): void
