@@ -17,6 +17,7 @@ Mapa del código para no tener que explorarlo desde cero en cada sesión. Conven
 | `/nosotros` | `Route::view` (vista estática, sin controller/CMS) | `nosotros` |
 | `/contacto` | `ContactoController` (invokable) | `contacto` |
 | `/reserva` | `ReservaController` (invokable) | `reserva` |
+| `/como-funciona` | `Route::view` (guía para el cliente: qué se edita desde el admin y qué requiere desarrollador; solo español, `noindex`, no enlazada en el menú) | `como-funciona` |
 
 `/dashboard` redirige a `/admin`. Bloque `auth`: `/profile` (Breeze `ProfileController`). `auth.php` = rutas Breeze estándar (login, registro *pendiente deshabilitar*, password reset, verify email).
 
@@ -98,7 +99,7 @@ Todo lo del admin vive en `admin/`; el resto de `views/` es sitio público.
 
 **Público:**
 - `layouts/winay.blade.php` + `layouts/footer.blade.php` — layout del sitio público.
-- Páginas en la raíz de `views/`: `inicio` (el carrusel sale de `ImagenCarrusel` y las fotos de huéspedes de `Galeria::HUESPEDES`; cada sección se oculta si no tiene fotos), `cultura`, `putre`, `entorno/{index,show}`, `nosotros`, `contacto`, `reserva`, `cabanas/{index,show}` (también sirven `/habitaciones`, textos según `$tipo`).
+- Páginas en la raíz de `views/`: `inicio` (el carrusel sale de `ImagenCarrusel` y las fotos de huéspedes de `Galeria::HUESPEDES`; cada sección se oculta si no tiene fotos), `cultura`, `putre`, `entorno/{index,show}`, `nosotros`, `contacto`, `reserva`, `como-funciona` (guía para el cliente: mantenerla al día con cada cambio), `cabanas/{index,show}` (también sirven `/habitaciones`, textos según `$tipo`).
 - `livewire/formulario-{contacto,reserva}.blade.php` — formularios de leads.
 - `components/` — `galeria-lightbox` (lightbox Alpine), `alojamientos/grilla` y `alojamientos/editorial` (cabañas y habitaciones en el inicio), `imagen-placeholder`, `language-switcher`, `form-field`.
 

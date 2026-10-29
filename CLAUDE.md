@@ -23,6 +23,7 @@ Mapa de rutas, modelos, Livewire y vistas ya construidos: ver `ARQUITECTURA.md` 
 - Sobriedad visual: acentos de identidad aymara (wiphala, chakana, textiles) con moderación, no como fondo saturado. Paleta base en `resources/css/app.css` (`--color-winay-terracota`, `--color-winay-tierra`, `--color-winay-andino`, `--color-winay-arena`).
 - Alpine.js para interactividad ligera (lightbox, toggles). Livewire para todo lo que requiere estado de servidor (formularios, calendario de fiestas, admin CRUD).
 - No usar comentarios en código salvo que el WHY sea no obvio.
+- **Todo cambio debe reflejarse en `resources/views/como-funciona.blade.php`** (`/como-funciona`), la guía para el cliente de qué se edita desde el admin y qué requiere desarrollador.
 
 ## Producción / Deploy
 

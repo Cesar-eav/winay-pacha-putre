@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ isset($titulo) ? $titulo.' — Wiñaypacha Putre' : 'Wiñaypacha Putre' }}</title>
+    @isset($noindex)
+        <meta name="robots" content="noindex">
+    @endisset
 
     @php
         $rutaActual = request()->route();

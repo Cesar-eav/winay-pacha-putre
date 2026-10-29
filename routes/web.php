@@ -23,6 +23,7 @@ $rutasPublicas = function () {
     Route::view('/nosotros', 'nosotros')->name('nosotros');
     Route::get('/contacto', ContactoController::class)->name('contacto');
     Route::get('/reserva', ReservaController::class)->name('reserva');
+    Route::view('/como-funciona', 'como-funciona')->name('como-funciona');
 };
 
 $rutasPublicas();
