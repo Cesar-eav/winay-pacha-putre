@@ -2,8 +2,10 @@
 
 namespace App\Livewire;
 
+use App\Mail\NuevaSolicitudReserva;
 use App\Models\Cabana;
 use App\Models\SolicitudReserva;
+use App\Support\Avisos;
 use Illuminate\Support\Collection;
 use Livewire\Component;
 
@@ -78,7 +80,7 @@ class FormularioReserva extends Component
     {
         $this->validate();
 
-        SolicitudReserva::create([
+        $solicitud = SolicitudReserva::create([
             'nombre' => $this->nombre,
             'apellido' => $this->apellido,
             'correo' => $this->correo,
@@ -91,7 +93,7 @@ class FormularioReserva extends Component
             'estado' => 'nuevo',
         ]);
 
-        // TODO: notificar al anfitrión (mail/WhatsApp) cuando exista integración.
+        Avisos::notificarAnfitrion(new NuevaSolicitudReserva($solicitud));
 
         $this->reset(['nombre', 'apellido', 'correo', 'whatsapp', 'fechaLlegada', 'fechaSalida', 'numPersonas', 'cabanaId', 'comentarios']);
         $this->enviado = true;

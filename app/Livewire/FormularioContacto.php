@@ -2,7 +2,9 @@
 
 namespace App\Livewire;
 
+use App\Mail\NuevoMensajeContacto;
 use App\Models\LeadContacto;
+use App\Support\Avisos;
 use Livewire\Component;
 
 class FormularioContacto extends Component
@@ -45,14 +47,14 @@ class FormularioContacto extends Component
     {
         $this->validate();
 
-        LeadContacto::create([
+        $lead = LeadContacto::create([
             'nombre' => $this->nombre,
             'correo' => $this->correo,
             'telefono' => $this->telefono,
             'mensaje' => $this->mensaje,
         ]);
 
-        // TODO: notificar al anfitrión (mail/WhatsApp) cuando exista integración.
+        Avisos::notificarAnfitrion(new NuevoMensajeContacto($lead));
 
         $this->reset(['nombre', 'correo', 'telefono', 'mensaje']);
         $this->enviado = true;
