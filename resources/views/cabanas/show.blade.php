@@ -35,7 +35,17 @@
                     <p class="text-sm font-semibold text-winay-terracota">{{ __($esHabitacion ? 'Habitación N° :n' : 'Cabaña N° :n', ['n' => $cabana->numero]) }}</p>
                 @endif
 
-                @if ($cabana->precio_texto)
+                @if ($cabana->tarifas)
+                    <h2 class="mt-1 font-display text-xl font-medium tracking-[-0.01em] text-winay-tierra">{{ __('Precio por noche') }}</h2>
+                    <dl class="mt-2 text-sm">
+                        @foreach ($cabana->tarifas as $personas => $monto)
+                            <div class="flex items-baseline justify-between gap-4 border-b border-winay-arena py-2.5">
+                                <dt class="text-stone-600">{{ trans_choice(':n persona|:n personas', $personas, ['n' => $personas]) }}</dt>
+                                <dd class="font-display text-lg font-medium text-winay-tierra">{{ \App\Models\Cabana::formatearPrecio($monto) }}</dd>
+                            </div>
+                        @endforeach
+                    </dl>
+                @elseif ($cabana->precio_texto)
                     <p class="mt-1 font-display text-3xl font-medium tracking-[-0.01em] text-winay-tierra">{{ $cabana->precio_texto }}</p>
                 @endif
 

@@ -18,6 +18,11 @@ class Cabana extends Model
 
     public const TIPO_HABITACION = 'habitacion';
 
+    public const TARIFAS_POR_DEFECTO = [
+        self::TIPO_CABANA => [1 => 38000, 2 => 58000, 3 => 70000, 4 => 85000, 5 => 95000],
+        self::TIPO_HABITACION => [1 => 30000, 2 => 50000, 3 => 65000, 4 => 75000],
+    ];
+
     public array $translatable = ['descripcion'];
 
     protected $fillable = [
@@ -49,6 +54,32 @@ class Cabana extends Model
         return preg_match('/^[$\d]/', $precio)
             ? __('Desde :precio', ['precio' => $precio])
             : __($precio);
+    }
+
+    public static function tarifas(string $tipo): array
+    {
+        $guardadas = json_decode((string) Configuracion::get("tarifas_{$tipo}"), true);
+
+        return is_array($guardadas) ? $guardadas : self::TARIFAS_POR_DEFECTO[$tipo] ?? [];
+    }
+
+    public static function guardarTarifas(string $tipo, array $tarifas): void
+    {
+        Configuracion::set("tarifas_{$tipo}", json_encode($tarifas));
+    }
+
+    public static function formatearPrecio(int $monto): string
+    {
+        return '$'.number_format($monto, 0, ',', '.');
+    }
+
+    public function getTarifasAttribute(): array
+    {
+        return array_filter(
+            static::tarifas($this->tipo),
+            fn (int $personas) => ! $this->capacidad || $personas <= $this->capacidad,
+            ARRAY_FILTER_USE_KEY,
+        );
     }
 
     public function getImagenPrincipalUrlAttribute(): ?string
