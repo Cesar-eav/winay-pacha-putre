@@ -226,6 +226,7 @@
                 <div class="mt-3 space-y-3 text-sm text-stone-600">
                     <p>El sitio está en español, inglés y francés. En el panel basta con escribir en español: al guardar, el texto se traduce solo al inglés y al francés.</p>
                     <p>Las pestañas EN y FR de cada campo sirven para revisar o corregir la traducción. Si se corrige a mano, esa versión se respeta; si después cambia el texto en español, conviene revisarla de nuevo.</p>
+                    <p>El botón «Traducir con DeepL» muestra la traducción antes de guardar. Si ya hay texto en inglés o francés, pide confirmar porque lo reemplaza. Si después de usarlo se cambia el español, al guardar se vuelve a traducir. Un punto rojo en una pestaña EN o FR indica que ese idioma tiene un error que impide guardar.</p>
                 </div>
             </div>
             <div>

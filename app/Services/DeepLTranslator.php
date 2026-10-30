@@ -28,7 +28,10 @@ class DeepLTranslator
             : 'https://api.deepl.com/v2/translate';
 
         try {
+            // Un guardado puede encadenar varias llamadas: sin tope, DeepL lento agotaría el max_execution_time y se perdería el guardado.
             $response = Http::asForm()
+                ->connectTimeout(5)
+                ->timeout(15)
                 ->withHeaders(['Authorization' => "DeepL-Auth-Key {$apiKey}"])
                 ->post($url, array_filter([
                     'text' => $texto,

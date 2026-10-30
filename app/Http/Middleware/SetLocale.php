@@ -28,16 +28,15 @@ class SetLocale
 
             if ($routeName !== null && str_starts_with($routeName, $prefijo)
                 && in_array(substr($routeName, strlen($prefijo)), self::RUTAS_PUBLICAS, true)) {
-                session(['locale' => $codigo]);
                 App::setLocale($codigo);
 
                 return $next($request);
             }
         }
 
-        // Ruta fuera del grupo público (admin, auth, endpoint interno de Livewire, etc.):
-        // se mantiene el idioma ya elegido en la sesión durante la navegación pública.
-        App::setLocale(session('locale', $localePredeterminado));
+        // Admin y auth van siempre en español. Las peticiones internas de Livewire de los
+        // formularios públicos recuperan su idioma del snapshot del componente (SupportLocales).
+        App::setLocale($localePredeterminado);
 
         return $next($request);
     }

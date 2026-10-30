@@ -76,6 +76,20 @@ class FormularioReserva extends Component
         ];
     }
 
+    protected function validationAttributes(): array
+    {
+        return [
+            'nombre' => __('Nombre'),
+            'apellido' => __('Apellido'),
+            'correo' => __('Correo'),
+            'whatsapp' => 'WhatsApp',
+            'fechaLlegada' => __('Fecha de llegada'),
+            'fechaSalida' => __('Fecha de salida'),
+            'numPersonas' => __('Número de personas'),
+            'comentarios' => __('Comentarios'),
+        ];
+    }
+
     public function guardar(): void
     {
         $this->validate();

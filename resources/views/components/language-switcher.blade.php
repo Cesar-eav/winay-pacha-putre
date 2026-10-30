@@ -2,12 +2,13 @@
     $rutaActual = request()->route();
     $nombreBase = preg_replace('/^(en|fr)\./', '', $rutaActual->getName());
     $params = $rutaActual->parameters();
+    $query = request()->getQueryString();
 @endphp
 
 <div {{ $attributes->merge(['class' => 'flex items-center gap-2']) }}>
     @foreach (config('winay.locales') as $codigo => $label)
         @php $activo = app()->getLocale() === $codigo; @endphp
-        <a href="{{ lroute($nombreBase, $params, $codigo) }}"
+        <a href="{{ lroute($nombreBase, $params, $codigo) }}{{ $query ? '?'.$query : '' }}"
            lang="{{ $codigo }}"
            title="{{ $label }}"
            aria-label="{{ $label }}"

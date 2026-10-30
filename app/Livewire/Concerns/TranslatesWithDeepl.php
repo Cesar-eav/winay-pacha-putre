@@ -8,11 +8,15 @@ use Illuminate\Support\Str;
 
 trait TranslatesWithDeepl
 {
-    public ?string $errorTraduccion = null;
+    /** @var array<string, string> Aviso de DeepL por campo, para mostrarlo solo bajo el botón pulsado. */
+    public array $errorTraduccion = [];
+
+    /** @var array<string, array<string, array{es: string, traduccion: string}>> Lo que puso el botón "Traducir", para no confundirlo con una edición a mano al guardar. */
+    public array $traduccionesAuto = [];
 
     public function traducir(string $propiedad): void
     {
-        $this->errorTraduccion = null;
+        unset($this->errorTraduccion[$propiedad]);
 
         $texto = data_get($this, "{$propiedad}.es", '');
 
@@ -21,22 +25,25 @@ trait TranslatesWithDeepl
         }
 
         $translator = app(DeepLTranslator::class);
+        $fallidos = [];
 
-        $en = $translator->translate($texto, 'en');
-        $fr = $translator->translate($texto, 'fr');
+        foreach (['en' => 'inglés', 'fr' => 'francés'] as $locale => $idioma) {
+            $traduccion = $translator->translate($texto, $locale);
 
-        if ($en === null && $fr === null) {
-            $this->errorTraduccion = 'No se pudo traducir automáticamente (revisá la DEEPL_API_KEY). Podés completar EN/FR a mano.';
+            if ($traduccion === null) {
+                $fallidos[] = $idioma;
 
-            return;
+                continue;
+            }
+
+            data_set($this, "{$propiedad}.{$locale}", $traduccion);
+            $this->traduccionesAuto[$propiedad][$locale] = ['es' => $texto, 'traduccion' => $traduccion];
         }
 
-        if ($en !== null) {
-            data_set($this, "{$propiedad}.en", $en);
-        }
-
-        if ($fr !== null) {
-            data_set($this, "{$propiedad}.fr", $fr);
+        if (count($fallidos) === 2) {
+            $this->errorTraduccion[$propiedad] = 'No se pudo traducir automáticamente (revisa la DEEPL_API_KEY). Puedes completar EN/FR a mano.';
+        } elseif ($fallidos) {
+            $this->errorTraduccion[$propiedad] = "No se pudo traducir al {$fallidos[0]}. Vuelve a intentarlo o complétalo a mano.";
         }
     }
 
@@ -58,13 +65,17 @@ trait TranslatesWithDeepl
             }
 
             $guardadas = $guardado?->getTranslations(Str::snake($propiedad)) ?? [];
-            $esCambio = $es !== ($guardadas['es'] ?? null);
+            $auto = $this->traduccionesAuto[$propiedad] ?? [];
 
             foreach (['en', 'fr'] as $locale) {
                 $actual = (string) ($form[$locale] ?? '');
-                $sinTocar = $actual === (string) ($guardadas[$locale] ?? '');
 
-                if (trim($actual) !== '' && ! ($esCambio && $sinTocar)) {
+                // Si el texto vino del botón "Traducir", se compara contra el ES que se tradujo entonces.
+                [$esBase, $sinTocar] = $actual === ($auto[$locale]['traduccion'] ?? null)
+                    ? [$auto[$locale]['es'], true]
+                    : [$guardadas['es'] ?? null, $actual === (string) ($guardadas[$locale] ?? '')];
+
+                if (trim($actual) !== '' && ! ($es !== $esBase && $sinTocar)) {
                     continue;
                 }
 
@@ -81,7 +92,7 @@ trait TranslatesWithDeepl
         }
 
         if ($fallos) {
-            session()->flash('aviso', 'DeepL no respondió: algunas traducciones EN/FR quedaron sin actualizar. Podés completarlas a mano o volver a guardar más tarde.');
+            session()->flash('aviso', 'DeepL no respondió: algunas traducciones EN/FR quedaron sin actualizar. Puedes completarlas a mano o volver a guardar más tarde.');
         }
     }
 }

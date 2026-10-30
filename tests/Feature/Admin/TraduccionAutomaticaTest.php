@@ -118,4 +118,72 @@ class TraduccionAutomaticaTest extends TestCase
         $this->assertNotNull($tema);
         $this->assertSame('', (string) $tema->getTranslation('titulo', 'en', false));
     }
+
+    public function test_si_cambia_el_es_despues_de_traducir_retraduce_al_guardar(): void
+    {
+        $this->fakeDeepL();
+
+        Livewire::test(Temas::class)
+            ->call('nuevo')
+            ->set('titulo.es', 'Wilancha')
+            ->set('cuerpo.es', '<p>Ofrenda</p>')
+            ->call('traducir', 'titulo')
+            ->assertSet('titulo.en', '[EN] Wilancha')
+            ->set('titulo.es', 'La Wilancha')
+            ->call('guardar')
+            ->assertHasNoErrors();
+
+        $tema = Tema::firstWhere('slug', 'la-wilancha');
+        $this->assertSame('[EN] La Wilancha', $tema->getTranslation('titulo', 'en'));
+        $this->assertSame('[FR] La Wilancha', $tema->getTranslation('titulo', 'fr'));
+    }
+
+    public function test_traducir_y_guardar_sin_cambios_no_vuelve_a_llamar_a_deepl(): void
+    {
+        $this->fakeDeepL();
+        $tema = $this->crearTema();
+
+        $componente = Livewire::test(Temas::class)
+            ->call('editar', $tema->id)
+            ->set('titulo.es', 'La Pachamama')
+            ->call('traducir', 'titulo');
+
+        Http::assertSentCount(2);
+
+        $componente->set('titulo.en', 'The Pachamama')->call('guardar')->assertHasNoErrors();
+
+        Http::assertSentCount(2);
+        $tema->refresh();
+        $this->assertSame('The Pachamama', $tema->getTranslation('titulo', 'en'));
+        $this->assertSame('[FR] La Pachamama', $tema->getTranslation('titulo', 'fr'));
+    }
+
+    public function test_el_aviso_de_deepl_sale_solo_en_el_campo_pulsado(): void
+    {
+        Http::fake(fn (Request $request) => $request['target_lang'] === 'FR'
+            ? Http::response([], 500)
+            : Http::response(['translations' => [['text' => 'Wiphala flag']]]));
+
+        Livewire::test(Temas::class)
+            ->call('nuevo')
+            ->set('titulo.es', 'Wiphala')
+            ->call('traducir', 'titulo')
+            ->assertSet('titulo.en', 'Wiphala flag')
+            ->assertSet('errorTraduccion', ['titulo' => 'No se pudo traducir al francés. Vuelve a intentarlo o complétalo a mano.']);
+    }
+
+    public function test_los_errores_de_validacion_del_admin_salen_en_espanol(): void
+    {
+        $this->crearTema();
+
+        Livewire::test(Temas::class)
+            ->call('nuevo')
+            ->set('slug', 'pachamama')
+            ->call('guardar')
+            ->assertHasErrors([
+                'slug' => 'El valor de dirección web (slug) ya está en uso.',
+                'titulo.es' => 'El campo título es obligatorio.',
+                'cuerpo.es' => 'El campo cuerpo es obligatorio.',
+            ]);
+    }
 }
