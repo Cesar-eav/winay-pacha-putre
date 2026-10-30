@@ -17,12 +17,6 @@ class TemasSeeder extends Seeder
     public function run(): void
     {
         $temas = [
-            ['slug' => 'cosmovision-aymara', 'categoria' => 'cultura', 'titulo' => 'Cosmovisión aymara', 'cuerpo' => '<p>Texto placeholder sobre la cosmovisión aymara: la relación con la Pachamama, los apus y el territorio altiplánico. Contenido pendiente de revisión con el cliente.</p>', 'orden' => 0, 'imagenes' => [
-                ['path' => 'temas/haCE4huMb8qRQb03dy67cF02t34xssZmuRI98pm8.jpg', 'alt' => 'Cosmovisión aymara', 'orden' => 0],
-                ['path' => 'temas/KjfrWVgkrR1lXOdnkTO7MabAors1RzEJsohPPfyr.webp', 'alt' => 'Cosmovisión aymara', 'orden' => 1],
-            ]],
-            ['slug' => 'textiles-y-artesania', 'categoria' => 'cultura', 'titulo' => 'Textiles y artesanía', 'cuerpo' => '<p>Texto placeholder sobre las técnicas textiles y la artesanía local de Putre y sus comunidades.</p>', 'orden' => 1],
-            ['slug' => 'lengua-y-tradicion-oral', 'categoria' => 'cultura', 'titulo' => 'Lengua y tradición oral', 'cuerpo' => '<p>Texto placeholder sobre el aymara como lengua viva y la tradición oral de la zona.</p>', 'orden' => 2],
             ['slug' => 'trekking-en-el-altiplano', 'categoria' => 'putre_blog', 'titulo' => 'Trekking en el altiplano', 'cuerpo' => '<p>Texto placeholder sobre rutas de trekking recomendadas cerca de Putre.</p>', 'orden' => 3],
             ['slug' => 'observacion-de-estrellas', 'categoria' => 'putre_blog', 'titulo' => 'Observación de estrellas', 'cuerpo' => '<p>Texto placeholder sobre observación astronómica en el altiplano.</p>', 'orden' => 4],
             ['slug' => 'ferias-y-mercados-locales', 'categoria' => 'putre_blog', 'titulo' => 'Ferias y mercados locales', 'cuerpo' => '<p>Texto placeholder sobre ferias y comercio local en Putre.</p>', 'orden' => 5],

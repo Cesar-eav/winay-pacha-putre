@@ -16,15 +16,10 @@ use Livewire\Component;
 #[Layout('admin.layouts.admin', ['titulo' => 'Dashboard'])]
 class Dashboard extends Component
 {
-    protected const ETIQUETAS_CATEGORIA_TEMA = [
-        'cultura' => 'Cultura',
-        'putre_blog' => 'Putre Blog',
-        'publico_objetivo' => 'Público Objetivo',
-    ];
-
     public function render()
     {
         $temasPorCategoria = Tema::selectRaw('categoria, count(*) as total')
+            ->whereIn('categoria', array_keys(Tema::CATEGORIAS))
             ->groupBy('categoria')
             ->pluck('total', 'categoria');
 
@@ -56,9 +51,9 @@ class Dashboard extends Component
                 [
                     'nombre' => 'Temas',
                     'ruta' => route('admin.temas'),
-                    'total' => Tema::count(),
+                    'total' => $temasPorCategoria->sum(),
                     'detalle' => $temasPorCategoria->mapWithKeys(
-                        fn ($total, $categoria) => [(self::ETIQUETAS_CATEGORIA_TEMA[$categoria] ?? $categoria) => $total]
+                        fn ($total, $categoria) => [Tema::CATEGORIAS[$categoria] => $total]
                     ),
                 ],
                 [

@@ -18,7 +18,7 @@ class Temas extends Component
 {
     use ManagesGaleria, TranslatesWithDeepl, ManagesEstadoYOrden;
 
-    public string $categoriaFiltro = 'cultura';
+    public string $categoriaFiltro = 'putre_blog';
 
     public bool $mostrarFormulario = false;
 
@@ -26,7 +26,7 @@ class Temas extends Component
 
     public string $slug = '';
 
-    public string $categoria = 'cultura';
+    public string $categoria = 'putre_blog';
 
     public array $titulo = ['es' => '', 'en' => '', 'fr' => ''];
 
@@ -40,7 +40,7 @@ class Temas extends Component
     {
         return [
             'slug' => ['required', 'string', 'max:255', Rule::unique('temas', 'slug')->ignore($this->editandoId)],
-            'categoria' => ['required', Rule::in(['cultura', 'putre_blog', 'publico_objetivo'])],
+            'categoria' => ['required', Rule::in(array_keys(Tema::CATEGORIAS))],
             'titulo.es' => ['required', 'string', 'max:255'],
             'cuerpo.es' => ['required', 'string'],
             'orden' => ['required', 'integer', 'min:0'],

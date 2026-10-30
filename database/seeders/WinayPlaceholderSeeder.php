@@ -46,9 +46,6 @@ class WinayPlaceholderSeeder extends Seeder
     private function temas(): void
     {
         $temas = [
-            ['slug' => 'cosmovision-aymara', 'categoria' => 'cultura', 'titulo' => 'Cosmovisión aymara', 'cuerpo' => '<p>Texto placeholder sobre la cosmovisión aymara: la relación con la Pachamama, los apus y el territorio altiplánico. Contenido pendiente de revisión con el cliente.</p>'],
-            ['slug' => 'textiles-y-artesania', 'categoria' => 'cultura', 'titulo' => 'Textiles y artesanía', 'cuerpo' => '<p>Texto placeholder sobre las técnicas textiles y la artesanía local de Putre y sus comunidades.</p>'],
-            ['slug' => 'lengua-y-tradicion-oral', 'categoria' => 'cultura', 'titulo' => 'Lengua y tradición oral', 'cuerpo' => '<p>Texto placeholder sobre el aymara como lengua viva y la tradición oral de la zona.</p>'],
             ['slug' => 'trekking-en-el-altiplano', 'categoria' => 'putre_blog', 'titulo' => 'Trekking en el altiplano', 'cuerpo' => '<p>Texto placeholder sobre rutas de trekking recomendadas cerca de Putre.</p>'],
             ['slug' => 'observacion-de-estrellas', 'categoria' => 'putre_blog', 'titulo' => 'Observación de estrellas', 'cuerpo' => '<p>Texto placeholder sobre observación astronómica en el altiplano.</p>'],
             ['slug' => 'ferias-y-mercados-locales', 'categoria' => 'putre_blog', 'titulo' => 'Ferias y mercados locales', 'cuerpo' => '<p>Texto placeholder sobre ferias y comercio local en Putre.</p>'],

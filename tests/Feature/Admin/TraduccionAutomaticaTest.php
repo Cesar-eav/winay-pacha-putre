@@ -35,7 +35,7 @@ class TraduccionAutomaticaTest extends TestCase
     {
         return Tema::create([
             'slug' => 'pachamama',
-            'categoria' => 'cultura',
+            'categoria' => 'putre_blog',
             'titulo' => ['es' => 'Pachamama', 'en' => 'Mother Earth', 'fr' => 'Terre Mère'],
             'cuerpo' => ['es' => '<p>Texto</p>', 'en' => '<p>Text</p>', 'fr' => '<p>Texte</p>'],
             'orden' => 0,

@@ -10,6 +10,11 @@ class Tema extends Model
 {
     use HasTranslations;
 
+    public const CATEGORIAS = [
+        'putre_blog' => 'Putre Blog',
+        'publico_objetivo' => 'Público Objetivo',
+    ];
+
     public array $translatable = ['titulo', 'cuerpo'];
 
     protected $fillable = ['slug', 'categoria', 'titulo', 'cuerpo', 'orden', 'publicado'];

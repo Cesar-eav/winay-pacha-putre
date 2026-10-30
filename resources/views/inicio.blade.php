@@ -189,21 +189,24 @@
     </section>
     @endif
 
-    @if ($temaDestacado)
-        <section class="bg-white border-t border-winay-arena">
-            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16 grid gap-8 lg:grid-cols-2 items-center">
-                <x-galeria-lightbox :imagenes="$temaDestacado->imagenes" :titulo="$temaDestacado->titulo" />
-                <div>
-                    <p class="text-sm uppercase tracking-wide text-winay-terracota font-semibold mb-2">{{ __('Cultura Aymara') }}</p>
-                    <h2 class="text-2xl font-display font-medium tracking-[-0.01em] text-winay-tierra">{{ $temaDestacado->titulo }}</h2>
-                    <p class="mt-4 text-stone-600">{{ Str::limit(strip_tags($temaDestacado->cuerpo), 280) }}</p>
-                    <a href="{{ lroute('cultura') }}" class="mt-4 inline-block text-sm font-semibold text-winay-terracota hover:underline">
-                        {{ __('Conocer más sobre la cultura aymara →') }}
-                    </a>
-                </div>
+    <section class="bg-white border-t border-winay-arena">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16 grid gap-8 lg:grid-cols-2 items-center">
+            <img
+                src="{{ asset('images/culturaaymara/web/cosmovision1.jpg') }}"
+                alt="{{ __('Pareja aymara con vestimenta tradicional y textil andino, mirando el atardecer en el altiplano') }}"
+                loading="lazy" decoding="async"
+                class="w-full aspect-video rounded-2xl object-cover"
+            >
+            <div>
+                <p class="text-sm uppercase tracking-wide text-winay-terracota font-semibold mb-2">{{ __('Cultura Aymara') }}</p>
+                <h2 class="text-2xl font-display font-medium tracking-[-0.01em] text-winay-tierra">{{ __('Vivir en equilibrio con la Pachamama') }}</h2>
+                <p class="mt-4 text-stone-600">{{ __('La cosmovisión aymara no es solo un conjunto de creencias: es una manera de habitar el territorio que sigue guiando la vida cotidiana en Putre.') }}</p>
+                <a href="{{ lroute('cultura') }}" class="mt-4 inline-block text-sm font-semibold text-winay-terracota hover:underline">
+                    {{ __('Conocer más sobre la cultura aymara →') }}
+                </a>
             </div>
-        </section>
-    @endif
+        </div>
+    </section>
 {{-- BOTONES --}}
     <section class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
         <a href="{{ lroute('putre') }}" class="p-6 rounded-2xl border border-winay-arena hover:border-winay-terracota transition">
