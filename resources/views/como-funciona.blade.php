@@ -112,6 +112,7 @@
 
         $comunes = [
             'Menú, logo y botón "Reservar" del encabezado.',
+            'Ícono de la pestaña del navegador (favicon) y de acceso directo en el celular: se genera a partir del dibujo del logo.',
             'Pie de página: descripción, enlace a Instagram y enlaces. Los datos de contacto del pie (el correo es el mismo de la página Contacto) y el número del botón flotante de WhatsApp salen de la misma configuración sin pantalla en el admin.',
             'Textos fijos de las páginas en inglés y francés (títulos, botones, avisos): se traducen a mano en archivos del proyecto.',
             'Colores, tipografías, diseño y orden de las secciones.',

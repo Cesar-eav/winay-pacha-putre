@@ -6,6 +6,7 @@
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
         <title>Admin — Wiñaypacha Putre</title>
+        @include('layouts.favicon')
 
         <!-- Scripts -->
         @livewireStyles
