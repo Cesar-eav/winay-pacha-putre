@@ -24,6 +24,7 @@
                     'El bloque "¡Bienvenidos a Wiñaypacha!" (texto y foto).',
                     'El bloque "Cultura Aymara" (texto y foto, tomados de la página Cultura Aymara).',
                     'Los botones de acceso a Putre, Cultura, Qué Visitar, etc.',
+                    'El mapa de Google Maps del final ("Cómo llegar") y su enlace "Abrir en Google Maps" (apuntan a la ficha de Cabañas Putre "Wiñaypacha").',
                 ],
             ],
             [

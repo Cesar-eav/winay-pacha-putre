@@ -226,4 +226,32 @@
             <p class="mt-2 text-sm text-stone-600">{{ __('Fiestas y actividades tradicionales del año aymara.') }}</p>
         </a>
     </section>
+
+    <section class="bg-winay-arena/40 border-t border-winay-arena">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+            <div class="flex flex-wrap items-end justify-between gap-4 mb-8">
+                <div>
+                    <p class="text-sm uppercase tracking-wide text-winay-terracota font-semibold mb-2">{{ __('Ubicación') }}</p>
+                    <h2 class="text-3xl sm:text-4xl font-display font-medium tracking-[-0.01em] text-winay-tierra">{{ __('Cómo llegar') }}</h2>
+                </div>
+                <a
+                    href="https://www.google.com/maps/place/Caba%C3%B1as+Putre+%22Wi%C3%B1aypacha%22/@-18.1947326,-69.5630956,739m/data=!3m2!1e3!4b1!4m6!3m5!1s0x915a659e27edccad:0xd2a512a7012c25d0!8m2!3d-18.1947326!4d-69.5605207!16s%2Fg%2F11k4wt8by0"
+                    target="_blank"
+                    rel="noopener"
+                    class="text-sm font-semibold text-winay-terracota hover:underline"
+                >{{ __('Abrir en Google Maps') }} →</a>
+            </div>
+            <div class="overflow-hidden rounded-2xl border border-winay-arena shadow-sm">
+                <iframe
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1478!2d-69.5605207!3d-18.1947326!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x915a659e27edccad%3A0xd2a512a7012c25d0!2sCaba%C3%B1as%20Putre%20%22Wi%C3%B1aypacha%22!5e0!3m2!1s{{ app()->getLocale() }}!2scl!4v1763600000000!5m2!1s{{ app()->getLocale() }}!2scl"
+                    class="block w-full h-80 sm:h-96"
+                    style="border:0"
+                    loading="lazy"
+                    referrerpolicy="no-referrer-when-downgrade"
+                    allowfullscreen
+                    title="{{ __('Mapa de ubicación de Wiñaypacha en Putre') }}"
+                ></iframe>
+            </div>
+        </div>
+    </section>
 </x-winay-layout>
