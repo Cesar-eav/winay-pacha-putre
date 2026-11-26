@@ -10,4 +10,15 @@ import { Livewire, Alpine } from '../../vendor/livewire/livewire/dist/livewire.e
 
 window.Alpine = Alpine;
 
+Alpine.data('mapaRuta', (textos) => ({
+    init() {
+        const observador = new IntersectionObserver(([entrada]) => {
+            if (! entrada.isIntersecting) return;
+            observador.disconnect();
+            import('./mapa-ruta.js').then(({ montar }) => montar(this.$el, textos));
+        }, { rootMargin: '300px' });
+        observador.observe(this.$el);
+    },
+}));
+
 Livewire.start();

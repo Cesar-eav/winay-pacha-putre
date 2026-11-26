@@ -241,17 +241,16 @@
                     class="text-sm font-semibold text-winay-terracota hover:underline"
                 >{{ __('Abrir en Google Maps') }} →</a>
             </div>
-            <div class="overflow-hidden rounded-2xl border border-winay-arena shadow-sm">
-                <iframe
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1478!2d-69.5605207!3d-18.1947326!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x915a659e27edccad%3A0xd2a512a7012c25d0!2sCaba%C3%B1as%20Putre%20%22Wi%C3%B1aypacha%22!5e0!3m2!1s{{ app()->getLocale() }}!2scl!4v1763600000000!5m2!1s{{ app()->getLocale() }}!2scl"
-                    class="block w-full h-80 sm:h-96"
-                    style="border:0"
-                    loading="lazy"
-                    referrerpolicy="no-referrer-when-downgrade"
-                    allowfullscreen
-                    title="{{ __('Mapa de ubicación de Wiñaypacha en Putre') }}"
-                ></iframe>
+            {{-- isolate: los paneles de Leaflet usan z-index de hasta 1000 y taparían el menú fijo. --}}
+            <div class="isolate overflow-hidden rounded-2xl border border-winay-arena shadow-sm">
+                <div
+                    x-data="mapaRuta(@js(['plaza' => __('Plaza de Putre'), 'alojamiento' => 'Wiñaypacha']))"
+                    role="region"
+                    aria-label="{{ __('Mapa de ubicación de Wiñaypacha en Putre') }}"
+                    class="block w-full h-80 sm:h-96 bg-winay-arena"
+                ></div>
             </div>
+            <p class="mt-4 text-stone-600">{{ __('Desde la Plaza de Putre, una cuadra por Latorre y luego por Lynch hasta el final de la calle.') }}</p>
         </div>
     </section>
 </x-winay-layout>
